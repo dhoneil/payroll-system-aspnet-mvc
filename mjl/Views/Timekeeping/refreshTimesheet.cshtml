@@ -1,0 +1,121 @@
+﻿@using mjl.Models.Database;
+@using mjl.Models;
+
+
+@{
+
+    int employee_id = (int)ViewBag.employee_id;
+    DateTime date_from = (DateTime)ViewBag.date_from;
+    DateTime date_to = (DateTime)ViewBag.date_to;
+    bool has_timesheet = TimesheetModel.verifyHasEmployeeTimesheet(employee_id, date_from, date_to);
+}
+
+
+
+@{
+
+    Employee empData = EmployeeModel.getEmployeeByID(employee_id);
+    Company company = CompanyModel.getCompany(empData.company_id.Value);
+
+    int regular_days = 0;
+    int holiday_days = 0;
+    int restday_days = 0;
+
+    int workingdays = 0;
+    int days_absent = 0;
+    int lates = 0;
+    int undertime = 0;
+
+
+    decimal overtime = 0;
+
+
+    foreach (DateTime day in SystemHelper.EachDay(date_from, date_to))
+    {
+        bool holiday_remarks = false;
+
+        if (HolidayModel.VerifygetHolidayByDateandCompany(day, empData.company_id.Value))
+        {
+
+            CompanyHoliday holiday = HolidayModel.getHolidayByDateandCompany(day, empData.company_id.Value);
+            holiday_remarks = true;
+        }
+
+        string remarks_schedule = Scheduler.verifyScheduleAvailable(employee_id, day);
+
+        if (remarks_schedule == "HasSchedule")
+        {
+            Employee_Schedule emp_sched = Scheduler.getEmployeeSchedule(employee_id, day);
+            DateTime dateSchedIn = DateTime.Parse(emp_sched.TimeIn.Value.ToString());
+            DateTime dateSchedOut = DateTime.Parse(emp_sched.TimeOut.Value.ToString());
+
+
+            if (DtrComputation.checkgetDtrReport(employee_id, day))
+            {
+                DailyTimeRecord employee_dtr = DtrComputation.getDtrReport(employee_id, day);
+                workingdays++;
+
+                if (holiday_remarks)
+                {
+                    holiday_days++;
+                }
+                else
+                {
+                    regular_days++;
+                    overtime += employee_dtr.total_overtime_hrs.Value;
+                }
+
+                lates += employee_dtr.lates.Value;
+                undertime += employee_dtr.undertime.Value;
+
+            }
+            else
+            {
+                if (holiday_remarks == false)
+                {
+                    if (company.type != "MANPOWER")
+                    {
+                        days_absent++;
+                    }
+                }
+            }
+        }
+        else if (remarks_schedule == "NoSchedule")
+        {
+            if (holiday_remarks == false)
+            {
+                if (company.type != "MANPOWER")
+                {
+                    days_absent++;
+                }
+            }
+        }
+        else
+        {
+            //RESTDAY Schedule
+            if (DtrComputation.checkgetDtrReport(empData.EmployeeID, day))
+            {
+                restday_days++;
+            }
+
+        }
+    }
+
+    <td><a class="show_dtr_details" href="javascript:void(0);">@empData.LastName.EmptyNull().ToUpper(), @empData.FirstName.EmptyNull().ToUpper()</a></td>
+    <td style="text-align:center" class="regular_days">@regular_days</td>
+    <td style="text-align:center" class="holiday_days">@holiday_days</td>
+    <td style="text-align:center" class="rest_days">@restday_days</td>
+    <td style="text-align:center" class="days_absent">@days_absent</td>
+    <td style="text-align:center" class="overtime">@overtime</td>
+    <td style="text-align:center" class="lates">@lates</td>
+    <td style="text-align:center" class="undertime">@undertime</td>
+    <td style="text-align:center" class=""><span class="badge bg-red"><i class="fa fa-unlock"></i> UNLOCK</span></td>
+    <td>
+        <div style="margin-left:40%">
+            <input type="checkbox" class="chckboxSubmit" name="checkrecord" />
+        </div>
+    </td>
+
+}
+
+

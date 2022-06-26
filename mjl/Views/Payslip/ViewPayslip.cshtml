@@ -1,0 +1,104 @@
+﻿@using mjl.Models.Database;
+@using mjl.Models;
+
+@{
+    List<Employee> data = (List<Employee>)ViewBag.lstEmployee;
+    DateTime date_from = (DateTime)ViewBag.date_from;
+    DateTime date_to = (DateTime)ViewBag.date_to;
+
+}
+<table class="table table-bordered table-hover table-condensed" id="employee_payslip">
+    <thead>
+        <tr style="background-color:#f2f2f2;">
+            <th style="width:200px;">Name</th>
+            <th style="width:120px;">Rate</th>
+            <th style="width:120px;">Regular WD</th>
+            <th style="width:120px;">Additionals</th>
+            <th style="width:120px;">Less</th>
+            <th style="width:120px;">Gross Pay</th>
+            <th style="width:120px;">Deductions</th>
+            <th style="width:120px;">Net Pay</th>
+            <th style="width:50px;">Status</th>
+            <th style="width:120px;"><input type="checkbox" class="checkALL" /> Options</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var items in data)
+            {
+                decimal rate = CompensationModel.getCompensationRate(items.EmployeeID);
+                bool has_timesheet = TimesheetModel.verifyHasEmployeeTimesheet(items.EmployeeID, date_from, date_to);
+                bool has_payslip = PayslipModel.verifyHasPayslip(items.EmployeeID, date_from, date_to);
+
+                if (has_payslip)
+                {
+                    Employee_Payslip payslip = PayslipModel.getPayslip(items.EmployeeID, date_from, date_to);
+                    employee_timesheet emp_timesheet = TimesheetModel.getEmployeeTimsheet(items.EmployeeID, date_from, date_to);
+                    <tr class="refresh_payslip">
+                        <td><a class="show_payslip_details" href="javascript:void(0);" payslip_id="@payslip.payslip_id">@items.LastName.EmptyNull().ToUpper(), @items.FirstName.EmptyNull().ToUpper()</a></td>
+                        <td>@payslip.employee_rate.Value.ToNumericFormat()</td>
+                        <td>@emp_timesheet.regular_days.Value</td>
+                        <td>@payslip.total_additionals.Value.ToNumericFormat()</td>
+                        <td>@payslip.total_less.Value.ToNumericFormat()</td>
+                        <td>@payslip.gross_pay.Value.ToNumericFormat()</td>
+                        <td>@payslip.total_deduction.Value.ToNumericFormat()</td>
+                        <td>@payslip.net_pay.Value.ToNumericFormat()</td>
+                        <td>
+                            @if (payslip.status == "APPROVED")
+                            {
+                                <span class="badge bg-blue" style="text-align:center">A</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-orange" style="text-align:center">FA</span>
+                            }
+                        </td>
+                        <td>
+                            @if (payslip.status == "APPROVED")
+                            {
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-default btn-print-payslip" title="Print" payslip_id="@payslip.payslip_id"><i class="fa fa-print"></i></button>
+                                    <button class="btn btn-sm btn-default btn-print-viewlogs" payslip_id="@payslip.payslip_id" title="View Logs"><i class="fa fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-default btn-print-voidpayslip" title="Void Payslip" payslip_id="@payslip.payslip_id"><i class="fa fa-times-circle"></i></button>
+                                </div>
+                            }
+                            else {
+                                <div style="margin-left:40%">
+                                    <input type="checkbox" class="chckboxSubmit" name="checkrecord" payslip_id="@payslip.payslip_id" />
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                    <tr style="display:none">
+                        <td colspan="10">
+                            <div class="box box-solid payslip-box" style="background-color:#ecf0f1;">
+                                <div class="box-body">
+                                        <div class="emp_payslip_details">
+                                           
+                                        </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    if (has_timesheet)
+                    {
+                     <tr class="has_timesheet" employee_id ="@items.EmployeeID">
+                        <td>@items.LastName.EmptyNull().ToUpper(), @items.FirstName.EmptyNull().ToUpper()</td>
+                        <td colspan="9" style="text-align:center;color:cornflowerblue" class="compute_loading">*** COMPUTE PAYSLIP ***</td>
+                    </tr>
+                    } else {
+                    <tr>
+                        <td>@items.LastName.EmptyNull().ToUpper(), @items.FirstName.EmptyNull().ToUpper()</td>
+                        <td colspan="9" style="text-align:center;color:maroon">*** NO TIMESHEET FOUND ***</td>
+                    </tr>
+                    }
+                }
+
+            }
+
+        }
+    </tbody>
+</table>

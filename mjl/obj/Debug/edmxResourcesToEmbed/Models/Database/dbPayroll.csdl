@@ -1,0 +1,855 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="dbPayrollModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="BillingAdjustment">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="payslip_id" Type="Int32" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="amount" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="is_active" Type="Boolean" />
+    <Property Name="prepared_by" Type="Int32" />
+    <Property Name="prepared_date" Type="DateTime" Precision="3" />
+    <Property Name="last_edit_by" Type="Int32" />
+    <Property Name="last_edit_date" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="BillingSecurity">
+    <Key>
+      <PropertyRef Name="bill_id" />
+    </Key>
+    <Property Name="bill_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="bill_description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="bill_amount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="company_id" Type="Int32" />
+    <Property Name="date_from" Type="DateTime" Precision="3" />
+    <Property Name="date_to" Type="DateTime" Precision="3" />
+    <Property Name="prepared_by" Type="Int32" />
+    <Property Name="prepared_date" Type="DateTime" Precision="3" />
+    <Property Name="updated_by" Type="Int32" />
+    <Property Name="update_date" Type="DateTime" Precision="3" />
+    <Property Name="status" Type="DateTime" Precision="3" />
+    <Property Name="remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Company">
+    <Key>
+      <PropertyRef Name="company_id" />
+    </Key>
+    <Property Name="company_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="owner_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="admin_fee" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="city" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="contact_number" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="prepared_by" Type="Int32" />
+    <Property Name="prepared_date" Type="DateTime" Precision="3" />
+    <Property Name="last_edit_by" Type="Int32" />
+    <Property Name="last_edit_date" Type="DateTime" Precision="3" />
+    <Property Name="is_active" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="CompanyHoliday">
+    <Key>
+      <PropertyRef Name="HolidayID" />
+    </Key>
+    <Property Name="HolidayID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="HolidayName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="HolidayType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="HolidayDate" Type="DateTime" Precision="3" />
+    <Property Name="CompanyID" Type="Int32" />
+    <Property Name="prepared_by" Type="Int32" />
+    <Property Name="prepared_date" Type="DateTime" Precision="3" />
+    <Property Name="last_edit_by" Type="Int32" />
+    <Property Name="last_edit_date" Type="DateTime" Precision="3" />
+    <Property Name="IsActive" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="CompensationHistory">
+    <Key>
+      <PropertyRef Name="HistoryID" />
+    </Key>
+    <Property Name="HistoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EmployeeID" Type="Int32" />
+    <Property Name="CompensationType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ValidityStart" Type="DateTime" Precision="3" />
+    <Property Name="CompensationRate" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="PreparedBy" Type="Int32" />
+    <Property Name="PreparedDate" Type="DateTime" Precision="3" />
+    <Property Name="LastEditBy" Type="Int32" />
+    <Property Name="LastEditDate" Type="DateTime" Precision="3" />
+    <Property Name="IsActive" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="DailyTimeRecord">
+    <Key>
+      <PropertyRef Name="RecordID" />
+    </Key>
+    <Property Name="RecordID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+    <Property Name="RecordDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="SystemEqDate" Type="Int32" Nullable="false" />
+    <Property Name="TimeLogIn" Type="DateTime" Precision="3" />
+    <Property Name="TimeLogOut" Type="DateTime" Precision="3" />
+    <Property Name="TimeLogType" Type="Int32" Nullable="false" />
+    <Property Name="PreparedBy" Type="Int32" Nullable="false" />
+    <Property Name="PreparedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="LastEditBy" Type="Int32" Nullable="false" />
+    <Property Name="LastEditDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Source" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="HasComputedPayslip" Type="Boolean" Nullable="false" />
+    <Property Name="total_duty_hrs" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="total_overtime_hrs" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="holiday_hrs" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="nigthdiff" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="lates" Type="Int32" />
+    <Property Name="undertime" Type="Int32" />
+    <Property Name="isHalfDay" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="employee_master">
+    <Key>
+      <PropertyRef Name="cust_acct_no" />
+      <PropertyRef Name="countryid" />
+      <PropertyRef Name="comp_code" />
+      <PropertyRef Name="franchise" />
+      <PropertyRef Name="store_code" />
+      <PropertyRef Name="employee_no" />
+    </Key>
+    <Property Name="cust_acct_no" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="countryid" Type="Int32" Nullable="false" />
+    <Property Name="comp_code" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="franchise" Type="Int32" Nullable="false" />
+    <Property Name="store_code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="employee_no" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+    <Property Name="username" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="first_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="middle_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="last_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="birthday" Type="DateTime" Precision="3" />
+    <Property Name="civil_id_no" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="civil_id_expired" Type="DateTime" Precision="3" />
+    <Property Name="health_card_no" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="health_crd_exp" Type="DateTime" Precision="3" />
+    <Property Name="level" Type="Int32" />
+    <Property Name="password" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="status" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="inac_date" Type="DateTime" Precision="3" />
+    <Property Name="act_date" Type="DateTime" Precision="3" />
+    <Property Name="passport" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="passport_expr" Type="DateTime" Precision="3" />
+    <Property Name="address_flat" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="address_floor" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="address_censuno" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="address_buildingno" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="address_street" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="address_blockno" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="address_area" Type="Int32" />
+    <Property Name="address_city" Type="Int32" />
+    <Property Name="address_country" Type="Int32" />
+    <Property Name="origin_address" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="origin_city" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="origin_country" Type="Int32" />
+    <Property Name="first_name_a" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="middle_name_a" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="last_name_a" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="father_name_a" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="father_last_a" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="salary_rate" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="address_avenue" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+    <Property Name="dept_code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="sect_code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="photo" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="genderid" Type="Int32" />
+    <Property Name="maritalid" Type="Int32" />
+    <Property Name="nationalityid" Type="Int32" />
+    <Property Name="worksched" Type="Int32" />
+    <Property Name="driverlicense" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="driverexpired" Type="DateTime" Precision="3" />
+    <Property Name="Contract" Type="Boolean" />
+    <Property Name="noyears" Type="Int32" />
+    <Property Name="contract_expired" Type="DateTime" Precision="3" />
+    <Property Name="residency_no" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="residency_expired" Type="DateTime" Precision="3" />
+    <Property Name="bankid" Type="Int32" />
+    <Property Name="bank_account_no" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Passport_countryid" Type="Int32" />
+    <Property Name="passport_issuedat" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="datehired" Type="DateTime" Precision="3" />
+    <Property Name="statusid" Type="Int32" />
+    <Property Name="photo_filename" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+    <Property Name="photo_imagetype" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="phoneno" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="mobileno" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="email" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+    <Property Name="compmobno" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="compemailadd" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+    <Property Name="shift_code" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+    <Property Name="clientassign" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="shift_type" Type="Int32" />
+    <Property Name="birthplace" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="salary_typeid" Type="Int32" />
+    <Property Name="salary_periodid" Type="Int32" />
+    <Property Name="height" Type="Int32" />
+    <Property Name="weight" Type="Int32" />
+    <Property Name="religionid" Type="Int32" />
+    <Property Name="spouse" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
+    <Property Name="spouse_occupation" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+    <Property Name="fathers_name" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="fathers_occupation" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
+    <Property Name="mothers_name" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
+    <Property Name="mothers_occupation" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="parent_address" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="skillandlanguage" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="caseemergency" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+    <Property Name="caseemergencycontact" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="caseemergencyaddress" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="sssno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="pagibig" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="philhealth" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="tinno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="probitionary" Type="Int32" />
+    <Property Name="noofmonths" Type="Int32" />
+    <Property Name="endprob" Type="DateTime" Precision="3" />
+    <Property Name="housing" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="transpo" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="sil" Type="Int32" />
+    <Property Name="vl" Type="Int32" />
+    <Property Name="sl" Type="Int32" />
+    <Property Name="renewcontract" Type="Boolean" />
+    <Property Name="restday" Type="Int32" />
+    <Property Name="allowance_petrol" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="allowance_telephone" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="allowance_travel" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="allowance_car" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="allowance_job_nature" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="allowance_foods" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="allowance_others" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="cash_bond" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="pagibig_contr" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="philhealth_contr" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="fingerprintid" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="security_lisence" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="sl_dateexpire" Type="DateTime" Precision="3" />
+    <Property Name="signaturephoto" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="photos" Type="Boolean" />
+    <Property Name="sss_deduct" Type="Boolean" />
+    <Property Name="pagibig_deduct" Type="Boolean" />
+    <Property Name="philhealthdeduct" Type="Boolean" />
+    <Property Name="chargefee" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="runningbalance" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="defaulthrswork" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="chargepaydaydeduct" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="sprsdhrsprem" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="defaultothrswork" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="nsdhrswork" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="totalhrsworby8" Type="Boolean" />
+    <Property Name="billingfee" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="incentive" Type="Decimal" Precision="18" Scale="3" />
+    <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Nationality" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Employee_Payslip">
+    <Key>
+      <PropertyRef Name="payslip_id" />
+    </Key>
+    <Property Name="payslip_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="company_id" Type="Int32" />
+    <Property Name="employee_id" Type="Int32" />
+    <Property Name="employee_rate" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="date_from" Type="DateTime" Precision="3" />
+    <Property Name="date_to" Type="DateTime" Precision="3" />
+    <Property Name="total_additionals" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="total_less" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="total_deduction" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="gross_pay" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="net_pay" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="prepared_by" Type="Int32" />
+    <Property Name="prepared_date" Type="DateTime" Precision="3" />
+    <Property Name="cancelled_by" Type="Int32" />
+    <Property Name="cancelled_date" Type="DateTime" Precision="3" />
+    <Property Name="approved_by" Type="Int32" />
+    <Property Name="approved_date" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Employee_Payslip_Adjustment">
+    <Key>
+      <PropertyRef Name="payslip_adjustment_id" />
+    </Key>
+    <Property Name="payslip_adjustment_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="payslip_id" Type="Int32" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="amount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="prepared_by" Type="Int32" />
+    <Property Name="prepared_date" Type="DateTime" Precision="3" />
+    <Property Name="cancelled_by" Type="Int32" />
+    <Property Name="cancelled_date" Type="DateTime" Precision="3" />
+    <Property Name="lastedit_by" Type="Int32" />
+    <Property Name="lastedit_date" Type="DateTime" Precision="3" />
+    <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="isCharges" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="Employee_Payslip_Details">
+    <Key>
+      <PropertyRef Name="payslip_less_id" />
+    </Key>
+    <Property Name="payslip_less_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="payslip_id" Type="Int32" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="days" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="hours" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="amount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="last_edit_by" Type="Int32" />
+    <Property Name="last_edit_date" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Employee_Payslip_Government">
+    <Key>
+      <PropertyRef Name="payslip_government_id" />
+    </Key>
+    <Property Name="payslip_government_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="payslip_id" Type="Int32" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="amount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="last_edit_by" Type="Int32" />
+    <Property Name="last_edit_date" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Employee_Schedule">
+    <Key>
+      <PropertyRef Name="ScheduleID" />
+    </Key>
+    <Property Name="ScheduleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EmployeeID" Type="Int32" />
+    <Property Name="EffectiveDate" Type="DateTime" Precision="3" />
+    <Property Name="ExpiryDate" Type="DateTime" Precision="3" />
+    <Property Name="TimeIn" Type="Time" Precision="7" />
+    <Property Name="TimeOut" Type="Time" Precision="7" />
+    <Property Name="Restday" Type="Int32" />
+    <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="prepared_by" Type="Int32" />
+    <Property Name="prepared_date" Type="DateTime" Precision="3" />
+    <Property Name="latest_edit_by" Type="Int32" />
+    <Property Name="latest_edit_date" Type="DateTime" Precision="3" />
+    <Property Name="isOutOverDay" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="employee_timesheet">
+    <Key>
+      <PropertyRef Name="emp_timesheet_id" />
+    </Key>
+    <Property Name="emp_timesheet_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="employee_id" Type="Int32" />
+    <Property Name="date_from" Type="DateTime" Precision="3" />
+    <Property Name="date_to" Type="DateTime" Precision="3" />
+    <Property Name="regular_days" Type="Int32" />
+    <Property Name="holiday_days" Type="Int32" />
+    <Property Name="restday_days" Type="Int32" />
+    <Property Name="absent_days" Type="Int32" />
+    <Property Name="overtime_hours" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="lates" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="undertime" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="prepared_by" Type="Int32" />
+    <Property Name="prepared_date" Type="DateTime" Precision="3" />
+    <Property Name="cancelled_by" Type="Int32" />
+    <Property Name="cancelled_date" Type="DateTime" Precision="3" />
+    <Property Name="lastedit_by" Type="Int32" />
+    <Property Name="lastedit_date" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="EmployeeCharge">
+    <Key>
+      <PropertyRef Name="ChargeID" />
+    </Key>
+    <Property Name="ChargeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ChargeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="EmployeeID" Type="Int32" />
+    <Property Name="date_from" Type="DateTime" Precision="3" />
+    <Property Name="date_to" Type="DateTime" Precision="3" />
+    <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="prepared_by" Type="Int32" />
+    <Property Name="prepared_date" Type="DateTime" Precision="3" />
+    <Property Name="lastedit_by" Type="Int32" />
+    <Property Name="lastedit_date" Type="DateTime" Precision="3" />
+    <Property Name="ChargeAmount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Released_by" Type="Int32" />
+    <Property Name="Released_date" Type="DateTime" Precision="3" />
+    <Property Name="Cancelled_by" Type="Int32" />
+    <Property Name="Cancelled_date" Type="DateTime" Precision="3" />
+    <Property Name="payslip_adjustment_id" Type="Int32" />
+    <Property Name="payslip_id" Type="Int32" />
+  </EntityType>
+  <EntityType Name="EmployeeDependent">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="emp_id" Type="Int64" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="relation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="isActive" Type="Boolean" />
+    <Property Name="preparedBy" Type="Int32" />
+    <Property Name="preparedDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="EmployeeGovernment">
+    <Key>
+      <PropertyRef Name="goverment_deduction_id" />
+    </Key>
+    <Property Name="goverment_deduction_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="emp_id" Type="Int32" />
+    <Property Name="with_sss" Type="Boolean" />
+    <Property Name="sss_type_deduction" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="sss_amount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="with_philhealth" Type="Boolean" />
+    <Property Name="philhealth_type_deduction" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="philhealth_amount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="with_pagibig" Type="Boolean" />
+    <Property Name="pagibig_type_deduction" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="pagibig_amount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="prepared_by" Type="Int32" />
+    <Property Name="prepared_date" Type="DateTime" Precision="3" />
+    <Property Name="last_edit_by" Type="Int32" />
+    <Property Name="last_edit_date" Type="DateTime" Precision="3" />
+    <Property Name="with_tin" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="EmployeeID" />
+    </Key>
+    <Property Name="EmployeeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="employee_no" Type="Int32" />
+    <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="MiddleName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DateHired" Type="DateTime" Precision="3" />
+    <Property Name="Gender" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Citizenship" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="BirthDate" Type="DateTime" Precision="3" />
+    <Property Name="BirthPlace" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="JobID" Type="Int32" />
+    <Property Name="PreparedBy" Type="Int32" />
+    <Property Name="PreparedDate" Type="DateTime" Precision="3" />
+    <Property Name="LastEditBy" Type="Int32" />
+    <Property Name="LastEditDate" Type="DateTime" Precision="3" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="company_id" Type="Int32" />
+    <Property Name="contact_no" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="birth_place" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="height" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="weight" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="probitionary" Type="Boolean" />
+    <Property Name="prob_no_of_months" Type="Int32" />
+    <Property Name="end_probitionary_date" Type="DateTime" Precision="3" />
+    <Property Name="province_address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Current_country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="MaritalStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="religion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Current_region" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Current_city_municipality" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Current_street" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Current_barangay" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Current_sitio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="provincial_country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="provincial_region" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="provincial_city_municipality" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="provincial_street" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="provincial_barangay" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="provincial_sitio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="renew_contract" Type="Boolean" />
+    <Property Name="SSS_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="PagIbig_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="PhilHealth_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="TIN_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="atm_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="EmployeeSpous">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="emp_id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="middlename" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="preparedBy" Type="Int32" />
+    <Property Name="preparedDate" Type="DateTime" Precision="3" />
+    <Property Name="isActive" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="Job">
+    <Key>
+      <PropertyRef Name="JobID" />
+    </Key>
+    <Property Name="JobID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="JobName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="JobDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PreparedBy" Type="Int32" />
+    <Property Name="PreparedDate" Type="DateTime" Precision="3" />
+    <Property Name="LastEditBy" Type="Int32" />
+    <Property Name="LastEditDate" Type="DateTime" Precision="3" />
+    <Property Name="IsActive" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="SSS_Contribution">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="start_range" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="end_range" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="monthly_salary_credit" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="social_security_er" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="social_security_ee" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="social_security_total" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="ec_er" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="total_contribution_er" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="total_contribution_ee" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="grand_total_contribution" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="total_contribution" Type="Decimal" Precision="18" Scale="2" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="View_billingAdjustments">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int64" Nullable="false" />
+    <Property Name="payslip_id" Type="Int32" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="amount" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="is_active" Type="Boolean" />
+    <Property Name="prepared_by" Type="Int32" />
+    <Property Name="prepared_date" Type="DateTime" Precision="3" />
+    <Property Name="last_edit_by" Type="Int32" />
+    <Property Name="last_edit_date" Type="DateTime" Precision="3" />
+    <Property Name="Expr1" Type="Int32" />
+    <Property Name="Expr5" Type="Int32" />
+    <Property Name="employee_id" Type="Int32" />
+    <Property Name="employee_rate" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="date_from" Type="DateTime" Precision="3" />
+    <Property Name="date_to" Type="DateTime" Precision="3" />
+    <Property Name="total_additionals" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="total_less" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="total_deduction" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="gross_pay" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="net_pay" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Expr2" Type="Int32" />
+    <Property Name="Expr3" Type="DateTime" Precision="3" />
+    <Property Name="cancelled_by" Type="Int32" />
+    <Property Name="cancelled_date" Type="DateTime" Precision="3" />
+    <Property Name="approved_by" Type="Int32" />
+    <Property Name="approved_date" Type="DateTime" Precision="3" />
+    <Property Name="fname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="lname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="fname_edit" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="lname_edit" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="e_ID" Type="Int32" />
+  </EntityType>
+  <EntityType Name="viewChargeReport">
+    <Key>
+      <PropertyRef Name="ChargeID" />
+      <PropertyRef Name="Expr1" />
+      <PropertyRef Name="Expr2" />
+    </Key>
+    <Property Name="ChargeID" Type="Int32" Nullable="false" />
+    <Property Name="ChargeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="EmployeeID" Type="Int32" />
+    <Property Name="date_from" Type="DateTime" Precision="3" />
+    <Property Name="date_to" Type="DateTime" Precision="3" />
+    <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="prepared_by" Type="Int32" />
+    <Property Name="prepared_date" Type="DateTime" Precision="3" />
+    <Property Name="lastedit_by" Type="Int32" />
+    <Property Name="lastedit_date" Type="DateTime" Precision="3" />
+    <Property Name="ChargeAmount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Released_by" Type="Int32" />
+    <Property Name="Released_date" Type="DateTime" Precision="3" />
+    <Property Name="Cancelled_by" Type="Int32" />
+    <Property Name="Cancelled_date" Type="DateTime" Precision="3" />
+    <Property Name="payslip_adjustment_id" Type="Int32" />
+    <Property Name="payslip_id" Type="Int32" />
+    <Property Name="Expr1" Type="Int32" Nullable="false" />
+    <Property Name="employee_no" Type="Int32" />
+    <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="MiddleName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DateHired" Type="DateTime" Precision="3" />
+    <Property Name="Gender" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Citizenship" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="BirthDate" Type="DateTime" Precision="3" />
+    <Property Name="BirthPlace" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="JobID" Type="Int32" />
+    <Property Name="PreparedBy" Type="Int32" />
+    <Property Name="PreparedDate" Type="DateTime" Precision="3" />
+    <Property Name="LastEditBy" Type="Int32" />
+    <Property Name="LastEditDate" Type="DateTime" Precision="3" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="company_id" Type="Int32" />
+    <Property Name="contact_no" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="birth_place" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="probitionary" Type="Boolean" />
+    <Property Name="prob_no_of_months" Type="Int32" />
+    <Property Name="end_probitionary_date" Type="DateTime" Precision="3" />
+    <Property Name="province_address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Current_country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="MaritalStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="religion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Current_region" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Current_city_municipality" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Current_street" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Current_barangay" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Current_sitio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="provincial_country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="provincial_region" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="provincial_city_municipality" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="provincial_street" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="provincial_barangay" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="provincial_sitio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="renew_contract" Type="Boolean" />
+    <Property Name="SSS_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="PagIbig_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="PhilHealth_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="TIN_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="atm_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Expr2" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="owner_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="admin_fee" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="city" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="contact_number" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Expr3" Type="Int32" />
+    <Property Name="Expr4" Type="DateTime" Precision="3" />
+    <Property Name="last_edit_by" Type="Int32" />
+    <Property Name="last_edit_date" Type="DateTime" Precision="3" />
+    <Property Name="is_active" Type="Boolean" />
+    <Property Name="weight" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="height" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="viewCompanyHoliday">
+    <Key>
+      <PropertyRef Name="HolidayID" />
+      <PropertyRef Name="company_id" />
+    </Key>
+    <Property Name="HolidayID" Type="Int32" Nullable="false" />
+    <Property Name="HolidayName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="HolidayType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="HolidayDate" Type="DateTime" Precision="3" />
+    <Property Name="CompanyID" Type="Int32" />
+    <Property Name="prepared_by" Type="Int32" />
+    <Property Name="prepared_date" Type="DateTime" Precision="3" />
+    <Property Name="last_edit_by" Type="Int32" />
+    <Property Name="last_edit_date" Type="DateTime" Precision="3" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="company_id" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="owner_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="city" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="contact_number" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Expr1" Type="Int32" />
+    <Property Name="Expr2" Type="DateTime" Precision="3" />
+    <Property Name="Expr3" Type="Int32" />
+    <Property Name="Expr4" Type="DateTime" Precision="3" />
+    <Property Name="is_active" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="viewEmployeeCharge">
+    <Key>
+      <PropertyRef Name="ChargeID" />
+      <PropertyRef Name="Expr1" />
+    </Key>
+    <Property Name="ChargeID" Type="Int32" Nullable="false" />
+    <Property Name="ChargeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="EmployeeID" Type="Int32" />
+    <Property Name="date_from" Type="DateTime" Precision="3" />
+    <Property Name="date_to" Type="DateTime" Precision="3" />
+    <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="prepared_by" Type="Int32" />
+    <Property Name="prepared_date" Type="DateTime" Precision="3" />
+    <Property Name="lastedit_by" Type="Int32" />
+    <Property Name="lastedit_date" Type="DateTime" Precision="3" />
+    <Property Name="ChargeAmount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Released_by" Type="Int32" />
+    <Property Name="Released_date" Type="DateTime" Precision="3" />
+    <Property Name="Cancelled_by" Type="Int32" />
+    <Property Name="Cancelled_date" Type="DateTime" Precision="3" />
+    <Property Name="payslip_adjustment_id" Type="Int32" />
+    <Property Name="payslip_id" Type="Int32" />
+    <Property Name="Expr1" Type="Int32" Nullable="false" />
+    <Property Name="employee_no" Type="Int32" />
+    <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="MiddleName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DateHired" Type="DateTime" Precision="3" />
+    <Property Name="Gender" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Citizenship" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="BirthDate" Type="DateTime" Precision="3" />
+    <Property Name="BirthPlace" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="JobID" Type="Int32" />
+    <Property Name="PreparedBy" Type="Int32" />
+    <Property Name="PreparedDate" Type="DateTime" Precision="3" />
+    <Property Name="LastEditBy" Type="Int32" />
+    <Property Name="LastEditDate" Type="DateTime" Precision="3" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="company_id" Type="Int32" />
+    <Property Name="contact_no" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="birth_place" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="probitionary" Type="Boolean" />
+    <Property Name="prob_no_of_months" Type="Int32" />
+    <Property Name="end_probitionary_date" Type="DateTime" Precision="3" />
+    <Property Name="province_address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Current_country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="MaritalStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="religion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Current_region" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Current_city_municipality" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Current_street" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Current_barangay" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Current_sitio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="provincial_country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="provincial_region" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="provincial_city_municipality" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="provincial_street" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="provincial_barangay" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="provincial_sitio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="renew_contract" Type="Boolean" />
+    <Property Name="height" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="weight" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="ViewEmployeeV2">
+    <Key>
+      <PropertyRef Name="EmployeeID" />
+    </Key>
+    <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+    <Property Name="employee_no" Type="Int32" />
+    <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="MiddleName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DateHired" Type="DateTime" Precision="3" />
+    <Property Name="Gender" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Citizenship" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="BirthDate" Type="DateTime" Precision="3" />
+    <Property Name="BirthPlace" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="JobID" Type="Int32" />
+    <Property Name="PreparedBy" Type="Int32" />
+    <Property Name="PreparedDate" Type="DateTime" Precision="3" />
+    <Property Name="LastEditBy" Type="Int32" />
+    <Property Name="LastEditDate" Type="DateTime" Precision="3" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="company_id" Type="Int32" />
+    <Property Name="contact_no" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="birth_place" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="probitionary" Type="Boolean" />
+    <Property Name="prob_no_of_months" Type="Int32" />
+    <Property Name="end_probitionary_date" Type="DateTime" Precision="3" />
+    <Property Name="province_address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Current_country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="MaritalStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="religion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Current_region" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Current_city_municipality" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Current_street" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Current_barangay" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Current_sitio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="provincial_country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="provincial_region" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="provincial_city_municipality" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="provincial_street" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="provincial_barangay" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="provincial_sitio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="renew_contract" Type="Boolean" />
+    <Property Name="SSS_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="PagIbig_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="PhilHealth_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="TIN_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Expr1" Type="Int32" />
+    <Property Name="JobName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="JobDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Expr2" Type="Int32" />
+    <Property Name="Expr3" Type="DateTime" Precision="3" />
+    <Property Name="Expr4" Type="Int32" />
+    <Property Name="Expr5" Type="DateTime" Precision="3" />
+    <Property Name="Expr6" Type="Boolean" />
+    <Property Name="HistoryID" Type="Int32" />
+    <Property Name="Expr7" Type="Int32" />
+    <Property Name="CompensationType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ValidityStart" Type="DateTime" Precision="3" />
+    <Property Name="CompensationRate" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Expr8" Type="Int32" />
+    <Property Name="Expr9" Type="DateTime" Precision="3" />
+    <Property Name="Expr10" Type="Int32" />
+    <Property Name="Expr11" Type="DateTime" Precision="3" />
+    <Property Name="Expr12" Type="Boolean" />
+    <Property Name="goverment_deduction_id" Type="Int64" />
+    <Property Name="emp_id" Type="Int32" />
+    <Property Name="with_sss" Type="Boolean" />
+    <Property Name="sss_type_deduction" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="sss_amount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="with_philhealth" Type="Boolean" />
+    <Property Name="philhealth_type_deduction" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="philhealth_amount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="with_pagibig" Type="Boolean" />
+    <Property Name="pagibig_type_deduction" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="pagibig_amount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="prepared_by" Type="Int32" />
+    <Property Name="prepared_date" Type="DateTime" Precision="3" />
+    <Property Name="last_edit_by" Type="Int32" />
+    <Property Name="last_edit_date" Type="DateTime" Precision="3" />
+    <Property Name="Expr13" Type="Int32" />
+    <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="owner_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="admin_fee" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="city" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="contact_number" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Expr14" Type="Int32" />
+    <Property Name="Expr15" Type="DateTime" Precision="3" />
+    <Property Name="Expr16" Type="Int32" />
+    <Property Name="Expr17" Type="DateTime" Precision="3" />
+    <Property Name="is_active" Type="Boolean" />
+    <Property Name="with_tin" Type="Boolean" />
+    <Property Name="atm_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="height" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="weight" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityContainer Name="dbPayrollEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="BillingAdjustments" EntityType="Self.BillingAdjustment" />
+    <EntitySet Name="BillingSecurities" EntityType="Self.BillingSecurity" />
+    <EntitySet Name="Companies" EntityType="Self.Company" />
+    <EntitySet Name="CompanyHolidays" EntityType="Self.CompanyHoliday" />
+    <EntitySet Name="CompensationHistories" EntityType="Self.CompensationHistory" />
+    <EntitySet Name="DailyTimeRecords" EntityType="Self.DailyTimeRecord" />
+    <EntitySet Name="employee_master" EntityType="Self.employee_master" />
+    <EntitySet Name="Employee_Payslip" EntityType="Self.Employee_Payslip" />
+    <EntitySet Name="Employee_Payslip_Adjustment" EntityType="Self.Employee_Payslip_Adjustment" />
+    <EntitySet Name="Employee_Payslip_Details" EntityType="Self.Employee_Payslip_Details" />
+    <EntitySet Name="Employee_Payslip_Government" EntityType="Self.Employee_Payslip_Government" />
+    <EntitySet Name="Employee_Schedule" EntityType="Self.Employee_Schedule" />
+    <EntitySet Name="employee_timesheet" EntityType="Self.employee_timesheet" />
+    <EntitySet Name="EmployeeCharges" EntityType="Self.EmployeeCharge" />
+    <EntitySet Name="EmployeeDependents" EntityType="Self.EmployeeDependent" />
+    <EntitySet Name="EmployeeGovernments" EntityType="Self.EmployeeGovernment" />
+    <EntitySet Name="Employees" EntityType="Self.Employee" />
+    <EntitySet Name="EmployeeSpouses" EntityType="Self.EmployeeSpous" />
+    <EntitySet Name="Jobs" EntityType="Self.Job" />
+    <EntitySet Name="SSS_Contribution" EntityType="Self.SSS_Contribution" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <EntitySet Name="View_billingAdjustments" EntityType="Self.View_billingAdjustments" />
+    <EntitySet Name="viewChargeReports" EntityType="Self.viewChargeReport" />
+    <EntitySet Name="viewCompanyHolidays" EntityType="Self.viewCompanyHoliday" />
+    <EntitySet Name="viewEmployeeCharges" EntityType="Self.viewEmployeeCharge" />
+    <EntitySet Name="ViewEmployeeV2" EntityType="Self.ViewEmployeeV2" />
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="db_triplannersBillingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="firstname" Type="varchar(max)" />
+    <Property Name="middlename" Type="varchar(max)" />
+    <Property Name="lastname" Type="varchar(max)" />
+    <Property Name="email" Type="varchar(max)" />
+    <Property Name="phone" Type="varchar(max)" />
+    <Property Name="telephone" Type="varchar(max)" />
+    <Property Name="address" Type="varchar(max)" />
+    <Property Name="birthdate" Type="date" />
+    <Property Name="gender" Type="varchar" MaxLength="50" />
+    <Property Name="password" Type="varchar(max)" />
+    <Property Name="IsEmailVerified" Type="bit" />
+    <Property Name="ActivationCode" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="date_hired" Type="date" />
+    <Property Name="date_added" Type="date" />
+    <Property Name="is_active" Type="bit" />
+    <Property Name="user_type" Type="varchar(max)" />
+  </EntityType>
+  <EntityContainer Name="db_triplannersBillingModelStoreContainer">
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

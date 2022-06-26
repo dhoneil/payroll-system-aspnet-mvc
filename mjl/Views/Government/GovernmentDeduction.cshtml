@@ -1,0 +1,366 @@
+﻿@{
+    ViewBag.Title = "Government Deduction";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<div class="modal fade" id="sss_table" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">SSS Contribution Table onwards Jan 2018</h4>
+            </div>
+            <div class="modal-body">
+                <div class="sss_table_result">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="philhealth_table" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Philhealth Contribution Table onwards Jan 2018</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Effective the applicable month of January 2018 and onwards, the monthly
+                    premium contribution shall be at the rate of 2.75% computed straight based on the
+                    monthly basic salary, with a salary floor of P10,000.00 and a ceiling of P40,000.00,
+                    to be equally shared by the employees and their employeer. With the removal of the
+                    salary brackets, computation shall be based on the following table:
+                </p>
+                <table class="table table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Monthly Basic x 2.75%</th>
+                            <th>Monthly Premium</th>
+                            <th>Personal Share</th>
+                            <th>Employer Share</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>P10,000 and below</td>
+                            <td>P275.00</td>
+                            <td>137.50</td>
+                            <td>137.50</td>
+                        </tr>
+                        <tr>
+                            <td>P10,000.01 to 39,999.99</td>
+                            <td>P275.02 to P1,099.99</td>
+                            <td>P137.51 to P549.99</td>
+                            <td>P137.51 to P549.99</td>
+                        </tr>
+                        <tr>
+                            <td>P40,000.00 and above</td>
+                            <td>P1,100.00</td>
+                            <td>P550.00</td>
+                            <td>P550.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="pagibig_table" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Pagibig Contribution Table onwards Jan 2018</h4>
+            </div>
+            <div class="modal-body">
+                 <table class="table table-bordered table-condensed">
+                     <thead>
+                         <tr>
+                             <th rowspan="2" style="text-align:center;vertical-align:middle">Monthly Compensation</th>
+                             <th colspan="2" style="text-align:center">Percentage of Monthly Compensation</th>
+                         </tr>
+                         <tr>
+                             <th>Employee Share</th>
+                             <th>Employee Share</th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         <tr>
+                             <td>P1,500 and below</td>
+                             <td>1%</td>
+                             <td>2%</td>
+                         </tr>
+                     </tbody>
+                 </table>
+                <h4>How to compute Pagibig Contributions?</h4>
+                <p>
+                    The maximum monthly compensation allowed to compute each employee’s Pagibig contribution is 
+                    currently set at P5,000. This means that the maximum contribution a member can pay per month is 
+                    currently P100 and the employer’s share applied to that maximum contribution is also P100.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">Filter Options</h3>
+                <div class="box-tools">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="form-vertical row">
+                    <div class="form-group col-md-3">
+                        <label>Company</label>
+                        <div class="form-group">
+                            @Html.DropDownList("company_id", (IEnumerable<SelectListItem>)ViewBag.company, new { @class = "form-control input-sm", @id = "select_company" })
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Job</label>
+                        <div class="form-group">
+                            @Html.DropDownList("JobID", (IEnumerable<SelectListItem>)ViewBag.job, new { @class = "form-control input-sm", @id = "select_job" })
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Employee</label>
+                        <div class="form-group">
+                            <select id="select_employee" class="form-control select2"></select>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label class="control-label" for="">Options</label>
+                        <button type="button" class="btn btn-sm btn-default btn-block" id="btnView">
+                            <i class="fa fa-refresh"></i> FILTER
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div id="viewResult" class="box box-solid">
+            <div class="box-header with-border"></div>
+            <div class="box-body">
+                <div class="result">
+                    <p style="text-align:center">*** CLICK FILTER TO SHOW RESULT ***</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('#select_company').trigger('change');
+
+            $('#select_company').on('change', function () {
+                select_employee();
+            });
+            $('#select_job').on('change', function () {
+                select_employee();
+            });
+
+
+            $(document).on('change', 'input[name=sss_radio_all]', function () {
+
+                if ($(this).val() == 'AUTO') {
+                    $('.sss_auto').prop('checked', true);
+                } else {
+                    $('.sss_manual').prop('checked', true);
+                }
+            });
+
+            $(document).on('change', 'input[name=philhealth_radio_all]', function () {
+
+                if ($(this).val() == 'AUTO') {
+                    $('.phihealth_auto').prop('checked', true);
+                } else {
+                    $('.phihealth_manual').prop('checked', true);
+                }
+            });
+
+            $(document).on('change', 'input[name=philhealth_radio_all]', function () {
+
+                if ($(this).val() == 'AUTO') {
+                    $('.phihealth_auto').prop('checked', true);
+                } else {
+                    $('.phihealth_manual').prop('checked', true);
+                }
+            });
+
+
+            $(document).on('change', 'input[name=pagibig_radio_all]', function () {
+
+                if ($(this).val() == 'AUTO') {
+                    $('.pagibig_auto').prop('checked', true);
+                } else {
+                    $('.pagibig_manual').prop('checked', true);
+                }
+            });
+
+            $(document).on('click', '.select_amount', function () {
+                $(this).select();
+            });
+
+            $(document).on('click', '.sss_table_formula', function () {
+
+                $('#sss_table').modal('show');
+
+                $.ajax({
+                    url: 'getSSSTable',
+                    type: 'POST',
+                    success: function (data) {
+                        $('.sss_table_result').html(data);
+                    }, error: function (xhr, status, error) {
+                        alertDialog({ text: xhr.responseText });
+                    }
+                });
+
+            });
+
+            $(document).on('click', '.philhealth_table_formula', function () {
+
+                $('#philhealth_table').modal('show');
+
+            });
+
+            $(document).on('click', '.pagibig_table_formula', function () {
+
+                $('#pagibig_table').modal('show');
+
+            });
+
+            $(document).on('click', '.btn-save-all', function () {
+
+                if (confirm("Do you want to save the changes?")) {
+                    var list = [];
+
+                    $('#list_of_employee > tbody > tr.record').each(function () {
+
+
+                        var employee_id = $(this).find('.employee_id').val();
+                        var sss_amount = $(this).find('input:radio.sss:checked').parents('td').find('.sss_amount').val();
+                        var sss_type_deduction = $(this).find('input:radio.sss:checked').attr('deduction_type');
+
+                        var philhealth_amount = $(this).find('input:radio.philhealth:checked').parents('td').find('.phihealth_amount').val();
+                        var philhealth_type_deduction = $(this).find('input:radio.philhealth:checked').attr('deduction_type');
+
+                        var pagibig_amount = $(this).find('input:radio.pagibig:checked').parents('td').find('.pagibig_amount').val();
+                        var pagibig_type_deduction = $(this).find('input:radio.pagibig:checked').attr('deduction_type');
+
+                        list.push({
+                            emp_id: employee_id,
+                            sss_amount: sss_amount,
+                            sss_type_deduction: sss_type_deduction,
+                            philhealth_amount: philhealth_amount,
+                            philhealth_type_deduction: philhealth_type_deduction,
+                            pagibig_amount: pagibig_amount,
+                            pagibig_type_deduction: pagibig_type_deduction
+
+                        });
+                    });
+                    var params = {
+                        'employeeGovernmentList': list
+                    }
+                   
+                    showLoader('#viewResult');
+                    $.ajax({
+                        url: 'updateEmployeeGovernment',
+                        type: 'POST',
+                        data: $.toDictionary(params),
+                        success: function (data) {
+                            hideLoader('#viewResult');
+                            $('#btnView').trigger('click');
+                        }, error: function (xhr, status, error) {
+                            alertDialog({ text: xhr.responseText });
+                        }
+                    });
+                }
+            });
+
+
+            $('#btnView').on('click', function () {
+
+                var company_id = $('#select_company').val();
+                var job_id = $('#select_job').val();
+                var employee_id = $('#select_employee').val();
+                
+                if (company_id > 0) {
+                    showLoader("#viewResult");
+                    $.ajax({
+                        url: action("Government", "viewEmployeeGovernmentDeduction"),
+                        type: 'POST',
+                        data: {
+                            company_id: company_id,
+                            job_id: job_id,
+                            employee_id: employee_id
+                        },
+                        success: function (data) {
+                            $('.result').html(data);
+                            $('.sss_amount').numeric();
+
+                        }, error: function (xhr, status, error) {
+                            alertDialog({ text: xhr.responseText });
+                        }
+                    });
+                    hideLoader("#viewResult");
+                } else {
+                    alert("You need to select a company");
+                }
+             
+            });
+
+        });
+
+        function select_employee() {
+            $.ajax({
+                url: "/Filter/getEmployee",
+                type: "POST",
+                data: {
+                    "job_id": $("#select_job").val(),
+                    "company_id": $("#select_company").val()
+                },
+                success: function (data) {
+
+                    if (data.length > 0) {
+                        $('#select_employee').html('');
+                        var options = '';
+                        options += '<option value="0">[[ ALL ]]</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            options += '<option value="' + data[i].emp_id + '">' + data[i].name + '</option>';
+                        }
+                        $('#select_employee').append(options);
+                    }
+                }
+
+            });
+
+        }
+    </script>
+}
+
+
+

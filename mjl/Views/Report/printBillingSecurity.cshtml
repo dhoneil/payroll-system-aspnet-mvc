@@ -1,0 +1,57 @@
+﻿@using mjl.Models.Database;
+@using mjl.Models;
+
+@{ 
+    BillingSecurity company_bill = (BillingSecurity)ViewBag.billing;
+    Company company = (Company)ViewBag.company;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 style="text-align:center">PRIMERO EAGLE SECURITY AGENCY</h3>
+                    <h4 style="text-align:center">P. Basubas St., Tipolo Mandaue City</h4>
+                    <h5 style="text-align:center">Tel # 032-2395872/09173260020/09233623884</h5>
+                </div>
+                <div class="col-md-12">
+                    <table class="table table-condensed table-sm">
+                        <tbody>
+                            <tr>
+                                <td>To : <b>@company.name.ToUpper()</b></td>
+                                <td style="text-align:right">Date Covered : <b>@company_bill.date_from.Value.ToString("MM-dd-yyyy")  -  @company_bill.date_to.Value.ToString("MM-dd-yyyy")</b></td>
+                            </tr>
+                            <tr>
+                                <td>Address : <b>@company.address.ToUpper()</b></td>
+                                <td style="text-align:right">
+                                    Control No.  <b>@company_bill.bill_id.ToString().PadLeft(9, '0')</b>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr style="background-color:#e7e7e7;">
+                                <th>Description</th>
+                                <th style="width:150px">Billing Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    @company_bill.bill_description.EmptyNull()
+                                </td>
+                                <td>
+                                    @company_bill.bill_amount.Value
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,145 @@
+﻿@using mjl.Models.Database;
+@using mjl.Models;
+
+@{
+    List<Employee> data = (List<Employee>)ViewBag.lstEmployee;
+    DateTime date_from = (DateTime)ViewBag.date_from;
+    DateTime date_to = (DateTime)ViewBag.date_to;
+    string company = (String)ViewBag.company;
+    decimal count = 0;
+
+}
+<p style="text-align:center;font-weight:bold">Payslip Summary Report</p>
+<p style="text-align:center;">Company : @company.ToUpper()</p>
+<p style="text-align:center">Covered Period: @date_from.ToShortDateString() - @date_to.ToShortDateString()</p>
+
+
+<table class="table table-bordered table-hover table-sm table-condensed" id="employee_payslip">
+    <thead>
+        <tr>
+            <th style="font-size:13px">#</th>
+            <th style="font-size:13px">ATM #</th>
+            <th style="font-size:13px">Name</th>
+            <th style="font-size:13px">Rate</th>
+            <th style="font-size:13px">Additionals</th>
+            <th style="font-size:13px">Less</th>
+            <th style="font-size:13px">Gross Pay</th>
+            <th style="font-size:13px">Deductions</th>
+            <th style="font-size:13px">Net Pay</th>
+    </thead>
+    <tbody>
+        @{
+            decimal total_additional = 0;
+            decimal total_less = 0;
+            decimal total_gross_pay = 0;
+            decimal total_deductions = 0;
+            decimal total_net_pay = 0;
+
+            decimal w_total_additional = 0;
+            decimal w_total_less = 0;
+            decimal w_total_gross_pay = 0;
+            decimal w_total_deductions = 0;
+            decimal w_total_net_pay = 0;
+            bool flag = false;
+
+            bool stopper = false;
+            bool loop_lock = false;
+            
+            foreach (var items in data)
+            {
+                decimal rate = CompensationModel.getCompensationRate(items.EmployeeID);
+                bool has_payslip_approved = PayslipModel.verifyHasPayslipApproved(items.EmployeeID, date_from, date_to);
+
+
+                if (has_payslip_approved)
+                {
+                    count++;
+                    flag = true;
+                    Employee_Payslip payslip = PayslipModel.getPayslip(items.EmployeeID, date_from, date_to);
+                    employee_timesheet emp_timesheet = TimesheetModel.getEmployeeTimsheet(items.EmployeeID, date_from, date_to);
+
+
+
+
+                    if (!String.IsNullOrWhiteSpace(items.atm_number))
+                    {
+                        stopper = true;
+                    }
+                    
+                    if (String.IsNullOrWhiteSpace(items.atm_number))
+                    {
+                        w_total_additional += payslip.total_additionals.Value;
+                        w_total_less += payslip.total_less.Value;
+                        w_total_gross_pay += payslip.gross_pay.Value;
+                        w_total_deductions += payslip.total_deduction.Value;
+                        w_total_net_pay += payslip.net_pay.Value;
+                          
+                        
+                        <tr>
+                            <td style="font-size:12px">@count</td>
+                            <td style="font-size:12px">@items.atm_number.EmptyNull()</td>
+                            <td style="font-size:12px">@items.LastName.EmptyNull().ToUpper(), @items.FirstName.EmptyNull().ToUpper()</td>
+                            <td style="font-size:12px">@payslip.employee_rate.Value.ToNumericFormat()</td>
+                            <td style="font-size:12px">@payslip.total_additionals.Value.ToNumericFormat()</td>
+                            <td style="font-size:12px">@payslip.total_less.Value.ToNumericFormat()</td>
+                            <td style="font-size:12px">@payslip.gross_pay.Value.ToNumericFormat()</td>
+                            <td style="font-size:12px">@payslip.total_deduction.Value.ToNumericFormat()</td>
+                            <td style="font-size:12px">@payslip.net_pay.Value.ToNumericFormat()</td>
+                        </tr>
+                     
+            
+                    }
+                    else
+                    {
+                        if (stopper == true && loop_lock == false) { 
+                          <tr>
+                            <td colspan="4" style="text-align:right;font-weight:bold">TOTAL</td>
+                            <td>@w_total_additional.ToNumericFormat()</td>
+                            <td>@w_total_less.ToNumericFormat()</td>
+                            <td>@w_total_gross_pay.ToNumericFormat()</td>
+                            <td>@w_total_deductions.ToNumericFormat()</td>
+                            <td>@w_total_net_pay.ToNumericFormat()</td>
+                        </tr>
+                        }
+
+                        loop_lock = true;
+                        total_additional += payslip.total_additionals.Value;
+                        total_less += payslip.total_less.Value;
+                        total_gross_pay += payslip.gross_pay.Value;
+                        total_deductions += payslip.total_deduction.Value;
+                        total_net_pay += payslip.net_pay.Value;
+                        <tr>
+                            <td style="font-size:12px">@count</td>
+                            <td style="font-size:12px">@items.atm_number.EmptyNull()</td>
+                            <td style="font-size:12px">@items.LastName.EmptyNull().ToUpper(), @items.FirstName.EmptyNull().ToUpper()</td>
+                            <td style="font-size:12px">@payslip.employee_rate.Value.ToNumericFormat()</td>
+                            <td style="font-size:12px">@payslip.total_additionals.Value.ToNumericFormat()</td>
+                            <td style="font-size:12px">@payslip.total_less.Value.ToNumericFormat()</td>
+                            <td style="font-size:12px">@payslip.gross_pay.Value.ToNumericFormat()</td>
+                            <td style="font-size:12px">@payslip.total_deduction.Value.ToNumericFormat()</td>
+                            <td style="font-size:12px">@payslip.net_pay.Value.ToNumericFormat()</td>
+                        </tr>
+                    }
+
+                    
+                }
+            }
+
+            if (flag == false)
+            {
+                <tr>
+                    <td colspan="9" style="text-align:center">No Records Found(0)</td>
+                </tr>
+            }
+        }
+        <tr>
+            <td colspan="4" style="text-align:right;font-weight:bold">TOTAL</td>
+            <td>@total_additional.ToNumericFormat()</td>
+            <td>@total_less.ToNumericFormat()</td>
+            <td>@total_gross_pay.ToNumericFormat()</td>
+            <td>@total_deductions.ToNumericFormat()</td>
+            <td>@total_net_pay.ToNumericFormat()</td>
+        </tr>
+    </tbody>
+
+</table>

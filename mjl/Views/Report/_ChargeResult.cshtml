@@ -1,0 +1,66 @@
+﻿@using mjl.Models.Database;
+@using mjl.Models;
+
+@{
+    List<viewChargeReport> charge_report = (List<viewChargeReport>)ViewBag.charge_report;
+    DateTime date_from = (DateTime)ViewBag.date_from;
+    DateTime date_to = (DateTime)ViewBag.date_to;
+    string company = (String)ViewBag.company;
+    decimal total_amount = 0;
+    decimal count = 0;
+}
+<p style="text-align:center;font-weight:bold">Charge Report Summary</p>
+<p style="text-align:center;">Company : @company.ToUpper()</p>
+<p style="text-align:center">Covered Period: @date_from.ToShortDateString() - @date_to.ToShortDateString()</p>
+<table class="table table-bordered table-hover table-sm table-condensed">
+    <thead>
+        <tr>
+            <th style="font-size:13px;">#</th>
+            <th style="font-size:13px;">Name</th>
+            <th style="font-size:13px;">Charge Name</th>
+            <th style="font-size:13px;">Amount</th>
+            <th style="font-size:13px;">Covered Date</th>
+            <th style="font-size:13px;">Approved</th>
+            <th style="font-size:13px;">Approved Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (charge_report.Count > 0)
+        {
+            foreach (var items in charge_report)
+            {
+                count++;
+                string released_name = "N/A";
+                string releasde_date = "N/A";
+                total_amount += items.ChargeAmount.Value;
+                if (items.Released_by.HasValue)
+                {
+                    User relasedEmployee = UserModel.gerUserById(items.Released_by.Value);
+                    released_name = relasedEmployee.FirstName + ' ' + relasedEmployee.LastName;
+                    releasde_date = items.Released_date.ToDateTimeFormat();
+                }
+
+                <tr>
+                    <td style="font-size:12px;">@count</td>
+                    <td style="font-size:12px;">@items.LastName.ToUpper().EmptyNull() , @items.FirstName.ToUpper().EmptyNull()</td>
+                    <td style="font-size:12px;">@items.ChargeName.ToUpper()</td>
+                    <td style="font-size:12px;">@items.ChargeAmount.Value.ToNumericFormat()</td>
+                    <td style="font-size:12px;">@items.date_from.Value.ToShortDateString() - @items.date_to.Value.ToShortDateString()</td>
+                    <td style="font-size:12px;">@released_name.ToUpper()</td>
+                    <td style="font-size:12px;">@releasde_date.ToUpper()</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="7" style="text-align:center">No Charge Found(0)</td>
+            </tr>
+        }
+        <tr>
+            <td colspan="3" style="text-align:right;font-weight:bold">Total Amount</td>
+            <td>@total_amount.ToNumericFormat()</td>
+            <td colspan="4"></td>
+        </tr>
+    </tbody>
+</table>

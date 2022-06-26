@@ -1,0 +1,565 @@
+﻿@using mjl.Models;
+@using mjl.Models.Database;
+
+@{
+    List<Company> lstcompany = ViewBag.lstcompany;
+    List<Job> lstjob = ViewBag.lstjob;
+    List<ViewEmployeeV2> lstemployee = (List<ViewEmployeeV2>)ViewBag.lstemployee;
+    List<EmployeeDependent> lstdep = (List<EmployeeDependent>)ViewBag.lstdep;
+}
+
+@*<script src="~/Scripts/AdminLTE/app.js" type="text/javascript"></script>
+    <script src="~/Scripts/Confirm/jquery-confirm.js" type="text/javascript"></script>*@
+
+@*<ul class="nav nav-tabs">
+        <li class="active">
+            <a href="#employee_detailEdited" data-toggle="tab" aria-expanded="true">Employee Details</a>
+        </li>
+        <li class="">
+            <a href="#government_detailEdited" data-toggle="tab" aria-expanded="true">Government Details</a>
+        </li>
+        <li class="">
+            <a href="#compensation_detailEdited" data-toggle="tab" aria-expanded="true">Compensation Details</a>
+        </li>
+    </ul>*@
+
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="box box-success box-small">
+            <div class="box-header">
+                <div class="box-tools">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </div>
+                <div class="box-title"><em>General Details</em></div>
+            </div>
+            @foreach (ViewEmployeeV2 x in lstemployee)
+
+            {
+
+
+                <div class="box-body">
+
+                    <input type="hidden" id="idEdited" value="@x.EmployeeID" />
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input id="txtfirstnameEdited" class="form-control input-sm" value="@x.FirstName" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Middle Name</label>
+                        <input id="txtmiddlenameEdited" class="form-control input-sm" value="@x.MiddleName" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input id="txtlastnameEdited" class="form-control input-sm" value="@x.LastName" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <select class="form-control" id="slcgenderrEdited" required>
+                            <option value="">[ SELECT ]</option>
+                            <option value="MALE" @(x.Gender == "MALE" ? "selected" : "")>@x.Gender</option>
+                            <option value="FEMALE" @(x.Gender == "FEMALE" ? "selected" : "")>@x.Gender</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Marital Status</label>
+                        <select class="form-control" id="txtmaritalstatusEdited" required>
+                            <option value="">[ SELECT ]</option>
+                            <option value="SINGLE" @(x.MaritalStatus == "SINGLE" ? "selected" : "")>SINGLE</option>
+                            <option value="MARRIED" @(x.MaritalStatus == "MARRIED" ? "selected" : "")>MARRIED</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Birthdate</label>
+                        <div class="input-group date">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            @{ 
+                                DateTime? date = null;
+                                if (x.BirthDate.HasValue) {
+                                    date = x.BirthDate.Value;
+                                }
+                            }
+                            <input type="date" class="form-control pull-right  " id="dtbirthdateEdited" value="@date.Value.ToString("yyyy-MM-dd")" required>
+                        </div>
+                    </div>
+                    @*<div class="form-group">
+                            <label>Age</label>
+                            <input id="txtage" class="form-control input-sm" />
+                        </div>*@
+                    <div class="form-group">
+                        <label>Height</label>
+                        <input id="txtheightEdited" class="form-control input-sm" value="@x.height" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Weight</label>
+                        <input id="txtweightEdited" class="form-control input-sm" value="@x.weight" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Birth of Place</label>
+                        <input id="txtbirthplaceEdited" class="form-control input-sm" value="@x.BirthPlace" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Nationality</label>
+                        <input id="txtnationalityEdited" class="form-control input-sm" value="@x.Citizenship" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Religion</label>
+                        <input id="txtreligionEdited" class="form-control input-sm" value="@x.religion" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Contact No.</label>
+                        <input id="txtcontactnoEdited" class="form-control input-sm" value="@x.contact_no" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Date Hired</label>
+                        <div class="input-group date">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="date" class="form-control pull-right  " id="dtdatehiredEdited" value="@x.DateHired.Value.ToString("yyyy-MM-dd")" required>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="box box-success box-small">
+            <div class="box-header">
+                <div class="box-tools">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </div>
+                <div id="txtcurrentaddress" class="box-title"><em>Current Address</em></div>
+            </div>
+            @foreach (ViewEmployeeV2 x in lstemployee)
+            {
+                <div class="box-body">
+                    <div class="form-group">
+                        <label>Country</label>
+                        <input id="txtcurrentcountryEdited" class="form-control input-sm" value="@x.Current_country" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Region</label>
+                        <input id="txtcurrentregionEdited" class="form-control input-sm" value="@x.Current_region" required />
+                    </div>
+                    <div class="form-group">
+                        <label>City/Municipalities</label>
+                        <input id="txtcurrentcityEdited" class="form-control input-sm" value="@x.Current_city_municipality" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Street</label>
+                        <input id="txtcurrentstreetEdited" class="form-control input-sm" value="@x.Current_street" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Barangay</label>
+                        <input id="txtcurrentbarangayEdited" class="form-control input-sm" value="@x.Current_barangay" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Sitio</label>
+                        <input id="txtcurrentsitioEdited" class="form-control input-sm" value="@x.Current_sitio" required />
+                    </div>
+                </div>
+            }
+        </div>
+        @foreach (ViewEmployeeV2 xx in lstemployee)
+        {
+            <div class="box box-success box-small">
+                <div class="box-header">
+                    <div class="box-tools">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+                    <div class="box-title"><em>Provincial Address</em></div>
+                </div>
+                <div class="box-body">
+                    <div class="form-group">
+                        <label>Country</label>
+                        <input id="txtprovcountryEdited" class="form-control input-sm" value="@xx.provincial_country" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Region</label>
+                        <input id="txtprovregionEdited" class="form-control input-sm" value="@xx.provincial_region" />
+                    </div>
+                    <div class="form-group">
+                        <label>Street</label>
+                        <input id="txtprovstreetEdited" class="form-control input-sm" value="@xx.provincial_street" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Sitio</label>
+                        <input id="txtprovsitioEdited" class="form-control input-sm" value="@xx.provincial_sitio" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Barangay</label>
+                        <input id="txtprovbarangayEdited" class="form-control input-sm" value="@xx.provincial_barangay" required />
+                    </div>
+                    <div class="form-group">
+                        <label>City/Municipalities</label>
+                        <input id="txtprovcityEdited" class="form-control input-sm" value="@xx.provincial_city_municipality" required />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+<div class="col-xs-12">
+    <div class="box box-success box-small">
+        <div class="box-header">
+            <div class="box-tools">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-plus"></i>
+                </button>
+            </div>
+            <div class="box-title"><em>Work Details</em></div>
+        </div>
+        @foreach (ViewEmployeeV2 xxx in lstemployee)
+        {
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <table>
+                            <tr>
+                                <td style="width:30px">
+                                    <input type="checkbox" id="chkprobitionaryEdited" @(xxx.probitionary == true ? "checked" : "") />
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label>Probitionary Until</label>
+                                        <div class="input-group date">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input type="date" class="form-control pull-right  " id="txtdtprobuntilEdited" @(xxx.probitionary == true ? "" : "disabled") value="@xxx.end_probitionary_date.Value.ToString("yyyy-MM-dd")" />
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input id="txtemailEdited" class="form-control input-sm" value="@xxx.email" required />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Company</label>&nbsp;&nbsp;&nbsp;<label id="slccompensationtypeEdited">@xxx.type</label>
+                            @*@Html.DropDownList("company_id", new SelectList(lstcompany, "company_id", "name"), "[Select Company]", new { @class = "form-control" })*@
+                            <select id="company_idEdited" class="form-control" required>
+                                <option>[ SELECT ]</option>
+                                @foreach (var x in lstcompany)
+                                {
+                                    <option value="@x.company_id" @(xxx.company_id == x.company_id ? "selected" : "")>@x.name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Job</label>
+                            @*@Html.DropDownList("job_id", new SelectList(lstjob, "JobID", "JobName"), "[Select Job]", new { @class = "form-control" })*@
+                            <select id="job_idEdited" class="form-control" required>
+                                <option>[ SELECT ]</option>
+                                @foreach (var x in lstjob)
+                                {
+                                    <option value="@x.JobID" @(xxx.JobID == x.JobID ? "selected" : "")>@x.JobName</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+<div class="box box-success box-small">
+    <div class="box-header">
+        <div class="box-tools">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-plus"></i>
+            </button>
+        </div>
+        <div class="box-title"><em>Government Details</em></div>
+    </div>
+    <div class="box-body">
+        @foreach (ViewEmployeeV2 gov in lstemployee)
+        {
+            <table style="width:100%">
+                <tr>
+                    <td style="text-align:center">
+                        <input id="chksssEdited" type="checkbox" class="" @(gov.with_sss == true ? "checked" : "") />
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label>SSS No.</label>
+                            <input id="txtssnoEdited" class="form-control input-sm" @(gov.with_sss == true ? "" : "disabled") value="@gov.SSS_Number" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:center">
+                        <input id="chkpagibigEdited" type="checkbox" class="" @(gov.with_pagibig == true ? "checked" : "") />
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label>PAG-IBIG No.</label>
+                            <input id="txtpagibignoEdited" class="form-control input-sm" @(gov.with_pagibig == true ? "" : "disabled") value="@gov.PagIbig_Number" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:center">
+                        <input id="chkphilhealthEdited" type="checkbox" class="" @(gov.with_philhealth == true ? "checked" : "") />
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label>PhilHealth No.</label>
+                            <input id="txtphilhealthnoEdited" class="form-control input-sm" @(gov.with_philhealth == true ? "" : "disabled") value="@gov.PhilHealth_Number" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:center">
+                        <input id="chktinEdited" type="checkbox" class="" @(gov.with_tin == true ? "checked" : "") />
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label>TIN No.</label>
+                            <input id="txttinnoEdited" class="form-control input-sm" @(gov.with_tin == true ? "" : "disabled") value="@gov.TIN_Number" />
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box box-primary box-small" id="_boxEmployeeDependent">
+            <div class="box-header">
+                <div class="box-tools">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </div>
+                <div class="box-title"><em>Employee Dependent</em></div>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label>First Name</label>
+                        <input id="txtnamedependentEditform" class="form-control input-sm" placeholder="[FIRST NAME] [MIDDLE NAME] [LAST NAME]" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Relation</label>
+                        <input id="txtrelationdependentEditForm" class="form-control input-sm" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <button style="margin-top:22px;" type="button" class="btn btn-primary pull-right" id="addDependentEditForm"><i class="fa fa-plus-square"></i> Add Dependent</button>
+                    </div>
+                </div>
+                <table class="table table-hover table-bordered" id="dependentTableEditForm">
+                    <thead>
+                        <tr>
+                            <th style="width:40%;" hidden></th>
+                            <th style="width:40%;">Name</th>
+                            <th style="width:40%;">Relation</th>
+                            @*<th style="width:20%;">Remove</th>*@
+                        </tr>
+                    </thead>
+                    <tbody id="GetEmployeeDependentsResult"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box box-success box-small">
+            <div class="box-header">
+                <div class="box-tools">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </div>
+                <div class="box-title"><em>Compensation Details</em></div>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <input type="hidden" id="employeeData" name="employeeData" value="" />
+                        <input type="hidden" id="compensationData" name="compensationData" value="" />
+                        @foreach (ViewEmployeeV2 comp in lstemployee)
+                        {
+                            <div class="form-group">
+                                <label>Validity start</label>
+                                <div class="input-group date">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    @if(@comp.ValidityStart!=null){
+                                        <input type="date" id="dtvalidstartEdited" class="form-control pull-right  " value="@comp.ValidityStart.Value.ToString("yyyy-MM-dd")" required />
+                                    }
+                                    else{
+                                        <input type="date" id="dtvalidstartEdited" class="form-control pull-right  " value="" required />
+                                    }
+                                </div>
+                                <div class="form-group">
+                                    <label>Compensation Rate</label>
+                                    <input id="txtcompensationrateEdited" class="form-control" value="@comp.CompensationRate" required />
+                                </div>
+                                <div class="form-group">
+                                    <label>ATM Number</label>
+                                    <input id="txtEditedAtmNumber" class="form-control" value="@comp.atm_number" required />
+                                </div>
+                                <div class="form-group text-right">
+                                    <button type="submit" class="btn btn-success btn-block" id="btnupdate">
+                                        <i class="fa fa-hdd-o"></i> Update
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    $(document).ready(function () {
+
+        $('#chkShowInactive').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%' // optional
+        });
+
+        //$('. '). ({
+        //    autoclose: true,
+        //    format: 'MM dd, yyyy'
+        //})
+
+        $('#chksssEdited').click(function () {
+            var chk = $('#chksssEdited').is(':checked');
+
+            if (chk) {
+                $('#txtssnoEdited').prop('disabled', '');
+                $('#txtssnoEdited').prop('required', true);
+            } else {
+                $('#txtssnoEdited').prop('disabled', 'disabled');
+                $('#txtssnoEdited').val('');
+            }
+        });
+
+        $('#chkpagibigEdited').click(function () {
+            var chk = $('#chkpagibigEdited').is(':checked');
+
+            if (chk) {
+                $('#txtpagibignoEdited').prop('disabled', '');
+                $('#txtpagibignoEdited').prop('required', true);
+            } else {
+                $('#txtpagibignoEdited').prop('disabled', 'disabled');
+            }
+        });
+
+        $('#chkphilhealthEdited').click(function () {
+            var chk = $('#chkphilhealthEdited').is(':checked');
+
+            if (chk) {
+                $('#txtphilhealthnoEdited').prop('disabled', '');
+                $('#txtphilhealthnoEdited').prop('required', true);
+            } else {
+                $('#txtphilhealthnoEdited').prop('disabled', 'disabled');
+            }
+        });
+
+        $('#chktinEdited').click(function () {
+            var chk = $('#chktinEdited').is(':checked');
+
+            if (chk) {
+                $('#txttinnoEdited').prop('disabled', '');
+                $('#txttinnoEdited').prop('required', true);
+            } else {
+                $('#txttinnoEdited').prop('disabled', 'disabled');
+            }
+        });
+
+        $('#company_idEdited').change(function () {
+            $.ajax({
+                url: '../Admin/GetCompanyType',
+                method: 'post',
+                data: {
+                    company_id: $(this).val()
+                },
+                success: function (data) {
+                    $('#slccompensationtypeEdited').text("[Type]: " + data.companytype)
+                },
+                error: function (data) {
+                    $.alert(xhr.message)
+                }
+            });
+        });
+
+        $('#addDependentEditForm').click(function () {
+            var checkthis = $('#txtnamedependentEditform').val();
+            var emp_id = $('#idEdited').val();
+            var name = $('#txtnamedependentEditform').val();
+            var relation = $('#txtrelationdependentEditForm').val();
+
+            $.ajax({
+                url: '@Url.Action("AddDependent","Admin")',
+                method: 'post',
+                data: {
+                    emp_id: emp_id,
+                    name: name,
+                    relation:relation,
+                },
+                success: function (data) {
+                    if (data == true) {
+                        $('#dependentTableEditForm tbody:last-child').append(
+                            '<tr>' +
+                                '<td class="tdnamedependentEditForm" hidden>' + checkthis + '</td>' +
+                                '<td class="tdnamedependentEditForm" ><input class="form-control input-sm" type="text" id="editDependentName" value=' + name + ' /></td>' +
+                                '<td class="tdrelationdependentEditForm"><input class="form-control input-sm" type="text" id="editDependentRelation" value=' + relation + ' /></td>' +
+                                //'<td><a id="" class="btn btnremoveEditForm"><i class="fa fa-trash"></i> Remove</a></td>' +
+                            '</tr>'
+                        );
+                    }
+                    else {
+                        $.alert(data.responseText)
+                    }
+                },
+                error: function (data) {$.alert(data.responseText) }
+            })
+        });
+
+        
+
+        //$('. '). ({
+        //    autoclose: true,
+        //    format: 'MM dd, yyyy'
+        //})
+
+    });
+</script>

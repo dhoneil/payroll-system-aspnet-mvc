@@ -1,0 +1,2587 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="dbPayrollModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BillingAdjustments">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="payslip_id" Type="int" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="amount" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="is_active" Type="bit" />
+          <Property Name="prepared_by" Type="int" />
+          <Property Name="prepared_date" Type="datetime" />
+          <Property Name="last_edit_by" Type="int" />
+          <Property Name="last_edit_date" Type="datetime" />
+        </EntityType>
+        <EntityType Name="BillingSecurities">
+          <Key>
+            <PropertyRef Name="bill_id" />
+          </Key>
+          <Property Name="bill_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="bill_description" Type="varchar(max)" />
+          <Property Name="bill_amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="company_id" Type="int" />
+          <Property Name="date_from" Type="datetime" />
+          <Property Name="date_to" Type="datetime" />
+          <Property Name="prepared_by" Type="int" />
+          <Property Name="prepared_date" Type="datetime" />
+          <Property Name="updated_by" Type="int" />
+          <Property Name="update_date" Type="datetime" />
+          <Property Name="status" Type="datetime" />
+          <Property Name="remarks" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="Companies">
+          <Key>
+            <PropertyRef Name="company_id" />
+          </Key>
+          <Property Name="company_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar(max)" />
+          <Property Name="type" Type="varchar" MaxLength="50" />
+          <Property Name="owner_name" Type="nvarchar(max)" />
+          <Property Name="admin_fee" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="address" Type="nvarchar(max)" />
+          <Property Name="city" Type="nvarchar(max)" />
+          <Property Name="contact_number" Type="nvarchar(max)" />
+          <Property Name="prepared_by" Type="int" />
+          <Property Name="prepared_date" Type="datetime" />
+          <Property Name="last_edit_by" Type="int" />
+          <Property Name="last_edit_date" Type="datetime" />
+          <Property Name="is_active" Type="bit" />
+        </EntityType>
+        <EntityType Name="CompanyHolidays">
+          <Key>
+            <PropertyRef Name="HolidayID" />
+          </Key>
+          <Property Name="HolidayID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HolidayName" Type="varchar" MaxLength="50" />
+          <Property Name="HolidayType" Type="varchar" MaxLength="50" />
+          <Property Name="HolidayDate" Type="datetime" />
+          <Property Name="CompanyID" Type="int" />
+          <Property Name="prepared_by" Type="int" />
+          <Property Name="prepared_date" Type="datetime" />
+          <Property Name="last_edit_by" Type="int" />
+          <Property Name="last_edit_date" Type="datetime" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="CompensationHistories">
+          <Key>
+            <PropertyRef Name="HistoryID" />
+          </Key>
+          <Property Name="HistoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeID" Type="int" />
+          <Property Name="CompensationType" Type="varchar" MaxLength="50" />
+          <Property Name="ValidityStart" Type="datetime" />
+          <Property Name="CompensationRate" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PreparedBy" Type="int" />
+          <Property Name="PreparedDate" Type="datetime" />
+          <Property Name="LastEditBy" Type="int" />
+          <Property Name="LastEditDate" Type="datetime" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="DailyTimeRecords">
+          <Key>
+            <PropertyRef Name="RecordID" />
+          </Key>
+          <Property Name="RecordID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeID" Type="int" Nullable="false" />
+          <Property Name="RecordDate" Type="datetime" Nullable="false" />
+          <Property Name="SystemEqDate" Type="int" Nullable="false" />
+          <Property Name="TimeLogIn" Type="datetime" />
+          <Property Name="TimeLogOut" Type="datetime" />
+          <Property Name="TimeLogType" Type="int" Nullable="false" />
+          <Property Name="PreparedBy" Type="int" Nullable="false" />
+          <Property Name="PreparedDate" Type="datetime" Nullable="false" />
+          <Property Name="LastEditBy" Type="int" Nullable="false" />
+          <Property Name="LastEditDate" Type="datetime" Nullable="false" />
+          <Property Name="Source" Type="nvarchar(max)" />
+          <Property Name="HasComputedPayslip" Type="bit" Nullable="false" />
+          <Property Name="total_duty_hrs" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="total_overtime_hrs" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="holiday_hrs" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="nigthdiff" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="lates" Type="int" />
+          <Property Name="undertime" Type="int" />
+          <Property Name="isHalfDay" Type="bit" />
+        </EntityType>
+        <EntityType Name="employee_master">
+          <Key>
+            <PropertyRef Name="cust_acct_no" />
+            <PropertyRef Name="countryid" />
+            <PropertyRef Name="comp_code" />
+            <PropertyRef Name="franchise" />
+            <PropertyRef Name="store_code" />
+            <PropertyRef Name="employee_no" />
+          </Key>
+          <Property Name="cust_acct_no" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="countryid" Type="int" Nullable="false" />
+          <Property Name="comp_code" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="franchise" Type="int" Nullable="false" />
+          <Property Name="store_code" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="employee_no" Type="decimal" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="30" />
+          <Property Name="first_name" Type="varchar" MaxLength="50" />
+          <Property Name="middle_name" Type="varchar" MaxLength="50" />
+          <Property Name="last_name" Type="varchar" MaxLength="50" />
+          <Property Name="birthday" Type="datetime" />
+          <Property Name="civil_id_no" Type="varchar" MaxLength="30" />
+          <Property Name="civil_id_expired" Type="datetime" />
+          <Property Name="health_card_no" Type="varchar" MaxLength="30" />
+          <Property Name="health_crd_exp" Type="datetime" />
+          <Property Name="level" Type="int" />
+          <Property Name="password" Type="varchar" MaxLength="30" />
+          <Property Name="status" Type="varchar" MaxLength="1" />
+          <Property Name="inac_date" Type="datetime" />
+          <Property Name="act_date" Type="datetime" />
+          <Property Name="passport" Type="varchar" MaxLength="30" />
+          <Property Name="passport_expr" Type="datetime" />
+          <Property Name="address_flat" Type="varchar" MaxLength="10" />
+          <Property Name="address_floor" Type="varchar" MaxLength="10" />
+          <Property Name="address_censuno" Type="varchar" MaxLength="20" />
+          <Property Name="address_buildingno" Type="varchar" MaxLength="20" />
+          <Property Name="address_street" Type="varchar" MaxLength="30" />
+          <Property Name="address_blockno" Type="varchar" MaxLength="20" />
+          <Property Name="address_area" Type="int" />
+          <Property Name="address_city" Type="int" />
+          <Property Name="address_country" Type="int" />
+          <Property Name="origin_address" Type="varchar" MaxLength="100" />
+          <Property Name="origin_city" Type="varchar" MaxLength="30" />
+          <Property Name="origin_country" Type="int" />
+          <Property Name="first_name_a" Type="varchar" MaxLength="50" />
+          <Property Name="middle_name_a" Type="varchar" MaxLength="50" />
+          <Property Name="last_name_a" Type="varchar" MaxLength="50" />
+          <Property Name="father_name_a" Type="varchar" MaxLength="50" />
+          <Property Name="father_last_a" Type="varchar" MaxLength="50" />
+          <Property Name="salary_rate" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="address_avenue" Type="varchar" MaxLength="60" />
+          <Property Name="dept_code" Type="varchar" MaxLength="10" />
+          <Property Name="sect_code" Type="varchar" MaxLength="10" />
+          <Property Name="photo" Type="varbinary(max)" />
+          <Property Name="genderid" Type="int" />
+          <Property Name="maritalid" Type="int" />
+          <Property Name="nationalityid" Type="int" />
+          <Property Name="worksched" Type="int" />
+          <Property Name="driverlicense" Type="varchar" MaxLength="50" />
+          <Property Name="driverexpired" Type="datetime" />
+          <Property Name="Contract" Type="bit" />
+          <Property Name="noyears" Type="int" />
+          <Property Name="contract_expired" Type="datetime" />
+          <Property Name="residency_no" Type="varchar" MaxLength="50" />
+          <Property Name="residency_expired" Type="datetime" />
+          <Property Name="bankid" Type="int" />
+          <Property Name="bank_account_no" Type="varchar" MaxLength="50" />
+          <Property Name="Passport_countryid" Type="int" />
+          <Property Name="passport_issuedat" Type="varchar" MaxLength="50" />
+          <Property Name="datehired" Type="datetime" />
+          <Property Name="statusid" Type="int" />
+          <Property Name="photo_filename" Type="varchar" MaxLength="300" />
+          <Property Name="photo_imagetype" Type="varchar" MaxLength="50" />
+          <Property Name="phoneno" Type="varchar" MaxLength="30" />
+          <Property Name="mobileno" Type="varchar" MaxLength="30" />
+          <Property Name="email" Type="varchar" MaxLength="60" />
+          <Property Name="compmobno" Type="varchar" MaxLength="30" />
+          <Property Name="compemailadd" Type="varchar" MaxLength="60" />
+          <Property Name="shift_code" Type="varchar" MaxLength="2" />
+          <Property Name="clientassign" Type="varchar" MaxLength="20" />
+          <Property Name="shift_type" Type="int" />
+          <Property Name="birthplace" Type="varchar" MaxLength="100" />
+          <Property Name="salary_typeid" Type="int" />
+          <Property Name="salary_periodid" Type="int" />
+          <Property Name="height" Type="int" />
+          <Property Name="weight" Type="int" />
+          <Property Name="religionid" Type="int" />
+          <Property Name="spouse" Type="varchar" MaxLength="120" />
+          <Property Name="spouse_occupation" Type="varchar" MaxLength="80" />
+          <Property Name="fathers_name" Type="varchar" MaxLength="150" />
+          <Property Name="fathers_occupation" Type="varchar" MaxLength="120" />
+          <Property Name="mothers_name" Type="varchar" MaxLength="120" />
+          <Property Name="mothers_occupation" Type="varchar" MaxLength="150" />
+          <Property Name="parent_address" Type="varchar" MaxLength="200" />
+          <Property Name="skillandlanguage" Type="varchar" MaxLength="200" />
+          <Property Name="caseemergency" Type="varchar" MaxLength="80" />
+          <Property Name="caseemergencycontact" Type="varchar" MaxLength="50" />
+          <Property Name="caseemergencyaddress" Type="varchar" MaxLength="200" />
+          <Property Name="sssno" Type="varchar" MaxLength="50" />
+          <Property Name="pagibig" Type="varchar" MaxLength="50" />
+          <Property Name="philhealth" Type="varchar" MaxLength="50" />
+          <Property Name="tinno" Type="varchar" MaxLength="50" />
+          <Property Name="probitionary" Type="int" />
+          <Property Name="noofmonths" Type="int" />
+          <Property Name="endprob" Type="datetime" />
+          <Property Name="housing" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="transpo" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="sil" Type="int" />
+          <Property Name="vl" Type="int" />
+          <Property Name="sl" Type="int" />
+          <Property Name="renewcontract" Type="bit" />
+          <Property Name="restday" Type="int" />
+          <Property Name="allowance_petrol" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="allowance_telephone" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="allowance_travel" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="allowance_car" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="allowance_job_nature" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="allowance_foods" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="allowance_others" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="cash_bond" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="pagibig_contr" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="philhealth_contr" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="fingerprintid" Type="varchar" MaxLength="30" />
+          <Property Name="security_lisence" Type="varchar" MaxLength="50" />
+          <Property Name="sl_dateexpire" Type="datetime" />
+          <Property Name="signaturephoto" Type="varbinary(max)" />
+          <Property Name="photos" Type="bit" />
+          <Property Name="sss_deduct" Type="bit" />
+          <Property Name="pagibig_deduct" Type="bit" />
+          <Property Name="philhealthdeduct" Type="bit" />
+          <Property Name="chargefee" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="runningbalance" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="defaulthrswork" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="chargepaydaydeduct" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="sprsdhrsprem" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="defaultothrswork" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="nsdhrswork" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="totalhrsworby8" Type="bit" />
+          <Property Name="billingfee" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="incentive" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="Gender" Type="varchar" MaxLength="50" />
+          <Property Name="Nationality" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Employee_Payslip">
+          <Key>
+            <PropertyRef Name="payslip_id" />
+          </Key>
+          <Property Name="payslip_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="company_id" Type="int" />
+          <Property Name="employee_id" Type="int" />
+          <Property Name="employee_rate" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="date_from" Type="datetime" />
+          <Property Name="date_to" Type="datetime" />
+          <Property Name="total_additionals" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="total_less" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="total_deduction" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="gross_pay" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="net_pay" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="status" Type="varchar" MaxLength="50" />
+          <Property Name="prepared_by" Type="int" />
+          <Property Name="prepared_date" Type="datetime" />
+          <Property Name="cancelled_by" Type="int" />
+          <Property Name="cancelled_date" Type="datetime" />
+          <Property Name="approved_by" Type="int" />
+          <Property Name="approved_date" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Employee_Payslip_Adjustment">
+          <Key>
+            <PropertyRef Name="payslip_adjustment_id" />
+          </Key>
+          <Property Name="payslip_adjustment_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="payslip_id" Type="int" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="type" Type="varchar" MaxLength="50" />
+          <Property Name="prepared_by" Type="int" />
+          <Property Name="prepared_date" Type="datetime" />
+          <Property Name="cancelled_by" Type="int" />
+          <Property Name="cancelled_date" Type="datetime" />
+          <Property Name="lastedit_by" Type="int" />
+          <Property Name="lastedit_date" Type="datetime" />
+          <Property Name="status" Type="varchar" MaxLength="50" />
+          <Property Name="isCharges" Type="bit" />
+        </EntityType>
+        <EntityType Name="Employee_Payslip_Details">
+          <Key>
+            <PropertyRef Name="payslip_less_id" />
+          </Key>
+          <Property Name="payslip_less_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="payslip_id" Type="int" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="days" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="hours" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="type" Type="varchar" MaxLength="50" />
+          <Property Name="last_edit_by" Type="int" />
+          <Property Name="last_edit_date" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Employee_Payslip_Government">
+          <Key>
+            <PropertyRef Name="payslip_government_id" />
+          </Key>
+          <Property Name="payslip_government_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="payslip_id" Type="int" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="last_edit_by" Type="int" />
+          <Property Name="last_edit_date" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Employee_Schedule">
+          <Key>
+            <PropertyRef Name="ScheduleID" />
+          </Key>
+          <Property Name="ScheduleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeID" Type="int" />
+          <Property Name="EffectiveDate" Type="datetime" />
+          <Property Name="ExpiryDate" Type="datetime" />
+          <Property Name="TimeIn" Type="time" Precision="7" />
+          <Property Name="TimeOut" Type="time" Precision="7" />
+          <Property Name="Restday" Type="int" />
+          <Property Name="Remarks" Type="varchar(max)" />
+          <Property Name="prepared_by" Type="int" />
+          <Property Name="prepared_date" Type="datetime" />
+          <Property Name="latest_edit_by" Type="int" />
+          <Property Name="latest_edit_date" Type="datetime" />
+          <Property Name="isOutOverDay" Type="bit" />
+        </EntityType>
+        <EntityType Name="employee_timesheet">
+          <Key>
+            <PropertyRef Name="emp_timesheet_id" />
+          </Key>
+          <Property Name="emp_timesheet_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="employee_id" Type="int" />
+          <Property Name="date_from" Type="datetime" />
+          <Property Name="date_to" Type="datetime" />
+          <Property Name="regular_days" Type="int" />
+          <Property Name="holiday_days" Type="int" />
+          <Property Name="restday_days" Type="int" />
+          <Property Name="absent_days" Type="int" />
+          <Property Name="overtime_hours" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="lates" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="undertime" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="status" Type="varchar" MaxLength="50" />
+          <Property Name="prepared_by" Type="int" />
+          <Property Name="prepared_date" Type="datetime" />
+          <Property Name="cancelled_by" Type="int" />
+          <Property Name="cancelled_date" Type="datetime" />
+          <Property Name="lastedit_by" Type="int" />
+          <Property Name="lastedit_date" Type="datetime" />
+        </EntityType>
+        <EntityType Name="EmployeeCharges">
+          <Key>
+            <PropertyRef Name="ChargeID" />
+          </Key>
+          <Property Name="ChargeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ChargeName" Type="varchar" MaxLength="50" />
+          <Property Name="EmployeeID" Type="int" />
+          <Property Name="date_from" Type="datetime" />
+          <Property Name="date_to" Type="datetime" />
+          <Property Name="status" Type="varchar" MaxLength="50" />
+          <Property Name="prepared_by" Type="int" />
+          <Property Name="prepared_date" Type="datetime" />
+          <Property Name="lastedit_by" Type="int" />
+          <Property Name="lastedit_date" Type="datetime" />
+          <Property Name="ChargeAmount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Released_by" Type="int" />
+          <Property Name="Released_date" Type="datetime" />
+          <Property Name="Cancelled_by" Type="int" />
+          <Property Name="Cancelled_date" Type="datetime" />
+          <Property Name="payslip_adjustment_id" Type="int" />
+          <Property Name="payslip_id" Type="int" />
+        </EntityType>
+        <EntityType Name="EmployeeDependents">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="emp_id" Type="bigint" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="relation" Type="varchar" MaxLength="50" />
+          <Property Name="isActive" Type="bit" />
+          <Property Name="preparedBy" Type="int" />
+          <Property Name="preparedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="EmployeeGovernments">
+          <Key>
+            <PropertyRef Name="goverment_deduction_id" />
+          </Key>
+          <Property Name="goverment_deduction_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="emp_id" Type="int" />
+          <Property Name="with_sss" Type="bit" />
+          <Property Name="sss_type_deduction" Type="varchar" MaxLength="50" />
+          <Property Name="sss_amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="with_philhealth" Type="bit" />
+          <Property Name="philhealth_type_deduction" Type="varchar" MaxLength="50" />
+          <Property Name="philhealth_amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="with_pagibig" Type="bit" />
+          <Property Name="pagibig_type_deduction" Type="varchar" MaxLength="50" />
+          <Property Name="pagibig_amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="prepared_by" Type="int" />
+          <Property Name="prepared_date" Type="datetime" />
+          <Property Name="last_edit_by" Type="int" />
+          <Property Name="last_edit_date" Type="datetime" />
+          <Property Name="with_tin" Type="bit" />
+        </EntityType>
+        <EntityType Name="Employees">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="employee_no" Type="int" />
+          <Property Name="FirstName" Type="nvarchar(max)" />
+          <Property Name="LastName" Type="nvarchar(max)" />
+          <Property Name="MiddleName" Type="nvarchar(max)" />
+          <Property Name="DateHired" Type="datetime" />
+          <Property Name="Gender" Type="nvarchar(max)" />
+          <Property Name="Citizenship" Type="nvarchar(max)" />
+          <Property Name="BirthDate" Type="datetime" />
+          <Property Name="BirthPlace" Type="nvarchar(max)" />
+          <Property Name="JobID" Type="int" />
+          <Property Name="PreparedBy" Type="int" />
+          <Property Name="PreparedDate" Type="datetime" />
+          <Property Name="LastEditBy" Type="int" />
+          <Property Name="LastEditDate" Type="datetime" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="company_id" Type="int" />
+          <Property Name="contact_no" Type="varchar" MaxLength="50" />
+          <Property Name="birth_place" Type="varchar" MaxLength="50" />
+          <Property Name="height" Type="varchar" MaxLength="50" />
+          <Property Name="weight" Type="varchar" MaxLength="50" />
+          <Property Name="probitionary" Type="bit" />
+          <Property Name="prob_no_of_months" Type="int" />
+          <Property Name="end_probitionary_date" Type="datetime" />
+          <Property Name="province_address" Type="varchar(max)" />
+          <Property Name="email" Type="varchar" MaxLength="50" />
+          <Property Name="Current_country" Type="varchar" MaxLength="50" />
+          <Property Name="MaritalStatus" Type="varchar" MaxLength="50" />
+          <Property Name="religion" Type="varchar" MaxLength="100" />
+          <Property Name="Current_region" Type="varchar" MaxLength="50" />
+          <Property Name="Current_city_municipality" Type="varchar" MaxLength="50" />
+          <Property Name="Current_street" Type="varchar" MaxLength="50" />
+          <Property Name="Current_barangay" Type="varchar" MaxLength="50" />
+          <Property Name="Current_sitio" Type="varchar" MaxLength="50" />
+          <Property Name="provincial_country" Type="varchar" MaxLength="50" />
+          <Property Name="provincial_region" Type="varchar" MaxLength="50" />
+          <Property Name="provincial_city_municipality" Type="varchar" MaxLength="50" />
+          <Property Name="provincial_street" Type="varchar" MaxLength="50" />
+          <Property Name="provincial_barangay" Type="varchar" MaxLength="50" />
+          <Property Name="provincial_sitio" Type="varchar" MaxLength="50" />
+          <Property Name="renew_contract" Type="bit" />
+          <Property Name="SSS_Number" Type="varchar" MaxLength="50" />
+          <Property Name="PagIbig_Number" Type="varchar" MaxLength="50" />
+          <Property Name="PhilHealth_Number" Type="varchar" MaxLength="50" />
+          <Property Name="TIN_Number" Type="varchar" MaxLength="50" />
+          <Property Name="atm_number" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="EmployeeSpouses">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="emp_id" Type="varchar" MaxLength="50" />
+          <Property Name="firstname" Type="varchar" MaxLength="50" />
+          <Property Name="middlename" Type="varchar" MaxLength="50" />
+          <Property Name="lastname" Type="varchar" MaxLength="50" />
+          <Property Name="preparedBy" Type="int" />
+          <Property Name="preparedDate" Type="datetime" />
+          <Property Name="isActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="Jobs">
+          <Key>
+            <PropertyRef Name="JobID" />
+          </Key>
+          <Property Name="JobID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="JobName" Type="nvarchar(max)" />
+          <Property Name="JobDescription" Type="nvarchar(max)" />
+          <Property Name="PreparedBy" Type="int" />
+          <Property Name="PreparedDate" Type="datetime" />
+          <Property Name="LastEditBy" Type="int" />
+          <Property Name="LastEditDate" Type="datetime" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="SSS_Contribution">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="start_range" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="end_range" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="monthly_salary_credit" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="social_security_er" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="social_security_ee" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="social_security_total" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ec_er" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="total_contribution_er" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="total_contribution_ee" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="grand_total_contribution" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="total_contribution" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Password" Type="nvarchar(max)" />
+          <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="View_billingAdjustments">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" Nullable="false" />
+          <Property Name="payslip_id" Type="int" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="amount" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="is_active" Type="bit" />
+          <Property Name="prepared_by" Type="int" />
+          <Property Name="prepared_date" Type="datetime" />
+          <Property Name="last_edit_by" Type="int" />
+          <Property Name="last_edit_date" Type="datetime" />
+          <Property Name="Expr1" Type="int" />
+          <Property Name="Expr5" Type="int" />
+          <Property Name="employee_id" Type="int" />
+          <Property Name="employee_rate" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="date_from" Type="datetime" />
+          <Property Name="date_to" Type="datetime" />
+          <Property Name="total_additionals" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="total_less" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="total_deduction" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="gross_pay" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="net_pay" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="status" Type="varchar" MaxLength="50" />
+          <Property Name="Expr2" Type="int" />
+          <Property Name="Expr3" Type="datetime" />
+          <Property Name="cancelled_by" Type="int" />
+          <Property Name="cancelled_date" Type="datetime" />
+          <Property Name="approved_by" Type="int" />
+          <Property Name="approved_date" Type="datetime" />
+          <Property Name="fname" Type="nvarchar(max)" />
+          <Property Name="lname" Type="nvarchar(max)" />
+          <Property Name="fname_edit" Type="nvarchar(max)" />
+          <Property Name="lname_edit" Type="nvarchar(max)" />
+          <Property Name="e_ID" Type="int" />
+        </EntityType>
+        <EntityType Name="viewChargeReports">
+          <Key>
+            <PropertyRef Name="ChargeID" />
+            <PropertyRef Name="Expr1" />
+            <PropertyRef Name="Expr2" />
+          </Key>
+          <Property Name="ChargeID" Type="int" Nullable="false" />
+          <Property Name="ChargeName" Type="varchar" MaxLength="50" />
+          <Property Name="EmployeeID" Type="int" />
+          <Property Name="date_from" Type="datetime" />
+          <Property Name="date_to" Type="datetime" />
+          <Property Name="status" Type="varchar" MaxLength="50" />
+          <Property Name="prepared_by" Type="int" />
+          <Property Name="prepared_date" Type="datetime" />
+          <Property Name="lastedit_by" Type="int" />
+          <Property Name="lastedit_date" Type="datetime" />
+          <Property Name="ChargeAmount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Released_by" Type="int" />
+          <Property Name="Released_date" Type="datetime" />
+          <Property Name="Cancelled_by" Type="int" />
+          <Property Name="Cancelled_date" Type="datetime" />
+          <Property Name="payslip_adjustment_id" Type="int" />
+          <Property Name="payslip_id" Type="int" />
+          <Property Name="Expr1" Type="int" Nullable="false" />
+          <Property Name="employee_no" Type="int" />
+          <Property Name="FirstName" Type="nvarchar(max)" />
+          <Property Name="LastName" Type="nvarchar(max)" />
+          <Property Name="MiddleName" Type="nvarchar(max)" />
+          <Property Name="DateHired" Type="datetime" />
+          <Property Name="Gender" Type="nvarchar(max)" />
+          <Property Name="Citizenship" Type="nvarchar(max)" />
+          <Property Name="BirthDate" Type="datetime" />
+          <Property Name="BirthPlace" Type="nvarchar(max)" />
+          <Property Name="JobID" Type="int" />
+          <Property Name="PreparedBy" Type="int" />
+          <Property Name="PreparedDate" Type="datetime" />
+          <Property Name="LastEditBy" Type="int" />
+          <Property Name="LastEditDate" Type="datetime" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="company_id" Type="int" />
+          <Property Name="contact_no" Type="varchar" MaxLength="50" />
+          <Property Name="birth_place" Type="varchar" MaxLength="50" />
+          <Property Name="probitionary" Type="bit" />
+          <Property Name="prob_no_of_months" Type="int" />
+          <Property Name="end_probitionary_date" Type="datetime" />
+          <Property Name="province_address" Type="varchar(max)" />
+          <Property Name="email" Type="varchar" MaxLength="50" />
+          <Property Name="Current_country" Type="varchar" MaxLength="50" />
+          <Property Name="MaritalStatus" Type="varchar" MaxLength="50" />
+          <Property Name="religion" Type="varchar" MaxLength="100" />
+          <Property Name="Current_region" Type="varchar" MaxLength="50" />
+          <Property Name="Current_city_municipality" Type="varchar" MaxLength="50" />
+          <Property Name="Current_street" Type="varchar" MaxLength="50" />
+          <Property Name="Current_barangay" Type="varchar" MaxLength="50" />
+          <Property Name="Current_sitio" Type="varchar" MaxLength="50" />
+          <Property Name="provincial_country" Type="varchar" MaxLength="50" />
+          <Property Name="provincial_region" Type="varchar" MaxLength="50" />
+          <Property Name="provincial_city_municipality" Type="nchar" MaxLength="10" />
+          <Property Name="provincial_street" Type="varchar" MaxLength="50" />
+          <Property Name="provincial_barangay" Type="varchar" MaxLength="50" />
+          <Property Name="provincial_sitio" Type="varchar" MaxLength="50" />
+          <Property Name="renew_contract" Type="bit" />
+          <Property Name="SSS_Number" Type="varchar" MaxLength="50" />
+          <Property Name="PagIbig_Number" Type="varchar" MaxLength="50" />
+          <Property Name="PhilHealth_Number" Type="varchar" MaxLength="50" />
+          <Property Name="TIN_Number" Type="varchar" MaxLength="50" />
+          <Property Name="atm_number" Type="varchar" MaxLength="50" />
+          <Property Name="Expr2" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar(max)" />
+          <Property Name="type" Type="varchar" MaxLength="50" />
+          <Property Name="owner_name" Type="nvarchar(max)" />
+          <Property Name="admin_fee" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="address" Type="nvarchar(max)" />
+          <Property Name="city" Type="nvarchar(max)" />
+          <Property Name="contact_number" Type="nvarchar(max)" />
+          <Property Name="Expr3" Type="int" />
+          <Property Name="Expr4" Type="datetime" />
+          <Property Name="last_edit_by" Type="int" />
+          <Property Name="last_edit_date" Type="datetime" />
+          <Property Name="is_active" Type="bit" />
+          <Property Name="weight" Type="varchar" MaxLength="50" />
+          <Property Name="height" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="viewCompanyHolidays">
+          <Key>
+            <PropertyRef Name="HolidayID" />
+            <PropertyRef Name="company_id" />
+          </Key>
+          <Property Name="HolidayID" Type="int" Nullable="false" />
+          <Property Name="HolidayName" Type="varchar" MaxLength="50" />
+          <Property Name="HolidayType" Type="varchar" MaxLength="50" />
+          <Property Name="HolidayDate" Type="datetime" />
+          <Property Name="CompanyID" Type="int" />
+          <Property Name="prepared_by" Type="int" />
+          <Property Name="prepared_date" Type="datetime" />
+          <Property Name="last_edit_by" Type="int" />
+          <Property Name="last_edit_date" Type="datetime" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="company_id" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar(max)" />
+          <Property Name="owner_name" Type="nvarchar(max)" />
+          <Property Name="address" Type="nvarchar(max)" />
+          <Property Name="city" Type="nvarchar(max)" />
+          <Property Name="contact_number" Type="nvarchar(max)" />
+          <Property Name="Expr1" Type="int" />
+          <Property Name="Expr2" Type="datetime" />
+          <Property Name="Expr3" Type="int" />
+          <Property Name="Expr4" Type="datetime" />
+          <Property Name="is_active" Type="bit" />
+        </EntityType>
+        <EntityType Name="viewEmployeeCharges">
+          <Key>
+            <PropertyRef Name="ChargeID" />
+            <PropertyRef Name="Expr1" />
+          </Key>
+          <Property Name="ChargeID" Type="int" Nullable="false" />
+          <Property Name="ChargeName" Type="varchar" MaxLength="50" />
+          <Property Name="EmployeeID" Type="int" />
+          <Property Name="date_from" Type="datetime" />
+          <Property Name="date_to" Type="datetime" />
+          <Property Name="status" Type="varchar" MaxLength="50" />
+          <Property Name="prepared_by" Type="int" />
+          <Property Name="prepared_date" Type="datetime" />
+          <Property Name="lastedit_by" Type="int" />
+          <Property Name="lastedit_date" Type="datetime" />
+          <Property Name="ChargeAmount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Released_by" Type="int" />
+          <Property Name="Released_date" Type="datetime" />
+          <Property Name="Cancelled_by" Type="int" />
+          <Property Name="Cancelled_date" Type="datetime" />
+          <Property Name="payslip_adjustment_id" Type="int" />
+          <Property Name="payslip_id" Type="int" />
+          <Property Name="Expr1" Type="int" Nullable="false" />
+          <Property Name="employee_no" Type="int" />
+          <Property Name="FirstName" Type="nvarchar(max)" />
+          <Property Name="LastName" Type="nvarchar(max)" />
+          <Property Name="MiddleName" Type="nvarchar(max)" />
+          <Property Name="DateHired" Type="datetime" />
+          <Property Name="Gender" Type="nvarchar(max)" />
+          <Property Name="Citizenship" Type="nvarchar(max)" />
+          <Property Name="BirthDate" Type="datetime" />
+          <Property Name="BirthPlace" Type="nvarchar(max)" />
+          <Property Name="JobID" Type="int" />
+          <Property Name="PreparedBy" Type="int" />
+          <Property Name="PreparedDate" Type="datetime" />
+          <Property Name="LastEditBy" Type="int" />
+          <Property Name="LastEditDate" Type="datetime" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="company_id" Type="int" />
+          <Property Name="contact_no" Type="varchar" MaxLength="50" />
+          <Property Name="birth_place" Type="varchar" MaxLength="50" />
+          <Property Name="probitionary" Type="bit" />
+          <Property Name="prob_no_of_months" Type="int" />
+          <Property Name="end_probitionary_date" Type="datetime" />
+          <Property Name="province_address" Type="varchar(max)" />
+          <Property Name="email" Type="varchar" MaxLength="50" />
+          <Property Name="Current_country" Type="varchar" MaxLength="50" />
+          <Property Name="MaritalStatus" Type="varchar" MaxLength="50" />
+          <Property Name="religion" Type="varchar" MaxLength="100" />
+          <Property Name="Current_region" Type="varchar" MaxLength="50" />
+          <Property Name="Current_city_municipality" Type="varchar" MaxLength="50" />
+          <Property Name="Current_street" Type="varchar" MaxLength="50" />
+          <Property Name="Current_barangay" Type="varchar" MaxLength="50" />
+          <Property Name="Current_sitio" Type="varchar" MaxLength="50" />
+          <Property Name="provincial_country" Type="varchar" MaxLength="50" />
+          <Property Name="provincial_region" Type="varchar" MaxLength="50" />
+          <Property Name="provincial_city_municipality" Type="nchar" MaxLength="10" />
+          <Property Name="provincial_street" Type="varchar" MaxLength="50" />
+          <Property Name="provincial_barangay" Type="varchar" MaxLength="50" />
+          <Property Name="provincial_sitio" Type="varchar" MaxLength="50" />
+          <Property Name="renew_contract" Type="bit" />
+          <Property Name="height" Type="varchar" MaxLength="50" />
+          <Property Name="weight" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ViewEmployeeV2">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="int" Nullable="false" />
+          <Property Name="employee_no" Type="int" />
+          <Property Name="FirstName" Type="nvarchar(max)" />
+          <Property Name="LastName" Type="nvarchar(max)" />
+          <Property Name="MiddleName" Type="nvarchar(max)" />
+          <Property Name="DateHired" Type="datetime" />
+          <Property Name="Gender" Type="nvarchar(max)" />
+          <Property Name="Citizenship" Type="nvarchar(max)" />
+          <Property Name="BirthDate" Type="datetime" />
+          <Property Name="BirthPlace" Type="nvarchar(max)" />
+          <Property Name="JobID" Type="int" />
+          <Property Name="PreparedBy" Type="int" />
+          <Property Name="PreparedDate" Type="datetime" />
+          <Property Name="LastEditBy" Type="int" />
+          <Property Name="LastEditDate" Type="datetime" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="company_id" Type="int" />
+          <Property Name="contact_no" Type="varchar" MaxLength="50" />
+          <Property Name="birth_place" Type="varchar" MaxLength="50" />
+          <Property Name="probitionary" Type="bit" />
+          <Property Name="prob_no_of_months" Type="int" />
+          <Property Name="end_probitionary_date" Type="datetime" />
+          <Property Name="province_address" Type="varchar(max)" />
+          <Property Name="email" Type="varchar" MaxLength="50" />
+          <Property Name="Current_country" Type="varchar" MaxLength="50" />
+          <Property Name="MaritalStatus" Type="varchar" MaxLength="50" />
+          <Property Name="religion" Type="varchar" MaxLength="100" />
+          <Property Name="Current_region" Type="varchar" MaxLength="50" />
+          <Property Name="Current_city_municipality" Type="varchar" MaxLength="50" />
+          <Property Name="Current_street" Type="varchar" MaxLength="50" />
+          <Property Name="Current_barangay" Type="varchar" MaxLength="50" />
+          <Property Name="Current_sitio" Type="varchar" MaxLength="50" />
+          <Property Name="provincial_country" Type="varchar" MaxLength="50" />
+          <Property Name="provincial_region" Type="varchar" MaxLength="50" />
+          <Property Name="provincial_city_municipality" Type="nchar" MaxLength="10" />
+          <Property Name="provincial_street" Type="varchar" MaxLength="50" />
+          <Property Name="provincial_barangay" Type="varchar" MaxLength="50" />
+          <Property Name="provincial_sitio" Type="varchar" MaxLength="50" />
+          <Property Name="renew_contract" Type="bit" />
+          <Property Name="SSS_Number" Type="varchar" MaxLength="50" />
+          <Property Name="PagIbig_Number" Type="varchar" MaxLength="50" />
+          <Property Name="PhilHealth_Number" Type="varchar" MaxLength="50" />
+          <Property Name="TIN_Number" Type="varchar" MaxLength="50" />
+          <Property Name="Expr1" Type="int" />
+          <Property Name="JobName" Type="nvarchar(max)" />
+          <Property Name="JobDescription" Type="nvarchar(max)" />
+          <Property Name="Expr2" Type="int" />
+          <Property Name="Expr3" Type="datetime" />
+          <Property Name="Expr4" Type="int" />
+          <Property Name="Expr5" Type="datetime" />
+          <Property Name="Expr6" Type="bit" />
+          <Property Name="HistoryID" Type="int" />
+          <Property Name="Expr7" Type="int" />
+          <Property Name="CompensationType" Type="varchar" MaxLength="50" />
+          <Property Name="ValidityStart" Type="datetime" />
+          <Property Name="CompensationRate" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Expr8" Type="int" />
+          <Property Name="Expr9" Type="datetime" />
+          <Property Name="Expr10" Type="int" />
+          <Property Name="Expr11" Type="datetime" />
+          <Property Name="Expr12" Type="bit" />
+          <Property Name="goverment_deduction_id" Type="bigint" />
+          <Property Name="emp_id" Type="int" />
+          <Property Name="with_sss" Type="bit" />
+          <Property Name="sss_type_deduction" Type="varchar" MaxLength="50" />
+          <Property Name="sss_amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="with_philhealth" Type="bit" />
+          <Property Name="philhealth_type_deduction" Type="varchar" MaxLength="50" />
+          <Property Name="philhealth_amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="with_pagibig" Type="bit" />
+          <Property Name="pagibig_type_deduction" Type="varchar" MaxLength="50" />
+          <Property Name="pagibig_amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="prepared_by" Type="int" />
+          <Property Name="prepared_date" Type="datetime" />
+          <Property Name="last_edit_by" Type="int" />
+          <Property Name="last_edit_date" Type="datetime" />
+          <Property Name="Expr13" Type="int" />
+          <Property Name="name" Type="nvarchar(max)" />
+          <Property Name="type" Type="varchar" MaxLength="50" />
+          <Property Name="owner_name" Type="nvarchar(max)" />
+          <Property Name="admin_fee" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="address" Type="nvarchar(max)" />
+          <Property Name="city" Type="nvarchar(max)" />
+          <Property Name="contact_number" Type="nvarchar(max)" />
+          <Property Name="Expr14" Type="int" />
+          <Property Name="Expr15" Type="datetime" />
+          <Property Name="Expr16" Type="int" />
+          <Property Name="Expr17" Type="datetime" />
+          <Property Name="is_active" Type="bit" />
+          <Property Name="with_tin" Type="bit" />
+          <Property Name="atm_number" Type="varchar" MaxLength="50" />
+          <Property Name="height" Type="varchar" MaxLength="50" />
+          <Property Name="weight" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityContainer Name="dbPayrollModelStoreContainer">
+          <EntitySet Name="BillingAdjustments" EntityType="Self.BillingAdjustments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BillingSecurities" EntityType="Self.BillingSecurities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Companies" EntityType="Self.Companies" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompanyHolidays" EntityType="Self.CompanyHolidays" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompensationHistories" EntityType="Self.CompensationHistories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DailyTimeRecords" EntityType="Self.DailyTimeRecords" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="employee_master" EntityType="Self.employee_master" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employee_Payslip" EntityType="Self.Employee_Payslip" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employee_Payslip_Adjustment" EntityType="Self.Employee_Payslip_Adjustment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employee_Payslip_Details" EntityType="Self.Employee_Payslip_Details" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employee_Payslip_Government" EntityType="Self.Employee_Payslip_Government" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employee_Schedule" EntityType="Self.Employee_Schedule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="employee_timesheet" EntityType="Self.employee_timesheet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeCharges" EntityType="Self.EmployeeCharges" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeDependents" EntityType="Self.EmployeeDependents" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeGovernments" EntityType="Self.EmployeeGovernments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeSpouses" EntityType="Self.EmployeeSpouses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Jobs" EntityType="Self.Jobs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SSS_Contribution" EntityType="Self.SSS_Contribution" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="View_billingAdjustments" EntityType="Self.View_billingAdjustments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="viewChargeReports" EntityType="Self.viewChargeReports" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="viewCompanyHolidays" EntityType="Self.viewCompanyHolidays" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="viewEmployeeCharges" EntityType="Self.viewEmployeeCharges" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ViewEmployeeV2" EntityType="Self.ViewEmployeeV2" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="dbPayrollModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="BillingAdjustment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="payslip_id" Type="Int32" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="amount" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="is_active" Type="Boolean" />
+          <Property Name="prepared_by" Type="Int32" />
+          <Property Name="prepared_date" Type="DateTime" Precision="3" />
+          <Property Name="last_edit_by" Type="Int32" />
+          <Property Name="last_edit_date" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="BillingSecurity">
+          <Key>
+            <PropertyRef Name="bill_id" />
+          </Key>
+          <Property Name="bill_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="bill_description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="bill_amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="company_id" Type="Int32" />
+          <Property Name="date_from" Type="DateTime" Precision="3" />
+          <Property Name="date_to" Type="DateTime" Precision="3" />
+          <Property Name="prepared_by" Type="Int32" />
+          <Property Name="prepared_date" Type="DateTime" Precision="3" />
+          <Property Name="updated_by" Type="Int32" />
+          <Property Name="update_date" Type="DateTime" Precision="3" />
+          <Property Name="status" Type="DateTime" Precision="3" />
+          <Property Name="remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="company_id" />
+          </Key>
+          <Property Name="company_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="owner_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="admin_fee" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="city" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="contact_number" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="prepared_by" Type="Int32" />
+          <Property Name="prepared_date" Type="DateTime" Precision="3" />
+          <Property Name="last_edit_by" Type="Int32" />
+          <Property Name="last_edit_date" Type="DateTime" Precision="3" />
+          <Property Name="is_active" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="CompanyHoliday">
+          <Key>
+            <PropertyRef Name="HolidayID" />
+          </Key>
+          <Property Name="HolidayID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HolidayName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="HolidayType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="HolidayDate" Type="DateTime" Precision="3" />
+          <Property Name="CompanyID" Type="Int32" />
+          <Property Name="prepared_by" Type="Int32" />
+          <Property Name="prepared_date" Type="DateTime" Precision="3" />
+          <Property Name="last_edit_by" Type="Int32" />
+          <Property Name="last_edit_date" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="CompensationHistory">
+          <Key>
+            <PropertyRef Name="HistoryID" />
+          </Key>
+          <Property Name="HistoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeID" Type="Int32" />
+          <Property Name="CompensationType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ValidityStart" Type="DateTime" Precision="3" />
+          <Property Name="CompensationRate" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PreparedBy" Type="Int32" />
+          <Property Name="PreparedDate" Type="DateTime" Precision="3" />
+          <Property Name="LastEditBy" Type="Int32" />
+          <Property Name="LastEditDate" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="DailyTimeRecord">
+          <Key>
+            <PropertyRef Name="RecordID" />
+          </Key>
+          <Property Name="RecordID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+          <Property Name="RecordDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SystemEqDate" Type="Int32" Nullable="false" />
+          <Property Name="TimeLogIn" Type="DateTime" Precision="3" />
+          <Property Name="TimeLogOut" Type="DateTime" Precision="3" />
+          <Property Name="TimeLogType" Type="Int32" Nullable="false" />
+          <Property Name="PreparedBy" Type="Int32" Nullable="false" />
+          <Property Name="PreparedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastEditBy" Type="Int32" Nullable="false" />
+          <Property Name="LastEditDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Source" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="HasComputedPayslip" Type="Boolean" Nullable="false" />
+          <Property Name="total_duty_hrs" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="total_overtime_hrs" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="holiday_hrs" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="nigthdiff" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="lates" Type="Int32" />
+          <Property Name="undertime" Type="Int32" />
+          <Property Name="isHalfDay" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="employee_master">
+          <Key>
+            <PropertyRef Name="cust_acct_no" />
+            <PropertyRef Name="countryid" />
+            <PropertyRef Name="comp_code" />
+            <PropertyRef Name="franchise" />
+            <PropertyRef Name="store_code" />
+            <PropertyRef Name="employee_no" />
+          </Key>
+          <Property Name="cust_acct_no" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="countryid" Type="Int32" Nullable="false" />
+          <Property Name="comp_code" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="franchise" Type="Int32" Nullable="false" />
+          <Property Name="store_code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="employee_no" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="username" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="first_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="middle_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="last_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="birthday" Type="DateTime" Precision="3" />
+          <Property Name="civil_id_no" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="civil_id_expired" Type="DateTime" Precision="3" />
+          <Property Name="health_card_no" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="health_crd_exp" Type="DateTime" Precision="3" />
+          <Property Name="level" Type="Int32" />
+          <Property Name="password" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="inac_date" Type="DateTime" Precision="3" />
+          <Property Name="act_date" Type="DateTime" Precision="3" />
+          <Property Name="passport" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="passport_expr" Type="DateTime" Precision="3" />
+          <Property Name="address_flat" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="address_floor" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="address_censuno" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="address_buildingno" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="address_street" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="address_blockno" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="address_area" Type="Int32" />
+          <Property Name="address_city" Type="Int32" />
+          <Property Name="address_country" Type="Int32" />
+          <Property Name="origin_address" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="origin_city" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="origin_country" Type="Int32" />
+          <Property Name="first_name_a" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="middle_name_a" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="last_name_a" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="father_name_a" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="father_last_a" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="salary_rate" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="address_avenue" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="dept_code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="sect_code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="photo" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="genderid" Type="Int32" />
+          <Property Name="maritalid" Type="Int32" />
+          <Property Name="nationalityid" Type="Int32" />
+          <Property Name="worksched" Type="Int32" />
+          <Property Name="driverlicense" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="driverexpired" Type="DateTime" Precision="3" />
+          <Property Name="Contract" Type="Boolean" />
+          <Property Name="noyears" Type="Int32" />
+          <Property Name="contract_expired" Type="DateTime" Precision="3" />
+          <Property Name="residency_no" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="residency_expired" Type="DateTime" Precision="3" />
+          <Property Name="bankid" Type="Int32" />
+          <Property Name="bank_account_no" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Passport_countryid" Type="Int32" />
+          <Property Name="passport_issuedat" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="datehired" Type="DateTime" Precision="3" />
+          <Property Name="statusid" Type="Int32" />
+          <Property Name="photo_filename" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="photo_imagetype" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="phoneno" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="mobileno" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="compmobno" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="compemailadd" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="shift_code" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="clientassign" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="shift_type" Type="Int32" />
+          <Property Name="birthplace" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="salary_typeid" Type="Int32" />
+          <Property Name="salary_periodid" Type="Int32" />
+          <Property Name="height" Type="Int32" />
+          <Property Name="weight" Type="Int32" />
+          <Property Name="religionid" Type="Int32" />
+          <Property Name="spouse" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Name="spouse_occupation" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="fathers_name" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="fathers_occupation" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Name="mothers_name" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Name="mothers_occupation" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="parent_address" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="skillandlanguage" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="caseemergency" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="caseemergencycontact" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="caseemergencyaddress" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="sssno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="pagibig" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="philhealth" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="tinno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="probitionary" Type="Int32" />
+          <Property Name="noofmonths" Type="Int32" />
+          <Property Name="endprob" Type="DateTime" Precision="3" />
+          <Property Name="housing" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="transpo" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="sil" Type="Int32" />
+          <Property Name="vl" Type="Int32" />
+          <Property Name="sl" Type="Int32" />
+          <Property Name="renewcontract" Type="Boolean" />
+          <Property Name="restday" Type="Int32" />
+          <Property Name="allowance_petrol" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="allowance_telephone" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="allowance_travel" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="allowance_car" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="allowance_job_nature" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="allowance_foods" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="allowance_others" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="cash_bond" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="pagibig_contr" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="philhealth_contr" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="fingerprintid" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="security_lisence" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sl_dateexpire" Type="DateTime" Precision="3" />
+          <Property Name="signaturephoto" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="photos" Type="Boolean" />
+          <Property Name="sss_deduct" Type="Boolean" />
+          <Property Name="pagibig_deduct" Type="Boolean" />
+          <Property Name="philhealthdeduct" Type="Boolean" />
+          <Property Name="chargefee" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="runningbalance" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="defaulthrswork" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="chargepaydaydeduct" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="sprsdhrsprem" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="defaultothrswork" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="nsdhrswork" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="totalhrsworby8" Type="Boolean" />
+          <Property Name="billingfee" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="incentive" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Nationality" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Employee_Payslip">
+          <Key>
+            <PropertyRef Name="payslip_id" />
+          </Key>
+          <Property Name="payslip_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="company_id" Type="Int32" />
+          <Property Name="employee_id" Type="Int32" />
+          <Property Name="employee_rate" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="date_from" Type="DateTime" Precision="3" />
+          <Property Name="date_to" Type="DateTime" Precision="3" />
+          <Property Name="total_additionals" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="total_less" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="total_deduction" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="gross_pay" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="net_pay" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="prepared_by" Type="Int32" />
+          <Property Name="prepared_date" Type="DateTime" Precision="3" />
+          <Property Name="cancelled_by" Type="Int32" />
+          <Property Name="cancelled_date" Type="DateTime" Precision="3" />
+          <Property Name="approved_by" Type="Int32" />
+          <Property Name="approved_date" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Employee_Payslip_Adjustment">
+          <Key>
+            <PropertyRef Name="payslip_adjustment_id" />
+          </Key>
+          <Property Name="payslip_adjustment_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="payslip_id" Type="Int32" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="prepared_by" Type="Int32" />
+          <Property Name="prepared_date" Type="DateTime" Precision="3" />
+          <Property Name="cancelled_by" Type="Int32" />
+          <Property Name="cancelled_date" Type="DateTime" Precision="3" />
+          <Property Name="lastedit_by" Type="Int32" />
+          <Property Name="lastedit_date" Type="DateTime" Precision="3" />
+          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="isCharges" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Employee_Payslip_Details">
+          <Key>
+            <PropertyRef Name="payslip_less_id" />
+          </Key>
+          <Property Name="payslip_less_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="payslip_id" Type="Int32" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="days" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="hours" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="last_edit_by" Type="Int32" />
+          <Property Name="last_edit_date" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Employee_Payslip_Government">
+          <Key>
+            <PropertyRef Name="payslip_government_id" />
+          </Key>
+          <Property Name="payslip_government_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="payslip_id" Type="Int32" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="last_edit_by" Type="Int32" />
+          <Property Name="last_edit_date" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Employee_Schedule">
+          <Key>
+            <PropertyRef Name="ScheduleID" />
+          </Key>
+          <Property Name="ScheduleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeID" Type="Int32" />
+          <Property Name="EffectiveDate" Type="DateTime" Precision="3" />
+          <Property Name="ExpiryDate" Type="DateTime" Precision="3" />
+          <Property Name="TimeIn" Type="Time" Precision="7" />
+          <Property Name="TimeOut" Type="Time" Precision="7" />
+          <Property Name="Restday" Type="Int32" />
+          <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="prepared_by" Type="Int32" />
+          <Property Name="prepared_date" Type="DateTime" Precision="3" />
+          <Property Name="latest_edit_by" Type="Int32" />
+          <Property Name="latest_edit_date" Type="DateTime" Precision="3" />
+          <Property Name="isOutOverDay" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="employee_timesheet">
+          <Key>
+            <PropertyRef Name="emp_timesheet_id" />
+          </Key>
+          <Property Name="emp_timesheet_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="employee_id" Type="Int32" />
+          <Property Name="date_from" Type="DateTime" Precision="3" />
+          <Property Name="date_to" Type="DateTime" Precision="3" />
+          <Property Name="regular_days" Type="Int32" />
+          <Property Name="holiday_days" Type="Int32" />
+          <Property Name="restday_days" Type="Int32" />
+          <Property Name="absent_days" Type="Int32" />
+          <Property Name="overtime_hours" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="lates" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="undertime" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="prepared_by" Type="Int32" />
+          <Property Name="prepared_date" Type="DateTime" Precision="3" />
+          <Property Name="cancelled_by" Type="Int32" />
+          <Property Name="cancelled_date" Type="DateTime" Precision="3" />
+          <Property Name="lastedit_by" Type="Int32" />
+          <Property Name="lastedit_date" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="EmployeeCharge">
+          <Key>
+            <PropertyRef Name="ChargeID" />
+          </Key>
+          <Property Name="ChargeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ChargeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeeID" Type="Int32" />
+          <Property Name="date_from" Type="DateTime" Precision="3" />
+          <Property Name="date_to" Type="DateTime" Precision="3" />
+          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="prepared_by" Type="Int32" />
+          <Property Name="prepared_date" Type="DateTime" Precision="3" />
+          <Property Name="lastedit_by" Type="Int32" />
+          <Property Name="lastedit_date" Type="DateTime" Precision="3" />
+          <Property Name="ChargeAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Released_by" Type="Int32" />
+          <Property Name="Released_date" Type="DateTime" Precision="3" />
+          <Property Name="Cancelled_by" Type="Int32" />
+          <Property Name="Cancelled_date" Type="DateTime" Precision="3" />
+          <Property Name="payslip_adjustment_id" Type="Int32" />
+          <Property Name="payslip_id" Type="Int32" />
+        </EntityType>
+        <EntityType Name="EmployeeDependent">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="emp_id" Type="Int64" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="relation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="isActive" Type="Boolean" />
+          <Property Name="preparedBy" Type="Int32" />
+          <Property Name="preparedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="EmployeeGovernment">
+          <Key>
+            <PropertyRef Name="goverment_deduction_id" />
+          </Key>
+          <Property Name="goverment_deduction_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="emp_id" Type="Int32" />
+          <Property Name="with_sss" Type="Boolean" />
+          <Property Name="sss_type_deduction" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sss_amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="with_philhealth" Type="Boolean" />
+          <Property Name="philhealth_type_deduction" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="philhealth_amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="with_pagibig" Type="Boolean" />
+          <Property Name="pagibig_type_deduction" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="pagibig_amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="prepared_by" Type="Int32" />
+          <Property Name="prepared_date" Type="DateTime" Precision="3" />
+          <Property Name="last_edit_by" Type="Int32" />
+          <Property Name="last_edit_date" Type="DateTime" Precision="3" />
+          <Property Name="with_tin" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="employee_no" Type="Int32" />
+          <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateHired" Type="DateTime" Precision="3" />
+          <Property Name="Gender" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Citizenship" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BirthDate" Type="DateTime" Precision="3" />
+          <Property Name="BirthPlace" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="JobID" Type="Int32" />
+          <Property Name="PreparedBy" Type="Int32" />
+          <Property Name="PreparedDate" Type="DateTime" Precision="3" />
+          <Property Name="LastEditBy" Type="Int32" />
+          <Property Name="LastEditDate" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="company_id" Type="Int32" />
+          <Property Name="contact_no" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="birth_place" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="height" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="weight" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="probitionary" Type="Boolean" />
+          <Property Name="prob_no_of_months" Type="Int32" />
+          <Property Name="end_probitionary_date" Type="DateTime" Precision="3" />
+          <Property Name="province_address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Current_country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MaritalStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="religion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Current_region" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Current_city_municipality" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Current_street" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Current_barangay" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Current_sitio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="provincial_country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="provincial_region" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="provincial_city_municipality" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="provincial_street" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="provincial_barangay" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="provincial_sitio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="renew_contract" Type="Boolean" />
+          <Property Name="SSS_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PagIbig_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PhilHealth_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TIN_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="atm_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="EmployeeSpous">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="emp_id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="middlename" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="preparedBy" Type="Int32" />
+          <Property Name="preparedDate" Type="DateTime" Precision="3" />
+          <Property Name="isActive" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Job">
+          <Key>
+            <PropertyRef Name="JobID" />
+          </Key>
+          <Property Name="JobID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="JobName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="JobDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PreparedBy" Type="Int32" />
+          <Property Name="PreparedDate" Type="DateTime" Precision="3" />
+          <Property Name="LastEditBy" Type="Int32" />
+          <Property Name="LastEditDate" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="SSS_Contribution">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="start_range" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="end_range" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="monthly_salary_credit" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="social_security_er" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="social_security_ee" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="social_security_total" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ec_er" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="total_contribution_er" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="total_contribution_ee" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="grand_total_contribution" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="total_contribution" Type="Decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="View_billingAdjustments">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="payslip_id" Type="Int32" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="amount" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="is_active" Type="Boolean" />
+          <Property Name="prepared_by" Type="Int32" />
+          <Property Name="prepared_date" Type="DateTime" Precision="3" />
+          <Property Name="last_edit_by" Type="Int32" />
+          <Property Name="last_edit_date" Type="DateTime" Precision="3" />
+          <Property Name="Expr1" Type="Int32" />
+          <Property Name="Expr5" Type="Int32" />
+          <Property Name="employee_id" Type="Int32" />
+          <Property Name="employee_rate" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="date_from" Type="DateTime" Precision="3" />
+          <Property Name="date_to" Type="DateTime" Precision="3" />
+          <Property Name="total_additionals" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="total_less" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="total_deduction" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="gross_pay" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="net_pay" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Expr2" Type="Int32" />
+          <Property Name="Expr3" Type="DateTime" Precision="3" />
+          <Property Name="cancelled_by" Type="Int32" />
+          <Property Name="cancelled_date" Type="DateTime" Precision="3" />
+          <Property Name="approved_by" Type="Int32" />
+          <Property Name="approved_date" Type="DateTime" Precision="3" />
+          <Property Name="fname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="lname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="fname_edit" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="lname_edit" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="e_ID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="viewChargeReport">
+          <Key>
+            <PropertyRef Name="ChargeID" />
+            <PropertyRef Name="Expr1" />
+            <PropertyRef Name="Expr2" />
+          </Key>
+          <Property Name="ChargeID" Type="Int32" Nullable="false" />
+          <Property Name="ChargeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeeID" Type="Int32" />
+          <Property Name="date_from" Type="DateTime" Precision="3" />
+          <Property Name="date_to" Type="DateTime" Precision="3" />
+          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="prepared_by" Type="Int32" />
+          <Property Name="prepared_date" Type="DateTime" Precision="3" />
+          <Property Name="lastedit_by" Type="Int32" />
+          <Property Name="lastedit_date" Type="DateTime" Precision="3" />
+          <Property Name="ChargeAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Released_by" Type="Int32" />
+          <Property Name="Released_date" Type="DateTime" Precision="3" />
+          <Property Name="Cancelled_by" Type="Int32" />
+          <Property Name="Cancelled_date" Type="DateTime" Precision="3" />
+          <Property Name="payslip_adjustment_id" Type="Int32" />
+          <Property Name="payslip_id" Type="Int32" />
+          <Property Name="Expr1" Type="Int32" Nullable="false" />
+          <Property Name="employee_no" Type="Int32" />
+          <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateHired" Type="DateTime" Precision="3" />
+          <Property Name="Gender" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Citizenship" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BirthDate" Type="DateTime" Precision="3" />
+          <Property Name="BirthPlace" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="JobID" Type="Int32" />
+          <Property Name="PreparedBy" Type="Int32" />
+          <Property Name="PreparedDate" Type="DateTime" Precision="3" />
+          <Property Name="LastEditBy" Type="Int32" />
+          <Property Name="LastEditDate" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="company_id" Type="Int32" />
+          <Property Name="contact_no" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="birth_place" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="probitionary" Type="Boolean" />
+          <Property Name="prob_no_of_months" Type="Int32" />
+          <Property Name="end_probitionary_date" Type="DateTime" Precision="3" />
+          <Property Name="province_address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Current_country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MaritalStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="religion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Current_region" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Current_city_municipality" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Current_street" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Current_barangay" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Current_sitio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="provincial_country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="provincial_region" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="provincial_city_municipality" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="provincial_street" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="provincial_barangay" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="provincial_sitio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="renew_contract" Type="Boolean" />
+          <Property Name="SSS_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PagIbig_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PhilHealth_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TIN_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="atm_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Expr2" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="owner_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="admin_fee" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="city" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="contact_number" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Expr3" Type="Int32" />
+          <Property Name="Expr4" Type="DateTime" Precision="3" />
+          <Property Name="last_edit_by" Type="Int32" />
+          <Property Name="last_edit_date" Type="DateTime" Precision="3" />
+          <Property Name="is_active" Type="Boolean" />
+          <Property Name="weight" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="height" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="viewCompanyHoliday">
+          <Key>
+            <PropertyRef Name="HolidayID" />
+            <PropertyRef Name="company_id" />
+          </Key>
+          <Property Name="HolidayID" Type="Int32" Nullable="false" />
+          <Property Name="HolidayName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="HolidayType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="HolidayDate" Type="DateTime" Precision="3" />
+          <Property Name="CompanyID" Type="Int32" />
+          <Property Name="prepared_by" Type="Int32" />
+          <Property Name="prepared_date" Type="DateTime" Precision="3" />
+          <Property Name="last_edit_by" Type="Int32" />
+          <Property Name="last_edit_date" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="owner_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="city" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="contact_number" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Expr1" Type="Int32" />
+          <Property Name="Expr2" Type="DateTime" Precision="3" />
+          <Property Name="Expr3" Type="Int32" />
+          <Property Name="Expr4" Type="DateTime" Precision="3" />
+          <Property Name="is_active" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="viewEmployeeCharge">
+          <Key>
+            <PropertyRef Name="ChargeID" />
+            <PropertyRef Name="Expr1" />
+          </Key>
+          <Property Name="ChargeID" Type="Int32" Nullable="false" />
+          <Property Name="ChargeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeeID" Type="Int32" />
+          <Property Name="date_from" Type="DateTime" Precision="3" />
+          <Property Name="date_to" Type="DateTime" Precision="3" />
+          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="prepared_by" Type="Int32" />
+          <Property Name="prepared_date" Type="DateTime" Precision="3" />
+          <Property Name="lastedit_by" Type="Int32" />
+          <Property Name="lastedit_date" Type="DateTime" Precision="3" />
+          <Property Name="ChargeAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Released_by" Type="Int32" />
+          <Property Name="Released_date" Type="DateTime" Precision="3" />
+          <Property Name="Cancelled_by" Type="Int32" />
+          <Property Name="Cancelled_date" Type="DateTime" Precision="3" />
+          <Property Name="payslip_adjustment_id" Type="Int32" />
+          <Property Name="payslip_id" Type="Int32" />
+          <Property Name="Expr1" Type="Int32" Nullable="false" />
+          <Property Name="employee_no" Type="Int32" />
+          <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateHired" Type="DateTime" Precision="3" />
+          <Property Name="Gender" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Citizenship" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BirthDate" Type="DateTime" Precision="3" />
+          <Property Name="BirthPlace" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="JobID" Type="Int32" />
+          <Property Name="PreparedBy" Type="Int32" />
+          <Property Name="PreparedDate" Type="DateTime" Precision="3" />
+          <Property Name="LastEditBy" Type="Int32" />
+          <Property Name="LastEditDate" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="company_id" Type="Int32" />
+          <Property Name="contact_no" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="birth_place" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="probitionary" Type="Boolean" />
+          <Property Name="prob_no_of_months" Type="Int32" />
+          <Property Name="end_probitionary_date" Type="DateTime" Precision="3" />
+          <Property Name="province_address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Current_country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MaritalStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="religion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Current_region" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Current_city_municipality" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Current_street" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Current_barangay" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Current_sitio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="provincial_country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="provincial_region" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="provincial_city_municipality" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="provincial_street" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="provincial_barangay" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="provincial_sitio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="renew_contract" Type="Boolean" />
+          <Property Name="height" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="weight" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ViewEmployeeV2">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+          <Property Name="employee_no" Type="Int32" />
+          <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateHired" Type="DateTime" Precision="3" />
+          <Property Name="Gender" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Citizenship" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BirthDate" Type="DateTime" Precision="3" />
+          <Property Name="BirthPlace" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="JobID" Type="Int32" />
+          <Property Name="PreparedBy" Type="Int32" />
+          <Property Name="PreparedDate" Type="DateTime" Precision="3" />
+          <Property Name="LastEditBy" Type="Int32" />
+          <Property Name="LastEditDate" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="company_id" Type="Int32" />
+          <Property Name="contact_no" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="birth_place" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="probitionary" Type="Boolean" />
+          <Property Name="prob_no_of_months" Type="Int32" />
+          <Property Name="end_probitionary_date" Type="DateTime" Precision="3" />
+          <Property Name="province_address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Current_country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MaritalStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="religion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Current_region" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Current_city_municipality" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Current_street" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Current_barangay" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Current_sitio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="provincial_country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="provincial_region" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="provincial_city_municipality" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="provincial_street" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="provincial_barangay" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="provincial_sitio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="renew_contract" Type="Boolean" />
+          <Property Name="SSS_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PagIbig_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PhilHealth_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TIN_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Expr1" Type="Int32" />
+          <Property Name="JobName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="JobDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Expr2" Type="Int32" />
+          <Property Name="Expr3" Type="DateTime" Precision="3" />
+          <Property Name="Expr4" Type="Int32" />
+          <Property Name="Expr5" Type="DateTime" Precision="3" />
+          <Property Name="Expr6" Type="Boolean" />
+          <Property Name="HistoryID" Type="Int32" />
+          <Property Name="Expr7" Type="Int32" />
+          <Property Name="CompensationType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ValidityStart" Type="DateTime" Precision="3" />
+          <Property Name="CompensationRate" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Expr8" Type="Int32" />
+          <Property Name="Expr9" Type="DateTime" Precision="3" />
+          <Property Name="Expr10" Type="Int32" />
+          <Property Name="Expr11" Type="DateTime" Precision="3" />
+          <Property Name="Expr12" Type="Boolean" />
+          <Property Name="goverment_deduction_id" Type="Int64" />
+          <Property Name="emp_id" Type="Int32" />
+          <Property Name="with_sss" Type="Boolean" />
+          <Property Name="sss_type_deduction" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sss_amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="with_philhealth" Type="Boolean" />
+          <Property Name="philhealth_type_deduction" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="philhealth_amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="with_pagibig" Type="Boolean" />
+          <Property Name="pagibig_type_deduction" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="pagibig_amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="prepared_by" Type="Int32" />
+          <Property Name="prepared_date" Type="DateTime" Precision="3" />
+          <Property Name="last_edit_by" Type="Int32" />
+          <Property Name="last_edit_date" Type="DateTime" Precision="3" />
+          <Property Name="Expr13" Type="Int32" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="owner_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="admin_fee" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="city" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="contact_number" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Expr14" Type="Int32" />
+          <Property Name="Expr15" Type="DateTime" Precision="3" />
+          <Property Name="Expr16" Type="Int32" />
+          <Property Name="Expr17" Type="DateTime" Precision="3" />
+          <Property Name="is_active" Type="Boolean" />
+          <Property Name="with_tin" Type="Boolean" />
+          <Property Name="atm_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="height" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="weight" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityContainer Name="dbPayrollEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BillingAdjustments" EntityType="Self.BillingAdjustment" />
+          <EntitySet Name="BillingSecurities" EntityType="Self.BillingSecurity" />
+          <EntitySet Name="Companies" EntityType="Self.Company" />
+          <EntitySet Name="CompanyHolidays" EntityType="Self.CompanyHoliday" />
+          <EntitySet Name="CompensationHistories" EntityType="Self.CompensationHistory" />
+          <EntitySet Name="DailyTimeRecords" EntityType="Self.DailyTimeRecord" />
+          <EntitySet Name="employee_master" EntityType="Self.employee_master" />
+          <EntitySet Name="Employee_Payslip" EntityType="Self.Employee_Payslip" />
+          <EntitySet Name="Employee_Payslip_Adjustment" EntityType="Self.Employee_Payslip_Adjustment" />
+          <EntitySet Name="Employee_Payslip_Details" EntityType="Self.Employee_Payslip_Details" />
+          <EntitySet Name="Employee_Payslip_Government" EntityType="Self.Employee_Payslip_Government" />
+          <EntitySet Name="Employee_Schedule" EntityType="Self.Employee_Schedule" />
+          <EntitySet Name="employee_timesheet" EntityType="Self.employee_timesheet" />
+          <EntitySet Name="EmployeeCharges" EntityType="Self.EmployeeCharge" />
+          <EntitySet Name="EmployeeDependents" EntityType="Self.EmployeeDependent" />
+          <EntitySet Name="EmployeeGovernments" EntityType="Self.EmployeeGovernment" />
+          <EntitySet Name="Employees" EntityType="Self.Employee" />
+          <EntitySet Name="EmployeeSpouses" EntityType="Self.EmployeeSpous" />
+          <EntitySet Name="Jobs" EntityType="Self.Job" />
+          <EntitySet Name="SSS_Contribution" EntityType="Self.SSS_Contribution" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="View_billingAdjustments" EntityType="Self.View_billingAdjustments" />
+          <EntitySet Name="viewChargeReports" EntityType="Self.viewChargeReport" />
+          <EntitySet Name="viewCompanyHolidays" EntityType="Self.viewCompanyHoliday" />
+          <EntitySet Name="viewEmployeeCharges" EntityType="Self.viewEmployeeCharge" />
+          <EntitySet Name="ViewEmployeeV2" EntityType="Self.ViewEmployeeV2" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="dbPayrollModelStoreContainer" CdmEntityContainer="dbPayrollEntities">
+          <EntitySetMapping Name="BillingAdjustments">
+            <EntityTypeMapping TypeName="dbPayrollModel.BillingAdjustment">
+              <MappingFragment StoreEntitySet="BillingAdjustments">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="payslip_id" ColumnName="payslip_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+                <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+                <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+                <ScalarProperty Name="last_edit_by" ColumnName="last_edit_by" />
+                <ScalarProperty Name="last_edit_date" ColumnName="last_edit_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BillingSecurities">
+            <EntityTypeMapping TypeName="dbPayrollModel.BillingSecurity">
+              <MappingFragment StoreEntitySet="BillingSecurities">
+                <ScalarProperty Name="bill_id" ColumnName="bill_id" />
+                <ScalarProperty Name="bill_description" ColumnName="bill_description" />
+                <ScalarProperty Name="bill_amount" ColumnName="bill_amount" />
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+                <ScalarProperty Name="date_from" ColumnName="date_from" />
+                <ScalarProperty Name="date_to" ColumnName="date_to" />
+                <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+                <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+                <ScalarProperty Name="updated_by" ColumnName="updated_by" />
+                <ScalarProperty Name="update_date" ColumnName="update_date" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="remarks" ColumnName="remarks" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="dbPayrollModel.Company">
+              <MappingFragment StoreEntitySet="Companies">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="owner_name" ColumnName="owner_name" />
+                <ScalarProperty Name="admin_fee" ColumnName="admin_fee" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="contact_number" ColumnName="contact_number" />
+                <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+                <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+                <ScalarProperty Name="last_edit_by" ColumnName="last_edit_by" />
+                <ScalarProperty Name="last_edit_date" ColumnName="last_edit_date" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompanyHolidays">
+            <EntityTypeMapping TypeName="dbPayrollModel.CompanyHoliday">
+              <MappingFragment StoreEntitySet="CompanyHolidays">
+                <ScalarProperty Name="HolidayID" ColumnName="HolidayID" />
+                <ScalarProperty Name="HolidayName" ColumnName="HolidayName" />
+                <ScalarProperty Name="HolidayType" ColumnName="HolidayType" />
+                <ScalarProperty Name="HolidayDate" ColumnName="HolidayDate" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+                <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+                <ScalarProperty Name="last_edit_by" ColumnName="last_edit_by" />
+                <ScalarProperty Name="last_edit_date" ColumnName="last_edit_date" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompensationHistories">
+            <EntityTypeMapping TypeName="dbPayrollModel.CompensationHistory">
+              <MappingFragment StoreEntitySet="CompensationHistories">
+                <ScalarProperty Name="HistoryID" ColumnName="HistoryID" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="CompensationType" ColumnName="CompensationType" />
+                <ScalarProperty Name="ValidityStart" ColumnName="ValidityStart" />
+                <ScalarProperty Name="CompensationRate" ColumnName="CompensationRate" />
+                <ScalarProperty Name="PreparedBy" ColumnName="PreparedBy" />
+                <ScalarProperty Name="PreparedDate" ColumnName="PreparedDate" />
+                <ScalarProperty Name="LastEditBy" ColumnName="LastEditBy" />
+                <ScalarProperty Name="LastEditDate" ColumnName="LastEditDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DailyTimeRecords">
+            <EntityTypeMapping TypeName="dbPayrollModel.DailyTimeRecord">
+              <MappingFragment StoreEntitySet="DailyTimeRecords">
+                <ScalarProperty Name="RecordID" ColumnName="RecordID" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="RecordDate" ColumnName="RecordDate" />
+                <ScalarProperty Name="SystemEqDate" ColumnName="SystemEqDate" />
+                <ScalarProperty Name="TimeLogIn" ColumnName="TimeLogIn" />
+                <ScalarProperty Name="TimeLogOut" ColumnName="TimeLogOut" />
+                <ScalarProperty Name="TimeLogType" ColumnName="TimeLogType" />
+                <ScalarProperty Name="PreparedBy" ColumnName="PreparedBy" />
+                <ScalarProperty Name="PreparedDate" ColumnName="PreparedDate" />
+                <ScalarProperty Name="LastEditBy" ColumnName="LastEditBy" />
+                <ScalarProperty Name="LastEditDate" ColumnName="LastEditDate" />
+                <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="HasComputedPayslip" ColumnName="HasComputedPayslip" />
+                <ScalarProperty Name="total_duty_hrs" ColumnName="total_duty_hrs" />
+                <ScalarProperty Name="total_overtime_hrs" ColumnName="total_overtime_hrs" />
+                <ScalarProperty Name="holiday_hrs" ColumnName="holiday_hrs" />
+                <ScalarProperty Name="nigthdiff" ColumnName="nigthdiff" />
+                <ScalarProperty Name="lates" ColumnName="lates" />
+                <ScalarProperty Name="undertime" ColumnName="undertime" />
+                <ScalarProperty Name="isHalfDay" ColumnName="isHalfDay" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="employee_master">
+            <EntityTypeMapping TypeName="dbPayrollModel.employee_master">
+              <MappingFragment StoreEntitySet="employee_master">
+                <ScalarProperty Name="cust_acct_no" ColumnName="cust_acct_no" />
+                <ScalarProperty Name="countryid" ColumnName="countryid" />
+                <ScalarProperty Name="comp_code" ColumnName="comp_code" />
+                <ScalarProperty Name="franchise" ColumnName="franchise" />
+                <ScalarProperty Name="store_code" ColumnName="store_code" />
+                <ScalarProperty Name="employee_no" ColumnName="employee_no" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="middle_name" ColumnName="middle_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="birthday" ColumnName="birthday" />
+                <ScalarProperty Name="civil_id_no" ColumnName="civil_id_no" />
+                <ScalarProperty Name="civil_id_expired" ColumnName="civil_id_expired" />
+                <ScalarProperty Name="health_card_no" ColumnName="health_card_no" />
+                <ScalarProperty Name="health_crd_exp" ColumnName="health_crd_exp" />
+                <ScalarProperty Name="level" ColumnName="level" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="inac_date" ColumnName="inac_date" />
+                <ScalarProperty Name="act_date" ColumnName="act_date" />
+                <ScalarProperty Name="passport" ColumnName="passport" />
+                <ScalarProperty Name="passport_expr" ColumnName="passport_expr" />
+                <ScalarProperty Name="address_flat" ColumnName="address_flat" />
+                <ScalarProperty Name="address_floor" ColumnName="address_floor" />
+                <ScalarProperty Name="address_censuno" ColumnName="address_censuno" />
+                <ScalarProperty Name="address_buildingno" ColumnName="address_buildingno" />
+                <ScalarProperty Name="address_street" ColumnName="address_street" />
+                <ScalarProperty Name="address_blockno" ColumnName="address_blockno" />
+                <ScalarProperty Name="address_area" ColumnName="address_area" />
+                <ScalarProperty Name="address_city" ColumnName="address_city" />
+                <ScalarProperty Name="address_country" ColumnName="address_country" />
+                <ScalarProperty Name="origin_address" ColumnName="origin_address" />
+                <ScalarProperty Name="origin_city" ColumnName="origin_city" />
+                <ScalarProperty Name="origin_country" ColumnName="origin_country" />
+                <ScalarProperty Name="first_name_a" ColumnName="first_name_a" />
+                <ScalarProperty Name="middle_name_a" ColumnName="middle_name_a" />
+                <ScalarProperty Name="last_name_a" ColumnName="last_name_a" />
+                <ScalarProperty Name="father_name_a" ColumnName="father_name_a" />
+                <ScalarProperty Name="father_last_a" ColumnName="father_last_a" />
+                <ScalarProperty Name="salary_rate" ColumnName="salary_rate" />
+                <ScalarProperty Name="address_avenue" ColumnName="address_avenue" />
+                <ScalarProperty Name="dept_code" ColumnName="dept_code" />
+                <ScalarProperty Name="sect_code" ColumnName="sect_code" />
+                <ScalarProperty Name="photo" ColumnName="photo" />
+                <ScalarProperty Name="genderid" ColumnName="genderid" />
+                <ScalarProperty Name="maritalid" ColumnName="maritalid" />
+                <ScalarProperty Name="nationalityid" ColumnName="nationalityid" />
+                <ScalarProperty Name="worksched" ColumnName="worksched" />
+                <ScalarProperty Name="driverlicense" ColumnName="driverlicense" />
+                <ScalarProperty Name="driverexpired" ColumnName="driverexpired" />
+                <ScalarProperty Name="Contract" ColumnName="Contract" />
+                <ScalarProperty Name="noyears" ColumnName="noyears" />
+                <ScalarProperty Name="contract_expired" ColumnName="contract_expired" />
+                <ScalarProperty Name="residency_no" ColumnName="residency_no" />
+                <ScalarProperty Name="residency_expired" ColumnName="residency_expired" />
+                <ScalarProperty Name="bankid" ColumnName="bankid" />
+                <ScalarProperty Name="bank_account_no" ColumnName="bank_account_no" />
+                <ScalarProperty Name="Passport_countryid" ColumnName="Passport_countryid" />
+                <ScalarProperty Name="passport_issuedat" ColumnName="passport_issuedat" />
+                <ScalarProperty Name="datehired" ColumnName="datehired" />
+                <ScalarProperty Name="statusid" ColumnName="statusid" />
+                <ScalarProperty Name="photo_filename" ColumnName="photo_filename" />
+                <ScalarProperty Name="photo_imagetype" ColumnName="photo_imagetype" />
+                <ScalarProperty Name="phoneno" ColumnName="phoneno" />
+                <ScalarProperty Name="mobileno" ColumnName="mobileno" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="compmobno" ColumnName="compmobno" />
+                <ScalarProperty Name="compemailadd" ColumnName="compemailadd" />
+                <ScalarProperty Name="shift_code" ColumnName="shift_code" />
+                <ScalarProperty Name="clientassign" ColumnName="clientassign" />
+                <ScalarProperty Name="shift_type" ColumnName="shift_type" />
+                <ScalarProperty Name="birthplace" ColumnName="birthplace" />
+                <ScalarProperty Name="salary_typeid" ColumnName="salary_typeid" />
+                <ScalarProperty Name="salary_periodid" ColumnName="salary_periodid" />
+                <ScalarProperty Name="height" ColumnName="height" />
+                <ScalarProperty Name="weight" ColumnName="weight" />
+                <ScalarProperty Name="religionid" ColumnName="religionid" />
+                <ScalarProperty Name="spouse" ColumnName="spouse" />
+                <ScalarProperty Name="spouse_occupation" ColumnName="spouse_occupation" />
+                <ScalarProperty Name="fathers_name" ColumnName="fathers_name" />
+                <ScalarProperty Name="fathers_occupation" ColumnName="fathers_occupation" />
+                <ScalarProperty Name="mothers_name" ColumnName="mothers_name" />
+                <ScalarProperty Name="mothers_occupation" ColumnName="mothers_occupation" />
+                <ScalarProperty Name="parent_address" ColumnName="parent_address" />
+                <ScalarProperty Name="skillandlanguage" ColumnName="skillandlanguage" />
+                <ScalarProperty Name="caseemergency" ColumnName="caseemergency" />
+                <ScalarProperty Name="caseemergencycontact" ColumnName="caseemergencycontact" />
+                <ScalarProperty Name="caseemergencyaddress" ColumnName="caseemergencyaddress" />
+                <ScalarProperty Name="sssno" ColumnName="sssno" />
+                <ScalarProperty Name="pagibig" ColumnName="pagibig" />
+                <ScalarProperty Name="philhealth" ColumnName="philhealth" />
+                <ScalarProperty Name="tinno" ColumnName="tinno" />
+                <ScalarProperty Name="probitionary" ColumnName="probitionary" />
+                <ScalarProperty Name="noofmonths" ColumnName="noofmonths" />
+                <ScalarProperty Name="endprob" ColumnName="endprob" />
+                <ScalarProperty Name="housing" ColumnName="housing" />
+                <ScalarProperty Name="transpo" ColumnName="transpo" />
+                <ScalarProperty Name="sil" ColumnName="sil" />
+                <ScalarProperty Name="vl" ColumnName="vl" />
+                <ScalarProperty Name="sl" ColumnName="sl" />
+                <ScalarProperty Name="renewcontract" ColumnName="renewcontract" />
+                <ScalarProperty Name="restday" ColumnName="restday" />
+                <ScalarProperty Name="allowance_petrol" ColumnName="allowance_petrol" />
+                <ScalarProperty Name="allowance_telephone" ColumnName="allowance_telephone" />
+                <ScalarProperty Name="allowance_travel" ColumnName="allowance_travel" />
+                <ScalarProperty Name="allowance_car" ColumnName="allowance_car" />
+                <ScalarProperty Name="allowance_job_nature" ColumnName="allowance_job_nature" />
+                <ScalarProperty Name="allowance_foods" ColumnName="allowance_foods" />
+                <ScalarProperty Name="allowance_others" ColumnName="allowance_others" />
+                <ScalarProperty Name="cash_bond" ColumnName="cash_bond" />
+                <ScalarProperty Name="pagibig_contr" ColumnName="pagibig_contr" />
+                <ScalarProperty Name="philhealth_contr" ColumnName="philhealth_contr" />
+                <ScalarProperty Name="fingerprintid" ColumnName="fingerprintid" />
+                <ScalarProperty Name="security_lisence" ColumnName="security_lisence" />
+                <ScalarProperty Name="sl_dateexpire" ColumnName="sl_dateexpire" />
+                <ScalarProperty Name="signaturephoto" ColumnName="signaturephoto" />
+                <ScalarProperty Name="photos" ColumnName="photos" />
+                <ScalarProperty Name="sss_deduct" ColumnName="sss_deduct" />
+                <ScalarProperty Name="pagibig_deduct" ColumnName="pagibig_deduct" />
+                <ScalarProperty Name="philhealthdeduct" ColumnName="philhealthdeduct" />
+                <ScalarProperty Name="chargefee" ColumnName="chargefee" />
+                <ScalarProperty Name="runningbalance" ColumnName="runningbalance" />
+                <ScalarProperty Name="defaulthrswork" ColumnName="defaulthrswork" />
+                <ScalarProperty Name="chargepaydaydeduct" ColumnName="chargepaydaydeduct" />
+                <ScalarProperty Name="sprsdhrsprem" ColumnName="sprsdhrsprem" />
+                <ScalarProperty Name="defaultothrswork" ColumnName="defaultothrswork" />
+                <ScalarProperty Name="nsdhrswork" ColumnName="nsdhrswork" />
+                <ScalarProperty Name="totalhrsworby8" ColumnName="totalhrsworby8" />
+                <ScalarProperty Name="billingfee" ColumnName="billingfee" />
+                <ScalarProperty Name="incentive" ColumnName="incentive" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Nationality" ColumnName="Nationality" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employee_Payslip">
+            <EntityTypeMapping TypeName="dbPayrollModel.Employee_Payslip">
+              <MappingFragment StoreEntitySet="Employee_Payslip">
+                <ScalarProperty Name="payslip_id" ColumnName="payslip_id" />
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+                <ScalarProperty Name="employee_rate" ColumnName="employee_rate" />
+                <ScalarProperty Name="date_from" ColumnName="date_from" />
+                <ScalarProperty Name="date_to" ColumnName="date_to" />
+                <ScalarProperty Name="total_additionals" ColumnName="total_additionals" />
+                <ScalarProperty Name="total_less" ColumnName="total_less" />
+                <ScalarProperty Name="total_deduction" ColumnName="total_deduction" />
+                <ScalarProperty Name="gross_pay" ColumnName="gross_pay" />
+                <ScalarProperty Name="net_pay" ColumnName="net_pay" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+                <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+                <ScalarProperty Name="cancelled_by" ColumnName="cancelled_by" />
+                <ScalarProperty Name="cancelled_date" ColumnName="cancelled_date" />
+                <ScalarProperty Name="approved_by" ColumnName="approved_by" />
+                <ScalarProperty Name="approved_date" ColumnName="approved_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employee_Payslip_Adjustment">
+            <EntityTypeMapping TypeName="dbPayrollModel.Employee_Payslip_Adjustment">
+              <MappingFragment StoreEntitySet="Employee_Payslip_Adjustment">
+                <ScalarProperty Name="payslip_adjustment_id" ColumnName="payslip_adjustment_id" />
+                <ScalarProperty Name="payslip_id" ColumnName="payslip_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+                <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+                <ScalarProperty Name="cancelled_by" ColumnName="cancelled_by" />
+                <ScalarProperty Name="cancelled_date" ColumnName="cancelled_date" />
+                <ScalarProperty Name="lastedit_by" ColumnName="lastedit_by" />
+                <ScalarProperty Name="lastedit_date" ColumnName="lastedit_date" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="isCharges" ColumnName="isCharges" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employee_Payslip_Details">
+            <EntityTypeMapping TypeName="dbPayrollModel.Employee_Payslip_Details">
+              <MappingFragment StoreEntitySet="Employee_Payslip_Details">
+                <ScalarProperty Name="payslip_less_id" ColumnName="payslip_less_id" />
+                <ScalarProperty Name="payslip_id" ColumnName="payslip_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="days" ColumnName="days" />
+                <ScalarProperty Name="hours" ColumnName="hours" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="last_edit_by" ColumnName="last_edit_by" />
+                <ScalarProperty Name="last_edit_date" ColumnName="last_edit_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employee_Payslip_Government">
+            <EntityTypeMapping TypeName="dbPayrollModel.Employee_Payslip_Government">
+              <MappingFragment StoreEntitySet="Employee_Payslip_Government">
+                <ScalarProperty Name="payslip_government_id" ColumnName="payslip_government_id" />
+                <ScalarProperty Name="payslip_id" ColumnName="payslip_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="last_edit_by" ColumnName="last_edit_by" />
+                <ScalarProperty Name="last_edit_date" ColumnName="last_edit_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employee_Schedule">
+            <EntityTypeMapping TypeName="dbPayrollModel.Employee_Schedule">
+              <MappingFragment StoreEntitySet="Employee_Schedule">
+                <ScalarProperty Name="ScheduleID" ColumnName="ScheduleID" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="EffectiveDate" ColumnName="EffectiveDate" />
+                <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
+                <ScalarProperty Name="TimeIn" ColumnName="TimeIn" />
+                <ScalarProperty Name="TimeOut" ColumnName="TimeOut" />
+                <ScalarProperty Name="Restday" ColumnName="Restday" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+                <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+                <ScalarProperty Name="latest_edit_by" ColumnName="latest_edit_by" />
+                <ScalarProperty Name="latest_edit_date" ColumnName="latest_edit_date" />
+                <ScalarProperty Name="isOutOverDay" ColumnName="isOutOverDay" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="employee_timesheet">
+            <EntityTypeMapping TypeName="dbPayrollModel.employee_timesheet">
+              <MappingFragment StoreEntitySet="employee_timesheet">
+                <ScalarProperty Name="emp_timesheet_id" ColumnName="emp_timesheet_id" />
+                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+                <ScalarProperty Name="date_from" ColumnName="date_from" />
+                <ScalarProperty Name="date_to" ColumnName="date_to" />
+                <ScalarProperty Name="regular_days" ColumnName="regular_days" />
+                <ScalarProperty Name="holiday_days" ColumnName="holiday_days" />
+                <ScalarProperty Name="restday_days" ColumnName="restday_days" />
+                <ScalarProperty Name="absent_days" ColumnName="absent_days" />
+                <ScalarProperty Name="overtime_hours" ColumnName="overtime_hours" />
+                <ScalarProperty Name="lates" ColumnName="lates" />
+                <ScalarProperty Name="undertime" ColumnName="undertime" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+                <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+                <ScalarProperty Name="cancelled_by" ColumnName="cancelled_by" />
+                <ScalarProperty Name="cancelled_date" ColumnName="cancelled_date" />
+                <ScalarProperty Name="lastedit_by" ColumnName="lastedit_by" />
+                <ScalarProperty Name="lastedit_date" ColumnName="lastedit_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeCharges">
+            <EntityTypeMapping TypeName="dbPayrollModel.EmployeeCharge">
+              <MappingFragment StoreEntitySet="EmployeeCharges">
+                <ScalarProperty Name="ChargeID" ColumnName="ChargeID" />
+                <ScalarProperty Name="ChargeName" ColumnName="ChargeName" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="date_from" ColumnName="date_from" />
+                <ScalarProperty Name="date_to" ColumnName="date_to" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+                <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+                <ScalarProperty Name="lastedit_by" ColumnName="lastedit_by" />
+                <ScalarProperty Name="lastedit_date" ColumnName="lastedit_date" />
+                <ScalarProperty Name="ChargeAmount" ColumnName="ChargeAmount" />
+                <ScalarProperty Name="Released_by" ColumnName="Released_by" />
+                <ScalarProperty Name="Released_date" ColumnName="Released_date" />
+                <ScalarProperty Name="Cancelled_by" ColumnName="Cancelled_by" />
+                <ScalarProperty Name="Cancelled_date" ColumnName="Cancelled_date" />
+                <ScalarProperty Name="payslip_adjustment_id" ColumnName="payslip_adjustment_id" />
+                <ScalarProperty Name="payslip_id" ColumnName="payslip_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeDependents">
+            <EntityTypeMapping TypeName="dbPayrollModel.EmployeeDependent">
+              <MappingFragment StoreEntitySet="EmployeeDependents">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="emp_id" ColumnName="emp_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="relation" ColumnName="relation" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="preparedBy" ColumnName="preparedBy" />
+                <ScalarProperty Name="preparedDate" ColumnName="preparedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeGovernments">
+            <EntityTypeMapping TypeName="dbPayrollModel.EmployeeGovernment">
+              <MappingFragment StoreEntitySet="EmployeeGovernments">
+                <ScalarProperty Name="goverment_deduction_id" ColumnName="goverment_deduction_id" />
+                <ScalarProperty Name="emp_id" ColumnName="emp_id" />
+                <ScalarProperty Name="with_sss" ColumnName="with_sss" />
+                <ScalarProperty Name="sss_type_deduction" ColumnName="sss_type_deduction" />
+                <ScalarProperty Name="sss_amount" ColumnName="sss_amount" />
+                <ScalarProperty Name="with_philhealth" ColumnName="with_philhealth" />
+                <ScalarProperty Name="philhealth_type_deduction" ColumnName="philhealth_type_deduction" />
+                <ScalarProperty Name="philhealth_amount" ColumnName="philhealth_amount" />
+                <ScalarProperty Name="with_pagibig" ColumnName="with_pagibig" />
+                <ScalarProperty Name="pagibig_type_deduction" ColumnName="pagibig_type_deduction" />
+                <ScalarProperty Name="pagibig_amount" ColumnName="pagibig_amount" />
+                <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+                <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+                <ScalarProperty Name="last_edit_by" ColumnName="last_edit_by" />
+                <ScalarProperty Name="last_edit_date" ColumnName="last_edit_date" />
+                <ScalarProperty Name="with_tin" ColumnName="with_tin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="dbPayrollModel.Employee">
+              <MappingFragment StoreEntitySet="Employees">
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="employee_no" ColumnName="employee_no" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="DateHired" ColumnName="DateHired" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Citizenship" ColumnName="Citizenship" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="BirthPlace" ColumnName="BirthPlace" />
+                <ScalarProperty Name="JobID" ColumnName="JobID" />
+                <ScalarProperty Name="PreparedBy" ColumnName="PreparedBy" />
+                <ScalarProperty Name="PreparedDate" ColumnName="PreparedDate" />
+                <ScalarProperty Name="LastEditBy" ColumnName="LastEditBy" />
+                <ScalarProperty Name="LastEditDate" ColumnName="LastEditDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+                <ScalarProperty Name="contact_no" ColumnName="contact_no" />
+                <ScalarProperty Name="birth_place" ColumnName="birth_place" />
+                <ScalarProperty Name="height" ColumnName="height" />
+                <ScalarProperty Name="weight" ColumnName="weight" />
+                <ScalarProperty Name="probitionary" ColumnName="probitionary" />
+                <ScalarProperty Name="prob_no_of_months" ColumnName="prob_no_of_months" />
+                <ScalarProperty Name="end_probitionary_date" ColumnName="end_probitionary_date" />
+                <ScalarProperty Name="province_address" ColumnName="province_address" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="Current_country" ColumnName="Current_country" />
+                <ScalarProperty Name="MaritalStatus" ColumnName="MaritalStatus" />
+                <ScalarProperty Name="religion" ColumnName="religion" />
+                <ScalarProperty Name="Current_region" ColumnName="Current_region" />
+                <ScalarProperty Name="Current_city_municipality" ColumnName="Current_city_municipality" />
+                <ScalarProperty Name="Current_street" ColumnName="Current_street" />
+                <ScalarProperty Name="Current_barangay" ColumnName="Current_barangay" />
+                <ScalarProperty Name="Current_sitio" ColumnName="Current_sitio" />
+                <ScalarProperty Name="provincial_country" ColumnName="provincial_country" />
+                <ScalarProperty Name="provincial_region" ColumnName="provincial_region" />
+                <ScalarProperty Name="provincial_city_municipality" ColumnName="provincial_city_municipality" />
+                <ScalarProperty Name="provincial_street" ColumnName="provincial_street" />
+                <ScalarProperty Name="provincial_barangay" ColumnName="provincial_barangay" />
+                <ScalarProperty Name="provincial_sitio" ColumnName="provincial_sitio" />
+                <ScalarProperty Name="renew_contract" ColumnName="renew_contract" />
+                <ScalarProperty Name="SSS_Number" ColumnName="SSS_Number" />
+                <ScalarProperty Name="PagIbig_Number" ColumnName="PagIbig_Number" />
+                <ScalarProperty Name="PhilHealth_Number" ColumnName="PhilHealth_Number" />
+                <ScalarProperty Name="TIN_Number" ColumnName="TIN_Number" />
+                <ScalarProperty Name="atm_number" ColumnName="atm_number" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeSpouses">
+            <EntityTypeMapping TypeName="dbPayrollModel.EmployeeSpous">
+              <MappingFragment StoreEntitySet="EmployeeSpouses">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="emp_id" ColumnName="emp_id" />
+                <ScalarProperty Name="firstname" ColumnName="firstname" />
+                <ScalarProperty Name="middlename" ColumnName="middlename" />
+                <ScalarProperty Name="lastname" ColumnName="lastname" />
+                <ScalarProperty Name="preparedBy" ColumnName="preparedBy" />
+                <ScalarProperty Name="preparedDate" ColumnName="preparedDate" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Jobs">
+            <EntityTypeMapping TypeName="dbPayrollModel.Job">
+              <MappingFragment StoreEntitySet="Jobs">
+                <ScalarProperty Name="JobID" ColumnName="JobID" />
+                <ScalarProperty Name="JobName" ColumnName="JobName" />
+                <ScalarProperty Name="JobDescription" ColumnName="JobDescription" />
+                <ScalarProperty Name="PreparedBy" ColumnName="PreparedBy" />
+                <ScalarProperty Name="PreparedDate" ColumnName="PreparedDate" />
+                <ScalarProperty Name="LastEditBy" ColumnName="LastEditBy" />
+                <ScalarProperty Name="LastEditDate" ColumnName="LastEditDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SSS_Contribution">
+            <EntityTypeMapping TypeName="dbPayrollModel.SSS_Contribution">
+              <MappingFragment StoreEntitySet="SSS_Contribution">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="start_range" ColumnName="start_range" />
+                <ScalarProperty Name="end_range" ColumnName="end_range" />
+                <ScalarProperty Name="monthly_salary_credit" ColumnName="monthly_salary_credit" />
+                <ScalarProperty Name="social_security_er" ColumnName="social_security_er" />
+                <ScalarProperty Name="social_security_ee" ColumnName="social_security_ee" />
+                <ScalarProperty Name="social_security_total" ColumnName="social_security_total" />
+                <ScalarProperty Name="ec_er" ColumnName="ec_er" />
+                <ScalarProperty Name="total_contribution_er" ColumnName="total_contribution_er" />
+                <ScalarProperty Name="total_contribution_ee" ColumnName="total_contribution_ee" />
+                <ScalarProperty Name="grand_total_contribution" ColumnName="grand_total_contribution" />
+                <ScalarProperty Name="total_contribution" ColumnName="total_contribution" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="dbPayrollModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_billingAdjustments">
+            <EntityTypeMapping TypeName="dbPayrollModel.View_billingAdjustments">
+              <MappingFragment StoreEntitySet="View_billingAdjustments">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="payslip_id" ColumnName="payslip_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+                <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+                <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+                <ScalarProperty Name="last_edit_by" ColumnName="last_edit_by" />
+                <ScalarProperty Name="last_edit_date" ColumnName="last_edit_date" />
+                <ScalarProperty Name="Expr1" ColumnName="Expr1" />
+                <ScalarProperty Name="Expr5" ColumnName="Expr5" />
+                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+                <ScalarProperty Name="employee_rate" ColumnName="employee_rate" />
+                <ScalarProperty Name="date_from" ColumnName="date_from" />
+                <ScalarProperty Name="date_to" ColumnName="date_to" />
+                <ScalarProperty Name="total_additionals" ColumnName="total_additionals" />
+                <ScalarProperty Name="total_less" ColumnName="total_less" />
+                <ScalarProperty Name="total_deduction" ColumnName="total_deduction" />
+                <ScalarProperty Name="gross_pay" ColumnName="gross_pay" />
+                <ScalarProperty Name="net_pay" ColumnName="net_pay" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="Expr2" ColumnName="Expr2" />
+                <ScalarProperty Name="Expr3" ColumnName="Expr3" />
+                <ScalarProperty Name="cancelled_by" ColumnName="cancelled_by" />
+                <ScalarProperty Name="cancelled_date" ColumnName="cancelled_date" />
+                <ScalarProperty Name="approved_by" ColumnName="approved_by" />
+                <ScalarProperty Name="approved_date" ColumnName="approved_date" />
+                <ScalarProperty Name="fname" ColumnName="fname" />
+                <ScalarProperty Name="lname" ColumnName="lname" />
+                <ScalarProperty Name="fname_edit" ColumnName="fname_edit" />
+                <ScalarProperty Name="lname_edit" ColumnName="lname_edit" />
+                <ScalarProperty Name="e_ID" ColumnName="e_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="viewChargeReports">
+            <EntityTypeMapping TypeName="dbPayrollModel.viewChargeReport">
+              <MappingFragment StoreEntitySet="viewChargeReports">
+                <ScalarProperty Name="ChargeID" ColumnName="ChargeID" />
+                <ScalarProperty Name="ChargeName" ColumnName="ChargeName" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="date_from" ColumnName="date_from" />
+                <ScalarProperty Name="date_to" ColumnName="date_to" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+                <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+                <ScalarProperty Name="lastedit_by" ColumnName="lastedit_by" />
+                <ScalarProperty Name="lastedit_date" ColumnName="lastedit_date" />
+                <ScalarProperty Name="ChargeAmount" ColumnName="ChargeAmount" />
+                <ScalarProperty Name="Released_by" ColumnName="Released_by" />
+                <ScalarProperty Name="Released_date" ColumnName="Released_date" />
+                <ScalarProperty Name="Cancelled_by" ColumnName="Cancelled_by" />
+                <ScalarProperty Name="Cancelled_date" ColumnName="Cancelled_date" />
+                <ScalarProperty Name="payslip_adjustment_id" ColumnName="payslip_adjustment_id" />
+                <ScalarProperty Name="payslip_id" ColumnName="payslip_id" />
+                <ScalarProperty Name="Expr1" ColumnName="Expr1" />
+                <ScalarProperty Name="employee_no" ColumnName="employee_no" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="DateHired" ColumnName="DateHired" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Citizenship" ColumnName="Citizenship" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="BirthPlace" ColumnName="BirthPlace" />
+                <ScalarProperty Name="JobID" ColumnName="JobID" />
+                <ScalarProperty Name="PreparedBy" ColumnName="PreparedBy" />
+                <ScalarProperty Name="PreparedDate" ColumnName="PreparedDate" />
+                <ScalarProperty Name="LastEditBy" ColumnName="LastEditBy" />
+                <ScalarProperty Name="LastEditDate" ColumnName="LastEditDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+                <ScalarProperty Name="contact_no" ColumnName="contact_no" />
+                <ScalarProperty Name="birth_place" ColumnName="birth_place" />
+                <ScalarProperty Name="probitionary" ColumnName="probitionary" />
+                <ScalarProperty Name="prob_no_of_months" ColumnName="prob_no_of_months" />
+                <ScalarProperty Name="end_probitionary_date" ColumnName="end_probitionary_date" />
+                <ScalarProperty Name="province_address" ColumnName="province_address" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="Current_country" ColumnName="Current_country" />
+                <ScalarProperty Name="MaritalStatus" ColumnName="MaritalStatus" />
+                <ScalarProperty Name="religion" ColumnName="religion" />
+                <ScalarProperty Name="Current_region" ColumnName="Current_region" />
+                <ScalarProperty Name="Current_city_municipality" ColumnName="Current_city_municipality" />
+                <ScalarProperty Name="Current_street" ColumnName="Current_street" />
+                <ScalarProperty Name="Current_barangay" ColumnName="Current_barangay" />
+                <ScalarProperty Name="Current_sitio" ColumnName="Current_sitio" />
+                <ScalarProperty Name="provincial_country" ColumnName="provincial_country" />
+                <ScalarProperty Name="provincial_region" ColumnName="provincial_region" />
+                <ScalarProperty Name="provincial_city_municipality" ColumnName="provincial_city_municipality" />
+                <ScalarProperty Name="provincial_street" ColumnName="provincial_street" />
+                <ScalarProperty Name="provincial_barangay" ColumnName="provincial_barangay" />
+                <ScalarProperty Name="provincial_sitio" ColumnName="provincial_sitio" />
+                <ScalarProperty Name="renew_contract" ColumnName="renew_contract" />
+                <ScalarProperty Name="SSS_Number" ColumnName="SSS_Number" />
+                <ScalarProperty Name="PagIbig_Number" ColumnName="PagIbig_Number" />
+                <ScalarProperty Name="PhilHealth_Number" ColumnName="PhilHealth_Number" />
+                <ScalarProperty Name="TIN_Number" ColumnName="TIN_Number" />
+                <ScalarProperty Name="atm_number" ColumnName="atm_number" />
+                <ScalarProperty Name="Expr2" ColumnName="Expr2" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="owner_name" ColumnName="owner_name" />
+                <ScalarProperty Name="admin_fee" ColumnName="admin_fee" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="contact_number" ColumnName="contact_number" />
+                <ScalarProperty Name="Expr3" ColumnName="Expr3" />
+                <ScalarProperty Name="Expr4" ColumnName="Expr4" />
+                <ScalarProperty Name="last_edit_by" ColumnName="last_edit_by" />
+                <ScalarProperty Name="last_edit_date" ColumnName="last_edit_date" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+                <ScalarProperty Name="weight" ColumnName="weight" />
+                <ScalarProperty Name="height" ColumnName="height" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="viewCompanyHolidays">
+            <EntityTypeMapping TypeName="dbPayrollModel.viewCompanyHoliday">
+              <MappingFragment StoreEntitySet="viewCompanyHolidays">
+                <ScalarProperty Name="HolidayID" ColumnName="HolidayID" />
+                <ScalarProperty Name="HolidayName" ColumnName="HolidayName" />
+                <ScalarProperty Name="HolidayType" ColumnName="HolidayType" />
+                <ScalarProperty Name="HolidayDate" ColumnName="HolidayDate" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+                <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+                <ScalarProperty Name="last_edit_by" ColumnName="last_edit_by" />
+                <ScalarProperty Name="last_edit_date" ColumnName="last_edit_date" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="owner_name" ColumnName="owner_name" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="contact_number" ColumnName="contact_number" />
+                <ScalarProperty Name="Expr1" ColumnName="Expr1" />
+                <ScalarProperty Name="Expr2" ColumnName="Expr2" />
+                <ScalarProperty Name="Expr3" ColumnName="Expr3" />
+                <ScalarProperty Name="Expr4" ColumnName="Expr4" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="viewEmployeeCharges">
+            <EntityTypeMapping TypeName="dbPayrollModel.viewEmployeeCharge">
+              <MappingFragment StoreEntitySet="viewEmployeeCharges">
+                <ScalarProperty Name="ChargeID" ColumnName="ChargeID" />
+                <ScalarProperty Name="ChargeName" ColumnName="ChargeName" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="date_from" ColumnName="date_from" />
+                <ScalarProperty Name="date_to" ColumnName="date_to" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+                <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+                <ScalarProperty Name="lastedit_by" ColumnName="lastedit_by" />
+                <ScalarProperty Name="lastedit_date" ColumnName="lastedit_date" />
+                <ScalarProperty Name="ChargeAmount" ColumnName="ChargeAmount" />
+                <ScalarProperty Name="Released_by" ColumnName="Released_by" />
+                <ScalarProperty Name="Released_date" ColumnName="Released_date" />
+                <ScalarProperty Name="Cancelled_by" ColumnName="Cancelled_by" />
+                <ScalarProperty Name="Cancelled_date" ColumnName="Cancelled_date" />
+                <ScalarProperty Name="payslip_adjustment_id" ColumnName="payslip_adjustment_id" />
+                <ScalarProperty Name="payslip_id" ColumnName="payslip_id" />
+                <ScalarProperty Name="Expr1" ColumnName="Expr1" />
+                <ScalarProperty Name="employee_no" ColumnName="employee_no" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="DateHired" ColumnName="DateHired" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Citizenship" ColumnName="Citizenship" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="BirthPlace" ColumnName="BirthPlace" />
+                <ScalarProperty Name="JobID" ColumnName="JobID" />
+                <ScalarProperty Name="PreparedBy" ColumnName="PreparedBy" />
+                <ScalarProperty Name="PreparedDate" ColumnName="PreparedDate" />
+                <ScalarProperty Name="LastEditBy" ColumnName="LastEditBy" />
+                <ScalarProperty Name="LastEditDate" ColumnName="LastEditDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+                <ScalarProperty Name="contact_no" ColumnName="contact_no" />
+                <ScalarProperty Name="birth_place" ColumnName="birth_place" />
+                <ScalarProperty Name="probitionary" ColumnName="probitionary" />
+                <ScalarProperty Name="prob_no_of_months" ColumnName="prob_no_of_months" />
+                <ScalarProperty Name="end_probitionary_date" ColumnName="end_probitionary_date" />
+                <ScalarProperty Name="province_address" ColumnName="province_address" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="Current_country" ColumnName="Current_country" />
+                <ScalarProperty Name="MaritalStatus" ColumnName="MaritalStatus" />
+                <ScalarProperty Name="religion" ColumnName="religion" />
+                <ScalarProperty Name="Current_region" ColumnName="Current_region" />
+                <ScalarProperty Name="Current_city_municipality" ColumnName="Current_city_municipality" />
+                <ScalarProperty Name="Current_street" ColumnName="Current_street" />
+                <ScalarProperty Name="Current_barangay" ColumnName="Current_barangay" />
+                <ScalarProperty Name="Current_sitio" ColumnName="Current_sitio" />
+                <ScalarProperty Name="provincial_country" ColumnName="provincial_country" />
+                <ScalarProperty Name="provincial_region" ColumnName="provincial_region" />
+                <ScalarProperty Name="provincial_city_municipality" ColumnName="provincial_city_municipality" />
+                <ScalarProperty Name="provincial_street" ColumnName="provincial_street" />
+                <ScalarProperty Name="provincial_barangay" ColumnName="provincial_barangay" />
+                <ScalarProperty Name="provincial_sitio" ColumnName="provincial_sitio" />
+                <ScalarProperty Name="renew_contract" ColumnName="renew_contract" />
+                <ScalarProperty Name="height" ColumnName="height" />
+                <ScalarProperty Name="weight" ColumnName="weight" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewEmployeeV2">
+            <EntityTypeMapping TypeName="dbPayrollModel.ViewEmployeeV2">
+              <MappingFragment StoreEntitySet="ViewEmployeeV2">
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="employee_no" ColumnName="employee_no" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="DateHired" ColumnName="DateHired" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Citizenship" ColumnName="Citizenship" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="BirthPlace" ColumnName="BirthPlace" />
+                <ScalarProperty Name="JobID" ColumnName="JobID" />
+                <ScalarProperty Name="PreparedBy" ColumnName="PreparedBy" />
+                <ScalarProperty Name="PreparedDate" ColumnName="PreparedDate" />
+                <ScalarProperty Name="LastEditBy" ColumnName="LastEditBy" />
+                <ScalarProperty Name="LastEditDate" ColumnName="LastEditDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+                <ScalarProperty Name="contact_no" ColumnName="contact_no" />
+                <ScalarProperty Name="birth_place" ColumnName="birth_place" />
+                <ScalarProperty Name="probitionary" ColumnName="probitionary" />
+                <ScalarProperty Name="prob_no_of_months" ColumnName="prob_no_of_months" />
+                <ScalarProperty Name="end_probitionary_date" ColumnName="end_probitionary_date" />
+                <ScalarProperty Name="province_address" ColumnName="province_address" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="Current_country" ColumnName="Current_country" />
+                <ScalarProperty Name="MaritalStatus" ColumnName="MaritalStatus" />
+                <ScalarProperty Name="religion" ColumnName="religion" />
+                <ScalarProperty Name="Current_region" ColumnName="Current_region" />
+                <ScalarProperty Name="Current_city_municipality" ColumnName="Current_city_municipality" />
+                <ScalarProperty Name="Current_street" ColumnName="Current_street" />
+                <ScalarProperty Name="Current_barangay" ColumnName="Current_barangay" />
+                <ScalarProperty Name="Current_sitio" ColumnName="Current_sitio" />
+                <ScalarProperty Name="provincial_country" ColumnName="provincial_country" />
+                <ScalarProperty Name="provincial_region" ColumnName="provincial_region" />
+                <ScalarProperty Name="provincial_city_municipality" ColumnName="provincial_city_municipality" />
+                <ScalarProperty Name="provincial_street" ColumnName="provincial_street" />
+                <ScalarProperty Name="provincial_barangay" ColumnName="provincial_barangay" />
+                <ScalarProperty Name="provincial_sitio" ColumnName="provincial_sitio" />
+                <ScalarProperty Name="renew_contract" ColumnName="renew_contract" />
+                <ScalarProperty Name="SSS_Number" ColumnName="SSS_Number" />
+                <ScalarProperty Name="PagIbig_Number" ColumnName="PagIbig_Number" />
+                <ScalarProperty Name="PhilHealth_Number" ColumnName="PhilHealth_Number" />
+                <ScalarProperty Name="TIN_Number" ColumnName="TIN_Number" />
+                <ScalarProperty Name="Expr1" ColumnName="Expr1" />
+                <ScalarProperty Name="JobName" ColumnName="JobName" />
+                <ScalarProperty Name="JobDescription" ColumnName="JobDescription" />
+                <ScalarProperty Name="Expr2" ColumnName="Expr2" />
+                <ScalarProperty Name="Expr3" ColumnName="Expr3" />
+                <ScalarProperty Name="Expr4" ColumnName="Expr4" />
+                <ScalarProperty Name="Expr5" ColumnName="Expr5" />
+                <ScalarProperty Name="Expr6" ColumnName="Expr6" />
+                <ScalarProperty Name="HistoryID" ColumnName="HistoryID" />
+                <ScalarProperty Name="Expr7" ColumnName="Expr7" />
+                <ScalarProperty Name="CompensationType" ColumnName="CompensationType" />
+                <ScalarProperty Name="ValidityStart" ColumnName="ValidityStart" />
+                <ScalarProperty Name="CompensationRate" ColumnName="CompensationRate" />
+                <ScalarProperty Name="Expr8" ColumnName="Expr8" />
+                <ScalarProperty Name="Expr9" ColumnName="Expr9" />
+                <ScalarProperty Name="Expr10" ColumnName="Expr10" />
+                <ScalarProperty Name="Expr11" ColumnName="Expr11" />
+                <ScalarProperty Name="Expr12" ColumnName="Expr12" />
+                <ScalarProperty Name="goverment_deduction_id" ColumnName="goverment_deduction_id" />
+                <ScalarProperty Name="emp_id" ColumnName="emp_id" />
+                <ScalarProperty Name="with_sss" ColumnName="with_sss" />
+                <ScalarProperty Name="sss_type_deduction" ColumnName="sss_type_deduction" />
+                <ScalarProperty Name="sss_amount" ColumnName="sss_amount" />
+                <ScalarProperty Name="with_philhealth" ColumnName="with_philhealth" />
+                <ScalarProperty Name="philhealth_type_deduction" ColumnName="philhealth_type_deduction" />
+                <ScalarProperty Name="philhealth_amount" ColumnName="philhealth_amount" />
+                <ScalarProperty Name="with_pagibig" ColumnName="with_pagibig" />
+                <ScalarProperty Name="pagibig_type_deduction" ColumnName="pagibig_type_deduction" />
+                <ScalarProperty Name="pagibig_amount" ColumnName="pagibig_amount" />
+                <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+                <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+                <ScalarProperty Name="last_edit_by" ColumnName="last_edit_by" />
+                <ScalarProperty Name="last_edit_date" ColumnName="last_edit_date" />
+                <ScalarProperty Name="Expr13" ColumnName="Expr13" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="owner_name" ColumnName="owner_name" />
+                <ScalarProperty Name="admin_fee" ColumnName="admin_fee" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="contact_number" ColumnName="contact_number" />
+                <ScalarProperty Name="Expr14" ColumnName="Expr14" />
+                <ScalarProperty Name="Expr15" ColumnName="Expr15" />
+                <ScalarProperty Name="Expr16" ColumnName="Expr16" />
+                <ScalarProperty Name="Expr17" ColumnName="Expr17" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+                <ScalarProperty Name="with_tin" ColumnName="with_tin" />
+                <ScalarProperty Name="atm_number" ColumnName="atm_number" />
+                <ScalarProperty Name="height" ColumnName="height" />
+                <ScalarProperty Name="weight" ColumnName="weight" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

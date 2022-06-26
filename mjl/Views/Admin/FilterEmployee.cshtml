@@ -1,0 +1,51 @@
+﻿@using mjl.Models;
+@using mjl.Models.Database;
+@using System.Data;
+
+@{ 
+    List<ViewEmployeeV2> lstemployee = ViewBag.lstemployee;
+}
+
+@if (lstemployee.Count() > 0)
+{
+    foreach (ViewEmployeeV2 employee in lstemployee)
+    {
+        <tr>
+            <td>@employee.EmployeeID</td>
+            <td>@employee.LastName, @employee.FirstName</td>
+            @*<td>@employee.Gender</td>
+            <td>@employee.JobName</td>
+            <td>@employee.DateHired.ToDateTimeFormat()</td>*@
+            <td>
+                @if (employee.IsActive==true)
+                {
+                    <span class="label label-primary">Active</span>
+                }
+                else
+                {
+                    <span class="label label-danger">Inactive</span>
+                }
+            </td>
+            @*<td>@employee.LastEditDate.ToDateTimeFormat()</td>*@
+            <td>
+                <button type='button' class='btn btn-xs btn-default btnEditEmployee' empid="@employee.EmployeeID" title='Edit employee basic details.'><i class='fa fa-pencil'></i></button>
+                <button type='button' class='btn btn-xs btn-info btnViewEmployee' empid="@employee.EmployeeID" title='View employee details.'><i class='fa fa-th'></i></button>
+                @if (employee.IsActive == true)
+                {
+                    <button type='button' class='btn btn-xs btn-danger btnDeactivateEmployee' empid="@employee.EmployeeID" title='Deactivate employee'><i class='fa fa-times'></i></button>
+                }
+                else
+                {
+                    <button type='button' class='btn btn-xs btn-success btnActivateEmployee' empid="@employee.EmployeeID" title='Activate employee'><i class='fa fa-check'></i></button>
+                }
+            </td>
+        </tr>
+    }
+}
+
+<script>
+    $(document).ready(function () {
+       
+
+    });
+</script>

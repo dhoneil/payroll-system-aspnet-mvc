@@ -1,0 +1,541 @@
+﻿@using mjl.Models;
+@using mjl.Models.Database;
+
+@{
+    ViewBag.Title = "Employee Charges";
+}
+
+<div class="row">
+    <div class="col-md-3">
+        <button class="btn btn-primary btn-block margin-bottom" id="btnNewCompany"><i class="fa fa-plus"></i> New Employee Charge</button>
+
+        <div class="box box-solid" id="boxfilteroption">
+            <div class="box-header with-border">
+                <div class="box-title">Filter Option</div>
+                <div class="box-tools">
+                    <button class="btn btn-box-tool" type="button" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="form-group">
+                    <label>Search Key</label>
+                    <input class="form-control input-sm" placeholder="Charge Name / Name" id="txtChargeSearch" />
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="checkbox" style="padding-left:0;">
+                                <input type="checkbox" class="flat-red" id="chkShowInactive" name="chkShowInactive" />
+                                <label for="chkShowInactive" style="margin-left:5px;">Show Cancelled</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button id="btnfilterchargelist" class="btn btn-default btn-block"><i class="fa fa-refresh"></i> Filter</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="box box-primary" id="tblchargelist">
+            <div class="box-header with-border">
+                <div class="box-title">Employee's Charge List</div>
+            </div>
+            <div class="box-body result">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdlEmployeeCharge">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title"><h4>ADD Employee Charge</h4></div>
+            </div>
+            <form id="form_new_company">
+                <div class="modal-body">
+                    <div class="form-group col-md-6">
+                        <label>Company</label>
+                        <div class="form-group">
+                            @Html.DropDownList("company_id", (IEnumerable<SelectListItem>)ViewBag.company, new { @class = "form-control", @id = "select_company" })
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Job</label>
+                        <div class="form-group">
+                            @Html.DropDownList("JobID", (IEnumerable<SelectListItem>)ViewBag.job, new { @class = "form-control", @id = "select_job" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Employee</label>
+                        <div class="form-group">
+                            <select id="select_employee" class="form-control" required></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Charge Name</label>
+                        <input class="form-control" id="txtname" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Amount</label>
+                        <input type="text" class="form-control" id="txtamount" pattern="^[1-9]\d*(\.\d+)?$" required />
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Date From</label>
+                                <!--<input class="form-control" id="txtdatefromupdate" pattern="\d{1,2}/\d{1,2}/\d{4}" required />-->
+                                <input type="date" class="form-control" id="txtdatefrom" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label>Date To</label>
+                                <!--<input class="form-control" id="txtdatefromupdate" pattern="\d{1,2}/\d{1,2}/\d{4}" required />-->
+                                <input type="date" class="form-control" id="txtdateto" required />
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer" id="mdlfooter">
+                    <button type="submit" class="btn btn-default btn-sm" id="btn-save"><i class="fa fa-save"></i> Save</button>
+                    <button class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fa fa-close"></i> Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="mdlEmployeeChargeUpdate">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title"><h4>Update Employee Charge</h4></div>
+            </div>
+            <form id="form_new_company">
+                <div class="modal-body">
+                    <input type="hidden" id="charge_id" />
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>Name : <span class="name" style="font-weight:bold"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Charge Name</label>
+                        <input class="form-control" id="txtnameupdate" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Amount</label>
+                        <input type="text" class="form-control" id="txtamountupdate" pattern="^[1-9]\d*(\.\d+)?$" required />
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Date From</label>
+                                <!--<input class="form-control" id="txtdatefromupdate" pattern="\d{1,2}/\d{1,2}/\d{4}" required />-->
+                                <input type="date" class="form-control" id="txtdatefromupdate" pattern="\d{1,2}/\d{1,2}/\d{4}" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label>Date To</label>
+                                <!--<input class="form-control" id="txtdatetoupdate" pattern="\d{1,2}/\d{1,2}/\d{4}" required />-->
+                                <input type="date" class="form-control" id="txtdatetoupdate" pattern="\d{1,2}/\d{1,2}/\d{4}" required />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" id="mdlfooter">
+                    <button type="submit" class="btn btn-default btn-sm" id="btn_update"><i class="fa fa-save"></i> Update</button>
+                    <button class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fa fa-close"></i> Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="mdlViewEmployeeCharge">
+    <div class="modal-dialog modal-lg" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title"><h4>Employee Charge Request Details</h4></div>
+            </div>
+            <div class="modal-body" style="background-color:#ecf0f5;">
+                <div class="resultChargeRequest">
+                    <p style="text-align:center"><i class="fa fa-spin fa-refresh"></i> Wait for a moment . . .</p>
+                </div>
+            </div>
+            <div class="modal-footer" id="mdlfooter">
+                <button class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdlprintandrelease">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title"><h4>Print and Release</h4></div>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="chargeid" value=" " />
+
+            </div>
+            <div class="modal-footer" id="mdlfooter">
+                <button class="btn btn-danger btn-sm pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                <button id="btprintandrelease" class="btn btn-primary btn-sm pull-right" ><i class="fa fa-print"></i> Print</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#chkShowInactive').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                increaseArea: '20%' // optional
+            });
+            
+
+            //$('#txtdatefrom').datepicker();
+            //$('#txtdateto').datepicker();
+            //$('#txtdatefromupdate').datepicker();
+            //$('#txtdatetoupdate').datepicker();
+
+            $(document).on('click', '.btn_releasedwithPrint', function () {
+                var id = $(this).attr('charge_id');
+                $.confirm({
+                    title: "Print?",
+                    content: 'Are you sure to "Print and Release" this charge?',
+                    buttons: {
+                        yes: function () {
+
+                            
+                            $.ajax({
+                                url: '@Url.Action("setChargeReleased", "Admin")',
+                                type: 'post',
+                                data: {
+                                    charge_id: id
+                                },
+                                success: function (data) {
+                                    refreshView(charge_id);
+                                },
+                                error: function () { }
+                            });
+
+                            $('#printthisarea').printElement({
+                                printBodyOptions: {
+                                    styleToAdd: "font-size:10px !important"
+                                }
+                            });
+                           
+                            $('#btnfilterchargelist').trigger('click');
+
+                            $('#mdlViewEmployeeCharge').modal('hide');
+                        },
+                        no: function () {
+
+                        }
+                    }
+                });
+            });
+
+            $(document).on('click', '.btn_printonly', function () {
+                $.confirm({
+                    title: "Print?",
+                    content: 'Are you sure to Print this charge?',
+                    buttons: {
+                        yes: function () {
+
+                            $('#printthisarea').printElement({
+                                printBodyOptions: {
+                                    styleToAdd: "font-size:10px !important"
+                                }
+                            });
+                            
+
+                            $('#mdlViewEmployeeCharge').modal('hide');
+                        },
+                        no: function () {
+
+                        }
+                    }
+                });
+            });
+
+
+            $(document).on('click', '.btn_released', function () {
+
+                if (confirm("Do you want to set this charge as Released?")) {
+                    var charge_id = $(this).attr('charge_id');
+                    $.ajax({
+                        url: 'setChargeReleased',
+                        type: 'post',
+                        data: {
+                            charge_id: charge_id
+                        },
+                        success: function (data) {
+                            refreshView(charge_id);
+
+                        },
+                        error: function () { }
+                    });
+                }
+            });
+
+            $(document).on('click', '.btn_void', function () {
+
+                if (confirm("Do you want to VOID this charge?")) {
+                    var charge_id = $(this).attr('charge_id');
+                    $.ajax({
+                        url: 'setChargeCancelled',
+                        type: 'post',
+                        data: {
+                            charge_id: charge_id
+                        },
+                        success: function (data) {
+                            refreshView(charge_id);
+                            $('#btnfilterchargelist').trigger('click');
+
+                        },
+                        error: function () { }
+                    });
+                }
+            });
+
+
+            $(document).on('click', '.btn_cancel', function () {
+
+                if (confirm("Do you want to CANCEL this charge?")) {
+                    var charge_id = $(this).attr('charge_id');
+                    $.ajax({
+                        url: 'setChargeCancelled',
+                        type: 'post',
+                        data: {
+                            charge_id: charge_id
+                        },
+                        success: function (data) {
+                            refreshView(charge_id);
+                            $('#btnfilterchargelist').trigger('click');
+
+                        },
+                        error: function () { }
+                    });
+                }
+            });
+
+
+
+            $(document).on('click', '.btnView', function () {
+
+                $('#mdlViewEmployeeCharge').modal('show');
+                showLoader('.tblViewDAta');
+
+                var charge_id = $(this).attr('charge_id');
+                $.ajax({
+                    url: 'viewEmployeeCharge',
+                    type: 'post',
+                    data: {
+                        charge_id: charge_id
+                    },
+                    success: function (data) {
+                        hideLoader('.tblViewDAta');
+                        $('.resultChargeRequest').html(data);
+                    },
+                    error: function () { }
+                });
+            });
+
+            $('#select_company').on('change', function () {
+                select_employee();
+            });
+            $('#select_job').on('change', function () {
+                select_employee();
+            });
+
+            $(document).on('click', '.btnEdit', function () {
+
+                $('#charge_id').val($(this).closest('tr').find('.charge_id').val());
+                $('#txtnameupdate').val($(this).closest('tr').find('.change_name').val());
+                $('#txtamountupdate').val($(this).closest('tr').find('.charge_amount').val());
+                $('#txtdatefromupdate').val($(this).closest('tr').find('.date_from').val());
+                $('#txtdatetoupdate').val($(this).closest('tr').find('.date_to').val());
+                $('.name').text($(this).closest('tr').find('.name').val());
+
+                $('#mdlEmployeeChargeUpdate').modal('show');
+            });
+
+            $('#mdlEmployeeChargeUpdate').on('submit', function (e) {
+                e.preventDefault();
+
+                if (confirm("Do you want update this charge?")) {
+
+                    var charge_id = $('#charge_id').val();
+                    var charge_name = $('#txtnameupdate').val();
+                    var amount = $('#txtamountupdate').val();
+                    var date_from = $('#txtdatefromupdate').val();
+                    var date_to = $('#txtdatetoupdate').val();
+
+                    var params = {
+
+                        ChargeName: charge_name,
+                        ChargeID: charge_id,
+                        date_from: date_from,
+                        date_to: date_to,
+                        ChargeAmount: amount
+                    }
+
+
+                    var btnoriginal_innerHTML = $('#btn_update').html();
+
+
+                    $('#btn_update').attr("disabled", "disabled");
+                    $('#btn_update').html('<i class="fa fa-spin fa-refresh"></i> Processing...');
+
+                    $.ajax({
+                        url: 'UpdateChargeEmployee',
+                        type: 'post',
+                        async:false,
+                        data: params,
+                        success: function (data) {
+                            $('#btn_update').html(btnoriginal_innerHTML);
+                            $('#mdlEmployeeChargeUpdate').modal('hide');
+                        },
+                        error: function () { }
+                    });
+                    $('#btn_update').removeAttr("disabled");
+                    $('#btnfilterchargelist').trigger('click');
+
+
+                }
+
+            });
+
+
+            $('#mdlEmployeeCharge').on('submit', function (e) {
+                e.preventDefault();
+
+                if (confirm("Do you want to continue?")) {
+
+                    var employee_id = $('#select_employee').val();
+                    var charge_name = $('#txtname').val();
+                    var amount = $('#txtamount').val();
+                    var date_from = $('#txtdatefrom').val();
+                    var date_to = $('#txtdateto').val();
+
+                    var params = {
+
+                        ChargeName: charge_name,
+                        EmployeeID: employee_id,
+                        date_from: date_from,
+                        date_to: date_to,
+                        ChargeAmount: amount
+                    }
+
+                    var btnoriginal_innerHTML = $('#btn-save').html();
+
+
+                    $('#btn-save').attr("disabled", "disabled");
+                    $('#btn-save').html('<i class="fa fa-spin fa-refresh"></i> Processing...');
+
+                    $.ajax({
+                        url: 'SaveChargeEmployee',
+                        type: 'post',
+                        data: params,
+                        success: function (data) {
+                            $('#btn-save').html(btnoriginal_innerHTML);
+                            $('#mdlEmployeeCharge').modal('hide');
+                        },
+                        error: function () { }
+                    });
+                    $('#btn-save').removeAttr("disabled");
+                    $('#txtChargeSearch').val($('#txtname').val());
+                    $('#btnfilterchargelist').trigger('click');
+
+                }
+
+            });
+
+
+            $('#btnNewCompany').click(function () {
+                $('#mdlEmployeeCharge').modal('show');
+            });
+
+
+            $('#btnfilterchargelist').click(function () {
+                
+                var flag = true;
+
+                //if ($('#txtChargeSearch').val() == "") {
+                //    $.alert('Search key is required ');
+                //    flag = false;
+                //}
+
+                if (flag) {
+                    var searchkey = $('#txtChargeSearch').val();
+                    var show_inactive = $('input[name=chkShowInactive]').prop('checked');
+                    showLoader('#tblchargelist');
+                    $.ajax({
+                        url: 'FilterScheduleDeduction',
+                        type: 'post',
+                        data: { searchKey: searchkey, show_cancelled: show_inactive },
+                        success: function (data) {
+                            $('.result').html(data);
+                            hideLoader('#tblchargelist');
+                        },
+                        error: function () { }
+                    })
+                }
+            });
+
+
+            function select_employee() {
+                $.ajax({
+                    url: "/Filter/getEmployee",
+                    type: "POST",
+                    data: {
+                        "job_id": $("#select_job").val(),
+                        "company_id": $("#select_company").val()
+                    },
+                    success: function (data) {
+
+                        if (data.length > 0) {
+                            $('#select_employee').html('');
+                            var options = '';
+                            options += '<option value="">[[ SELECT ]]</option>';
+                            for (var i = 0; i < data.length; i++) {
+                                options += '<option value="' + data[i].emp_id + '">' + data[i].name + '</option>';
+                            }
+                            $('#select_employee').append(options);
+                        }
+                    }
+
+                });
+            }
+
+            function refreshView(charge_id) {
+                showLoader('.tblViewDAta');
+                $.ajax({
+                    url: 'viewEmployeeCharge',
+                    type: 'post',
+                    data: {
+                        charge_id: charge_id
+                    },
+                    success: function (data) {
+                        hideLoader('.tblViewDAta');
+                        $('.resultChargeRequest').html(data);
+                    },
+                    error: function () { }
+                });
+            }
+        });
+    </script>
+}

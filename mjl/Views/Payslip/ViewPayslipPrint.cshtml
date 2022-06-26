@@ -1,0 +1,388 @@
+﻿@using mjl.Models.Database;
+@using mjl.Models;
+
+@{ 
+    Employee_Payslip emp_payslip = (Employee_Payslip)ViewBag.emp_payslip;
+    employee_timesheet emp_timesheet = (employee_timesheet)ViewBag.emp_timesheet;
+    Employee emp_data = EmployeeModel.getEmployeeByID(emp_payslip.employee_id.Value);
+    List<Employee_Payslip_Details> payslip_details_less = (List<Employee_Payslip_Details>)ViewBag.payslip_details_less;
+    List<Employee_Payslip_Details> payslip_details_add = (List<Employee_Payslip_Details>)ViewBag.payslip_details_add;
+    List<Employee_Payslip_Government> payslip_government = (List<Employee_Payslip_Government>)ViewBag.payslip_government;
+
+
+    List<Employee_Payslip_Adjustment> payslip_adjustment_charge = (List<Employee_Payslip_Adjustment>)ViewBag.payslip_adjustment_charge;
+    List<Employee_Payslip_Adjustment> payslip_adjustment_deduction = (List<Employee_Payslip_Adjustment>)ViewBag.payslip_adjustment_deduction;
+    List<Employee_Payslip_Adjustment> payslip_adjustment_additional = (List<Employee_Payslip_Adjustment>)ViewBag.payslip_adjustment_additional;
+
+    string compensation_type = CompensationModel.getCompensationType(emp_payslip.employee_id.Value);
+    decimal basic_pay = 0;
+    if (compensation_type.ToUpper() == "DAILY")
+    {
+        basic_pay = emp_timesheet.regular_days.Value * emp_payslip.employee_rate.Value;
+    }
+    else {
+        basic_pay = emp_payslip.employee_rate.Value;
+    }
+
+}
+
+<div style="width:100%">
+    <div style="width:48%;float:left">
+        <table class="table table-sm" style="border-color:#ffffff">
+            <tbody>
+                <tr>
+                    <td style="font-size:10px;padding-bottom:0px;padding-top:0px;border-color:#fff">Employee ID :</td>
+                    <td style="font-size:10px;padding-bottom:0px;padding-top:0px;border-color:#fff">@emp_data.EmployeeID</td>
+                </tr>
+                <tr>
+                    <td style="font-size:10px;padding-bottom:0px;padding-top:0px;border-color:#fff">Name :</td>
+                    <td style="font-size:10px;padding-bottom:0px;padding-top:0px;border-color:#fff">@emp_data.LastName.ToUpper() , @emp_data.FirstName.ToUpper()</td>
+                </tr>
+                <tr>
+                    @{
+                    Job empjob = JobModel.getJobPerEmployeID(emp_data.JobID.Value);
+                    }
+                    <td style="font-size:10px;padding-bottom:0px;padding-top:0px;border-color:#fff">Position :</td>
+                    <td style="font-size:10px;padding-bottom:0px;padding-top:0px;border-color:#fff">@empjob.JobName.ToUpper()</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="width:48%;float:right">
+        <h4 style="text-align:center;font-size:10px;">MJL Inc.</h4>
+        <h5 style="text-align:center;font-size:10px;">Date Covered : @emp_payslip.date_from.ToDateTimeFormat() - @emp_payslip.date_to.ToDateTimeFormat()</h5>
+        <h6 style="text-align:center;font-size:10px;">Payslip # : @emp_payslip.payslip_id</h6>
+    </div>
+</div>
+<div style="clear:both"></div>
+
+<div style="width:100%;">
+
+    <div style="width:32%;float:left;margin-right:2%">
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th colspan="2" style="font-size:10px;padding-bottom:0px;padding-top:0px;">Basic Pay</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    decimal total_basic_income = basic_pay;
+                }
+                <tr>
+                    <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">WORKING DAYS (@emp_timesheet.regular_days.Value.ToNumericFormat())</td>
+                    <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">@basic_pay.ToNumericFormat()</td>
+
+                </tr>
+                <tr>
+                    @{
+                        Employee_Payslip_Details payslip_details_night_diff = payslip_details_add.Where(s => s.name == "Night Differential").FirstOrDefault();
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">NIGHT DIFF (@payslip_details_night_diff.hours.Value.ToNumericFormat())</td>
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">@payslip_details_night_diff.amount.Value.ToNumericFormat()</td>
+                        total_basic_income += payslip_details_night_diff.amount.Value;
+
+           
+                    }
+                </tr>
+                <tr>
+                    @{ 
+                        Employee_Payslip_Details restday = payslip_details_add.Where(s => s.name.ToUpper() == "RESTDAY" ).FirstOrDefault();
+                        if (restday.amount > 0) {
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">Restday (@restday.hours.Value.ToNumericFormat())</td>
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">@restday.amount.Value.ToNumericFormat()</td>
+                                total_basic_income += restday.amount.Value;
+                            }
+                     }
+                </tr>
+                <tr>
+                    @{ 
+                        Employee_Payslip_Details restday_ot = payslip_details_add.Where(s => s.name.ToUpper() == "RESTDAY OVERTIME").FirstOrDefault();
+                        if (restday_ot.amount > 0) {
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">Restday Overtime (@restday_ot.hours.Value.ToNumericFormat())</td>
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">@restday_ot.amount.Value.ToNumericFormat()</td>
+                                total_basic_income += restday_ot.amount.Value;
+                            }
+                     }
+                </tr>
+                <tr>
+                    @{ 
+                        Employee_Payslip_Details regular_holiday = payslip_details_add.Where(s => s.name.ToUpper() == "REGULAR HOLIDAY").FirstOrDefault();
+                        if (regular_holiday.amount > 0) {
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">Regular Holiday (@regular_holiday.hours.Value.ToNumericFormat())</td>
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">@regular_holiday.amount.Value.ToNumericFormat()</td>
+                                total_basic_income += regular_holiday.amount.Value;
+                            }
+                     }
+                </tr>
+                <tr>
+                    @{ 
+                        Employee_Payslip_Details regular_holiday_overtime = payslip_details_add.Where(s => s.name.ToUpper() == "REGULAR HOLIDAY OVERTIME").FirstOrDefault();
+                        if (regular_holiday_overtime.amount > 0) {
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">Regular Holiday Overtime (@regular_holiday_overtime.hours.Value.ToNumericFormat())</td>
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">@regular_holiday_overtime.amount.Value.ToNumericFormat()</td>
+                                total_basic_income += regular_holiday_overtime.amount.Value;
+                            }
+                     }
+                </tr>
+                <tr>
+                    @{ 
+                        Employee_Payslip_Details regular_holiday_restday = payslip_details_add.Where(s => s.name.ToUpper() == "REGULAR HOLIDAY RESTDAY").FirstOrDefault();
+                        if (regular_holiday_restday.amount > 0) {
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">Regular Holiday w/ Restday (@regular_holiday_restday.hours.Value.ToNumericFormat())</td>
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">@regular_holiday_restday.amount.Value.ToNumericFormat()</td>
+                                total_basic_income += regular_holiday_restday.amount.Value;
+                            }
+                     }
+                </tr>
+                <tr>
+                    @{ 
+                        Employee_Payslip_Details regular_holiday_restday_ot = payslip_details_add.Where(s => s.name.ToUpper() == "REGULAR HOLIDAY RESTDAY OVERTIME").FirstOrDefault();
+                        if (regular_holiday_restday_ot.amount > 0) {
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">Regular Holiday w/ Restday Overtime(@regular_holiday_restday_ot.hours.Value.ToNumericFormat())</td>
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">@regular_holiday_restday_ot.amount.Value.ToNumericFormat()</td>
+                                total_basic_income += regular_holiday_restday_ot.amount.Value;
+                            }
+                     }
+                </tr>
+                <tr>
+                    @{ 
+                        Employee_Payslip_Details special_holiday = payslip_details_add.Where(s => s.name.ToUpper() == "SPECIAL HOLIDAY").FirstOrDefault();
+                        if (special_holiday.amount > 0) {
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">Special Holiday(@special_holiday.hours.Value.ToNumericFormat())</td>
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">@special_holiday.amount.Value.ToNumericFormat()</td>
+                                total_basic_income += special_holiday.amount.Value;
+                            }
+                     }
+                </tr>
+                <tr>
+                    @{ 
+                        Employee_Payslip_Details special_holiday_ot = payslip_details_add.Where(s => s.name.ToUpper() == "SPECIAL HOLIDAY OVERTIME").FirstOrDefault();
+                        if (special_holiday_ot.amount > 0) {
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">Special Holiday(@special_holiday_ot.hours.Value.ToNumericFormat())</td>
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">@special_holiday_ot.amount.Value.ToNumericFormat()</td>
+                                total_basic_income += special_holiday_ot.amount.Value;
+                            }
+                     }
+                </tr>
+                <tr>
+                    @{ 
+                        Employee_Payslip_Details special_holiday_restday = payslip_details_add.Where(s => s.name.ToUpper() == "SPECIAL HOLIDAY RESTDAY").FirstOrDefault();
+                        if (special_holiday_restday.amount > 0) {
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">Special Holiday w/ Restday(@special_holiday_restday.hours.Value.ToNumericFormat())</td>
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">@special_holiday_restday.amount.Value.ToNumericFormat()</td>
+                                total_basic_income += special_holiday_restday.amount.Value;
+                            }
+                     }
+                </tr>
+                <tr>
+                    @{ 
+                        Employee_Payslip_Details special_holiday_restday_ot = payslip_details_add.Where(s => s.name.ToUpper() == "SPECIAL HOLIDAY RESTDAY OVERTIME").FirstOrDefault();
+                        if (special_holiday_restday_ot.amount > 0) {
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">Special Holiday w/ Restday Overtime(@special_holiday_restday_ot.hours.Value.ToNumericFormat())</td>
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">@special_holiday_restday_ot.amount.Value.ToNumericFormat()</td>
+                                total_basic_income += special_holiday_restday_ot.amount.Value;
+                            }
+                     }
+                </tr>
+                <tr>
+                    @{ 
+                        Employee_Payslip_Details double_holiday = payslip_details_add.Where(s => s.name.ToUpper() == "DOUBLE HOLIDAY").FirstOrDefault();
+                        if (double_holiday.amount > 0) {
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">Double Holiday(@double_holiday.hours.Value.ToNumericFormat())</td>
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">@double_holiday.amount.Value.ToNumericFormat()</td>
+                                total_basic_income += double_holiday.amount.Value;
+                            }
+                     }
+                </tr>
+                <tr>
+                    @{ 
+                        Employee_Payslip_Details double_holiday_overtime = payslip_details_add.Where(s => s.name.ToUpper() == "DOUBLE HOLIDAY OVERTIME").FirstOrDefault();
+                        if (double_holiday_overtime.amount > 0) {
+                    <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">Double Holiday Overtime(@double_holiday_overtime.hours.Value.ToNumericFormat())</td>
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">@double_holiday_overtime.amount.Value.ToNumericFormat()</td>
+                                total_basic_income += double_holiday_overtime.amount.Value;
+                            }
+                     }
+                </tr>
+                <tr>
+                    <th style="font-size:10px;font-weight:bold;padding-bottom:0px;padding-top:0px;" colspan="2">Additional Adjusment</th>
+                </tr>
+                @{
+                    if (payslip_adjustment_additional.Count > 0)
+                    {
+                        foreach (var payslip_adjustment in payslip_adjustment_additional)
+                        {
+                            <tr>
+                                <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">@payslip_adjustment.name.ToUpper()</td>
+                                <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">@payslip_adjustment.amount.Value.ToNumericFormat()</td>
+                            </tr>
+                            total_basic_income += payslip_adjustment.amount.Value;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="2" style="text-align:center;font-size:10px;">N/A</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th style="font-size:10px;padding-bottom:0px;padding-top:0px;">Total</th>
+                    <th style="font-size:10px;padding-bottom:0px;padding-top:0px;">@total_basic_income.ToNumericFormat()</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div style="width:32%;float:left;margin-right:2%">
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th colspan="2" style="font-size:10px;padding-bottom:0px;padding-top:0px;">LESS</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    decimal total_less = 0;
+                }
+                <tr>
+                    @{
+                        Employee_Payslip_Details payslip_details_absent = payslip_details_less.Where(s => s.name == "Absences").FirstOrDefault();
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">ABSENCES (@payslip_details_absent.days.Value.ToNumericFormat())</td>
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">@payslip_details_absent.amount.Value.ToNumericFormat()</td>
+                        total_less += payslip_details_absent.amount.Value;
+                    }
+                </tr>
+                <tr>
+                    @{
+                        Employee_Payslip_Details payslip_details_lates = payslip_details_less.Where(s => s.name == "Lates").FirstOrDefault();
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">LATES (@payslip_details_lates.hours.Value.ToNumericFormat())</td>
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">@payslip_details_lates.amount.Value.ToNumericFormat()</td>
+                        total_less += payslip_details_lates.amount.Value;
+                    }
+                </tr>
+                <tr>
+                    @{
+                        Employee_Payslip_Details payslip_details_undertime = payslip_details_less.Where(s => s.name == "Undertime").FirstOrDefault();
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">UNDERTIME (@payslip_details_undertime.hours.Value.ToNumericFormat())</td>
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">@payslip_details_undertime.amount.Value.ToNumericFormat()</td>
+                        total_less += payslip_details_undertime.amount.Value;
+                    }
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th style="font-size:10px;padding-bottom:0px;padding-top:0px;">Total</th>
+                    <th style="font-size:10px;padding-bottom:0px;padding-top:0px;">@total_less.ToNumericFormat()</th>
+                </tr>
+            </tfoot>
+        </table>
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th style="font-size:10px;padding-bottom:0px;padding-top:0px;">GROSS INCOME</th>
+                    <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">@emp_payslip.gross_pay.Value.ToNumericFormat()</td>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div style="width:32%;float:right;">
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th colspan="2" style="font-size:10px;padding-bottom:0px;padding-top:0px;">Government Deduction</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    decimal total_deduction_amount = 0;
+                }
+                <tr>
+                    @{
+                        Employee_Payslip_Government payslip_government_sss = payslip_government.Where(s => s.name == "SSS").FirstOrDefault();
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">SSS</td>
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">@payslip_government_sss.amount.Value.ToNumericFormat()</td>
+                        total_deduction_amount += payslip_government_sss.amount.Value;
+                    }
+                </tr>
+                <tr>
+                    @{
+                        Employee_Payslip_Government payslip_government_philhealth = payslip_government.Where(s => s.name == "PHILHEALTH").FirstOrDefault();
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">PHILHEALTH</td>
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">@payslip_government_philhealth.amount.Value.ToNumericFormat()</td>
+                        total_deduction_amount += payslip_government_philhealth.amount.Value;
+                    }
+                </tr>
+                <tr>
+                    @{
+                        Employee_Payslip_Government payslip_government_pagibig = payslip_government.Where(s => s.name == "PAGIBIG").FirstOrDefault();
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">PAGIBIG</td>
+                        <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">@payslip_government_pagibig.amount.Value.ToNumericFormat()</td>
+                        total_deduction_amount += payslip_government_pagibig.amount.Value;
+                    }
+                </tr>
+                <tr>
+                    <th colspan="2" style="font-size:10px;font-weight:bold;padding-bottom:0px;padding-top:0px;">Charges Deduction</th>
+                </tr>
+                @{
+                    if (payslip_adjustment_charge.Count > 0)
+                    {
+                        foreach (var payslip_adjustment_charge_list in payslip_adjustment_charge)
+                        {
+                            <tr>
+                                <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">@payslip_adjustment_charge_list.name.ToUpper()</td>
+                                <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">@payslip_adjustment_charge_list.amount.Value.ToNumericFormat()</td>
+                            </tr>
+                            total_deduction_amount += payslip_adjustment_charge_list.amount.Value;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="2" style="text-align:center;font-size:10px;padding-bottom:0px;padding-top:0px;">N/A</td>
+                        </tr>
+                    }
+                }
+                <tr>
+                    <th colspan="2" style="font-size:10px;font-weight:bold;padding-bottom:0px;padding-top:0px;">Other Deduction</th>
+                </tr>
+                @{
+                    if (payslip_adjustment_deduction.Count > 0)
+                    {
+                        foreach (var payslip_adjustment_deduction_list in payslip_adjustment_deduction)
+                        {
+                            <tr>
+                                <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">@payslip_adjustment_deduction_list.name.ToUpper()</td>
+                                <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">@payslip_adjustment_deduction_list.amount.Value.ToNumericFormat()</td>
+                            </tr>
+                            total_deduction_amount += payslip_adjustment_deduction_list.amount.Value;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="2" style="text-align:center;font-size:10px;padding-bottom:0px;padding-top:0px;">N/A</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th style="font-size:10px;padding-bottom:0px;padding-top:0px;">Total</th>
+                    <th style="font-size:10px;padding-bottom:0px;padding-top:0px;">@total_deduction_amount.ToNumericFormat()</th>
+                </tr>
+            </tfoot>
+        </table>
+
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th style="font-size:10px;padding-bottom:0px;padding-top:0px;">NET INCOME</th>
+                    <td style="font-size:10px;padding-bottom:0px;padding-top:0px;">@emp_payslip.net_pay.Value.ToNumericFormat()</td>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<div style="clear:both"></div>

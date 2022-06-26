@@ -1,0 +1,285 @@
+﻿@using mjl.Models;
+@using mjl.Models.Database;
+
+@{
+    ViewBag.Title = "Company";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<Company> lstcompany = ViewBag.lstcompany;
+}
+
+<div class="row">
+    <div class="col-md-3">
+        <button class="btn btn-primary btn-block margin-bottom" id="btnNewCompany"><i class="fa fa-plus"></i> New Company</button>
+
+        <div class="box box-solid">
+            <div class="box-header with-border">
+                <div class="box-title">Filter Option</div>
+                <div class="box-tools">
+                    <button class="btn btn-box-tool" type="button" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="form-group">
+                    <label>Search Key</label>
+                    <input class="form-control input-sm" placeholder="Company name" id="txtcompany" />
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="checkbox" style="padding-left:0;">
+                                <input type="checkbox" class="flat-red" id="chkShowInactive" name="chkShowInactive" />
+                                <label for="chkShowInactive" style="margin-left:5px;">Show Inactive</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button id="btnfiltercompany" class="btn btn-default btn-block"><i class="fa fa-refresh"></i> Filter</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="box box-primary" id="tblcompanycontainer">
+            <div class="box-header with-border">
+                <div class="box-title">Company List</div>
+            </div>
+            <div class="box-body result">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdlUpdatecompany">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title"><h4>Update Company</h4></div>
+            </div>
+            <form id="form_update_company">
+                <input type="hidden" id="company_id_update"/>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Company Name</label>
+                        <input class="form-control" id="txtcompanynameUpdate" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Type</label>
+                        <select class="form-control" id="txtTypeUpdate" required>
+                            <option value="MANPOWER">MANPOWER</option>
+                            <option value="SECURITY">SECURITY</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Admin Fee</label>
+                        <input type="numeric" class="form-control" id="txtadminfeeUpdate" min="0" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Company Owner</label>
+                        <input class="form-control" id="txtownerUpdate" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input class="form-control" id="txtaddressUpdate" required />
+                    </div>
+                    <div class="form-group">
+                        <label>City</label>
+                        <input class="form-control" id="txtcityUpdate" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Number</label>
+                        <input class="form-control" id="txtcontactnumberUpdate" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select class="form-control" id="txtStatusUpdate">
+                            <option value="False">InActive</option>
+                            <option value="True">Active</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer" id="mdlfooter">
+                    <button type="submit" class="btn btn-default btn-sm" id="btn-update"><i class="fa fa-save"></i> Update</button>
+                    <button class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fa fa-close"></i> Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdlcompany">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title"><h4>Add Company</h4></div>
+            </div>
+            <form id="form_new_company">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Company Name</label>
+                        <input class="form-control" id="txtcompanyname" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Type</label>
+                        <select class="form-control" id="txtType" required>
+                            <option value="">[ SELECT ]</option>
+                            <option value="MANPOWER">MANPOWER</option>
+                            <option value="SECURITY">SECURITY</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Admin Fee</label>
+                        <input type="number" class="form-control" id="txtadminfee" min="0" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Company Owner</label>
+                        <input class="form-control" id="txtowner" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input class="form-control" id="txtaddress" required />
+                    </div>
+                    <div class="form-group">
+                        <label>City</label>
+                        <input class="form-control" id="txtcity" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Number</label>
+                        <input class="form-control" id="txtcontactnumber" required />
+                    </div>
+                </div>
+                <div class="modal-footer" id="mdlfooter">
+                    <button type="submit" class="btn btn-default btn-sm" id="btn-save"><i class="fa fa-save"></i> Save</button>
+                    <button class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fa fa-close"></i> Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#chkShowInactive').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%' // optional
+        });
+
+        $(document).on('click', '.btnEdit', function () {
+
+            $('#mdlUpdatecompany').modal('show');
+
+            $('#company_id_update').val($(this).closest('tr').find('.company_id').val());
+            $('#txtcompanynameUpdate').val($(this).closest('tr').find('.name').val());
+            $('#txtownerUpdate').val($(this).closest('tr').find('.owner_name').val());
+            $('#txtaddressUpdate').val($(this).closest('tr').find('.address').val());
+            $('#txtcityUpdate').val($(this).closest('tr').find('.city').val());
+            $('#txtcontactnumberUpdate').val($(this).closest('tr').find('.contact_number').val());
+            $('#txtStatusUpdate').val($(this).closest('tr').find('.company_status').val());
+            $('#txtTypeUpdate').val($(this).closest('tr').find('.type').val());
+            $('#txtadminfeeUpdate').val($(this).closest('tr').find('.admin_fee').val());
+
+        });
+        $('#form_update_company').on('submit', function (e) {
+            e.preventDefault();
+       
+            if (confirm("Do you want to update this company?")) {
+
+                var btnoriginal_innerHTML = $('#btn-update').html();
+
+                var params = {
+
+                    'company_id': $('#company_id_update').val(),
+                    'name': $('#txtcompanynameUpdate').val(),
+                    'admin_fee': $('#txtadminfeeUpdate').val(),
+                    'owner_name': $('#txtownerUpdate').val(),
+                    'address': $('#txtaddressUpdate').val(),
+                    'city': $('#txtcityUpdate').val(),
+                    'is_active': $('#txtStatusUpdate').val(),
+                    'contact_number': $('#txtcontactnumberUpdate').val(),
+                    'type': $('#txtTypeUpdate').val()
+                }
+
+                $('#btn-update').attr("disabled", "disabled");
+                $('#btn-update').html('<i class="fa fa-spin fa-refresh"></i> Processing...');
+
+                $.ajax({
+                    url: 'UpdateCompany',
+                    type: 'post',
+                    data: params,
+                    success: function (data) {
+                        $('#btn-update').html(btnoriginal_innerHTML);
+                        $('#mdlUpdatecompany').modal('hide');
+                    },
+                    error: function () { }
+                });
+                $('#btn-update').removeAttr("disabled");
+                $('#btnfiltercompany').trigger('click');
+            }
+        });
+
+        $('#form_new_company').on('submit', function (e) {
+            e.preventDefault();
+            if (confirm("Do you want to continue?")) {
+
+                var btnoriginal_innerHTML = $('#btn-save').html();
+
+                var name = $('#txtcompanyname').val();
+                var owner = $('#txtowner').val();
+                var address = $('#txtaddress').val();
+                var city = $('#txtcity').val();
+                var number = $('#txtcontactnumber').val();
+                var type = $('#txtType').val();
+                var admin_fee = $('#txtadminfee').val();
+
+                $('#btn-save').attr("disabled", "disabled");
+                $('#btn-save').html('<i class="fa fa-spin fa-refresh"></i> Processing...');
+
+                $.ajax({
+                    url: 'SaveCompany',
+                    type: 'post',
+                    data: {
+                        name: name,
+                        owner_name: owner,
+                        admin_fee : admin_fee,
+                        address: address,
+                        city: city,
+                        contact_number: number,
+                        type : type
+                    },
+                    success: function (data) {
+                        $('#btn-save').html(btnoriginal_innerHTML);
+                        $('#mdlcompany').modal('hide');
+                    },
+                    error: function () { }
+                });
+                $('#btn-save').removeAttr("disabled");
+                $('#btnfiltercompany').trigger('click');
+            }
+        });
+        
+        $('#btnNewCompany').click(function () {
+            $('#mdlcompany').modal('show');
+        });
+
+        $('#btnfiltercompany').click(function () {
+            showLoader('#tblcompanycontainer');
+
+            var company = $('#txtcompany').val();
+            var show_inactive = $('input[name=chkShowInactive]').prop('checked');
+            
+            $.ajax({
+                url: '../admin/FilterCompany',
+                type: 'post',
+                data: { company: company, show_active: show_inactive },
+                success: function (data) {
+                    $('.result').html(data);
+                    hideLoader('#tblcompanycontainer');
+                },
+                error: function () { }
+            })
+        });
+    });
+</script>
+}

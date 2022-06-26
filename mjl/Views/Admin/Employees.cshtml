@@ -1,0 +1,1407 @@
+﻿@using mjl.Models;
+@using mjl.Models.Database;
+
+@{
+    ViewBag.Title = "Employees";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<Company> lstcompany = ViewBag.lstcompany;
+    List<Job> lstjob = ViewBag.lstjob;
+
+}
+
+<input type="hidden" id="prepared_by" value="@ViewBag.prepared_by" />
+<input type="hidden" id="datetimenow" value="@DateTime.Now" />
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">Filter Options</h3>
+                <div class="box-tools">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="row">
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label>Company</label>
+                                <select class="form-control input-sm select2" id="company">
+                                    <option value="0">[ ALL ]</option>
+                                    @foreach (var x in lstcompany)
+                                    {
+                                        <option value="@x.company_id">@x.name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label>Job</label>
+                                @*@Html.DropDownList("jobsearch", new SelectList(lstjob, "JobID", "JobName"), "[Select Job]", new { @class = "form-control" })*@
+                                <select id="jobsearch" class="form-control validate-input input-sm txtUOM" style="width:100%">
+                                    <option value="0" selected>[ SELECT ]</option>
+                                    @foreach (var x in lstjob)
+                                    {
+                                        <option value="@x.JobID">@x.JobName</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <center>
+                                <div class="checkbox " style="margin-top:27px">
+                                    <input type="checkbox" class="minimal" id="chkShowInactive" />
+                                    <label for="chkShowInactive" style="margin-left:5px;">Show&nbsp;Inactive</label>
+                                </div>
+                            </center>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <button style="margin-top:20px" type="button" class="btn btn-block btn-default btnFilterEmployeeList">
+                                    <i class="fa fa-search"></i> Filter
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="box box-primary" id="boxEmployeeList">
+            <div class="box-header with-border">
+                <div class="box-title">
+                    <h3 class="box-title">Employee Records</h3>
+                </div>
+                <button type="button" class="btn btn-primary pull-right" id="btnNewEmployee"><i class="fa fa-plus"></i> New Employee</button>
+            </div>
+            <div class="box-body">
+                <div class="table-responsive mailbox-messages">
+                    <table class="table table-hover table-striped table-condensed table-bordered sampleeee" id="tblEmployeeList">
+                        <thead>
+                            <tr>
+                                <th>ID#</th>
+                                <th>EMPLOYEE NAME</th>
+                                <th>STATUS</th>
+                                <th>OPTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table_employee"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" role='dialog' data-backdrop='static' id="mdlEmployeeForm">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h2 class="modal-title">Employee Form</h2>
+            </div>
+            <div class="modal-body">
+                <form id="addEmployeeForm">
+                    @*<ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#employee_detail" data-toggle="tab" aria-expanded="true">Employee Details</a>
+                            </li>
+                            <li class="">
+                                <a href="#government_detail" data-toggle="tab" aria-expanded="true">Government Details</a>
+                            </li>
+                            <li class="">
+                                <a href="#compensation_detail" data-toggle="tab" aria-expanded="true">Compensation Details</a>
+                            </li>
+                        </ul>*@
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="box box-success ">
+                                <div class="box-header">
+                                    <div class="box-tools">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                    <div class="box-title"><em>General Details</em></div>
+                                </div>
+                                <div class="box-body">
+                                    @*<div class="form-group">
+                                            <label><i class="fa fa-id-badge"></i> Employee Number</label>
+                                            <div class="input-group input-group-sm">
+                                                <input id="txtemployeenumber" type="number" class="form-control" required>
+                                                <span class="input-group-btn">
+                                                    <button id="btncheckemployeenumber" type="button" class="btn btn-info btn-flat" title="Check Employee Number"><i class="fa fa-search"></i></button>
+                                                </span>
+                                            </div>
+                                        </div>*@
+                                    <div class="form-group">
+                                        <label><i class="fa fa-user"></i> First Name</label>
+                                        <input id="txtfirstname" name="firstname" class="form-control input-sm" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label><i class="fa fa-user"></i> Middle Name</label>
+                                        <input id="txtmiddlename" class="form-control input-sm" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label><i class="fa fa-user"></i> Last Name</label>
+                                        <input id="txtlastname" class="form-control input-sm" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label><i class="fa fa-male"></i> <i class="fa fa-female"></i> Gender</label>
+                                        <select class="form-control" id="slcgenderr" required>
+                                            <option value="">[ SELECT ]</option>
+                                            <option value="MALE">Male</option>
+                                            <option value="FEMALE">Female</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label><i class="fa fa-male"></i> <i class="fa fa-female"></i> Marital Status</label>
+                                        <select class="form-control" id="txtmaritalstatus" required>
+                                            <option value="">[ SELECT ]</option>
+                                            <option value="SINGLE">SINGLE</option>
+                                            <option value="MARRIED">MARRIED</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Birthdate</label>
+                                        <div class="input-group date">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input type="date" class="form-control pull-right" id="dtbirthdate" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label><i class="fa fa-location-arrow"></i> Place of Birth</label>
+                                        <input id="txtbirthplace" class="form-control input-sm" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label><i class="fa fa-ruler-combined"></i> Height</label>
+                                        <input id="txtheight" class="form-control input-sm " required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label><i class="fa fa-weight"></i> Weight [kg]</label>
+                                        <input id="txtweight" class="form-control input-sm " required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Nationality</label>
+                                        <input id="txtnationality" class="form-control input-sm" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Religion</label>
+                                        <input id="txtreligion" class="form-control input-sm" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Contact No.</label>
+                                        <input id="txtcontactno" class="form-control input-sm" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Date Hired</label>
+                                        <div class="input-group date">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input type="date" class="form-control pull-right" id="dtdatehired" value="@DateTime.Now.ToString("MMMM dd, yyyy")" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="box box-success ">
+                                <div class="box-header">
+                                    <div class="box-tools">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                    <div id="txtcurrentaddress" class="box-title"><em>Current Address</em></div>
+                                </div>
+                                <div class="box-body">
+                                    <div class="form-group">
+                                        <label>Country</label>
+                                        <input id="txtcurrentcountry" class="form-control input-sm" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Region</label>
+                                        <input id="txtcurrentregion" class="form-control input-sm" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>City/Municipalities</label>
+                                        <input id="txtcurrentcity" class="form-control input-sm" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Street</label>
+                                        <input id="txtcurrentstreet" class="form-control input-sm" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Barangay</label>
+                                        <input id="txtcurrentbarangay" class="form-control input-sm" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Sitio</label>
+                                        <input id="txtcurrentsitio" class="form-control input-sm" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box box-success ">
+                                <div class="box-header">
+                                    <div class="box-tools">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                    <div class="box-title"><em>Provincial Address</em></div>
+                                </div>
+                                <div class="box-body">
+                                    <div class="form-group">
+                                        <label>Country</label>
+                                        <input id="txtprovcountry" class="form-control input-sm" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Region</label>
+                                        <input class="form-control input-sm" id="txtprovregion" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Street</label>
+                                        <input id="txtprovstreet" class="form-control input-sm" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Sitio</label>
+                                        <input id="txtprovsitio" class="form-control input-sm" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Barangay</label>
+                                        <input id="txtprovbarangay" class="form-control input-sm" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>City/Municipalities</label>
+                                        <input id="txtprovcity" class="form-control input-sm" required />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box box-success ">
+                                <div class="box-header">
+                                    <div class="box-tools">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                    <div class="box-title"><em>Work Details</em></div>
+                                </div>
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <table>
+                                                <tr>
+                                                    <td style="width:30px">
+                                                        <input type="checkbox" id="chkprobitionary" required />
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <label>Probitionary Until</label>
+                                                            <div class="input-group date">
+                                                                <div class="input-group-addon">
+                                                                    <i class="fa fa-calendar"></i>
+                                                                </div>
+                                                                <input type="date" class="form-control pull-right" id="txtdtprobuntil" disabled />
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Email</label>
+                                                <input id="txtemail" class="form-control input-sm" required />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Company&nbsp;&nbsp;&nbsp;[Type]:</label><label id="slccompensationtype"></label>
+                                                @Html.DropDownList("company_id", new SelectList(lstcompany, "company_id", "name"), "[Select Company]", new { @class = "form-control", required = "required" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Job</label>
+                                                @Html.DropDownList("job_id", new SelectList(lstjob, "JobID", "JobName"), "[Select Job]", new { @class = "form-control", required = "required" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box box-success ">
+                                <div class="box-header">
+                                    <div class="box-tools">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                    <div class="box-title"><em>Government Details</em></div>
+                                </div>
+                                <div class="box-body">
+                                    <table style="width:100%">
+                                        <tr>
+                                            <td style="text-align:center">
+                                                <input id="chksss" type="checkbox" class="" />
+                                            </td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <label>SSS No.</label>
+                                                    <input id="txtssno" class="form-control input-sm" disabled />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center">
+                                                <input id="chkpagibig" type="checkbox" class="" />
+                                            </td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <label>PAG-IBIG No.</label>
+                                                    <input id="txtpagibigno" class="form-control input-sm" disabled />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center">
+                                                <input id="chkphilhealth" type="checkbox" class="" />
+                                            </td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <label>PhilHealth No.</label>
+                                                    <input id="txtphilhealthno" class="form-control input-sm" disabled />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center">
+                                                <input id="chktin" type="checkbox" class="" />
+                                            </td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <label>TIN No.</label>
+                                                    <input id="txttinno" class="form-control input-sm" disabled />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box box-primary ">
+                                <div class="box-header">
+                                    <div class="box-tools">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                    <div class="box-title"><em>Employee Dependent</em></div>
+                                </div>
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="form-group col-md-4">
+                                            <label>Name</label>
+                                            <input id="txtnamedependent" class="form-control input-sm" placeholder="[FIRST NAME] [MIDDLE NAME] [LAST NAME]" />
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label>Relation</label>
+                                            <input id="txtrelationdependent" class="form-control input-sm" />
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <button style="margin-top:22px;" type="button" class="btn btn-primary pull-right" id="addDependent"><i class="fa fa-plus-square"></i> Add Dependent</button>
+                                        </div>
+                                    </div>
+                                    <table class="table table-hover table-bordered" id="dependentTable">
+                                        <thead>
+                                            <tr>
+                                                <th style="width:40%;" hidden>Name</th>
+                                                <th style="width:40%;">Name</th>
+                                                <th style="width:40%;">Relation</th>
+                                                <th style="width:20%;">Remove</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-xs-12">
+
+                            <div class="box box-success ">
+                                <div class="box-header">
+                                    <div class="box-tools">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                    <div class="box-title"><em>Compensation Details</em></div>
+                                </div>
+                                <div class="box-body">
+                                    <div class="col-md-12">
+                                        <input type="hidden" id="employeeData" name="employeeData" value="" />
+                                        <input type="hidden" id="compensationData" name="compensationData" value="" />
+                                        <div class="form-group">
+                                            <label>Valid start</label>
+                                            <div class="input-group date">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                                <input required type="date" id="dtvalidstart" class="form-control pull-right " value="" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Compensation Rate</label>
+                                                <input id="txtcompensationrate" class="form-control" required />
+                                            </div>
+                                            <div class="form-group">
+                                                <label>ATM Number</label>
+                                                <input id="txtatmnumber" class="form-control" required />
+                                            </div>
+                                            <div class="form-group text-right">
+                                                <button type="submit" class="btn btn-default btn-block" id="btnsave">
+                                                    <i class="fa fa-hdd-o"></i> Save
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </form> @*end of form*@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@*VIEW FORM*@
+<div class="modal fade" role='dialog' data-backdrop='static' id="mdl_VIEW_EmployeeForm">
+    <div class="modal-dialog modal-lg" style="width:1250px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title"><strong>Employee Details</strong></h4>
+            </div>
+            <div class="modal-body">
+                <div class="box box-primary result">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*VIEW FORM*@
+
+@*EDIT FORM*@
+<div class="modal fade" role='dialog' data-backdrop='static' id="mdl_EDIT_EmployeeForm">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h2 class="modal-title"><strong>Edit Employee Form</strong></h2>
+            </div>
+            <div class="modal-body">
+                <form id="formedit">
+                    <div id="editcontent">
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@*EDIT FORM*@
+
+
+
+@section scripts{
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            //$('#chkShowInactive').iCheck({
+            //    checkboxClass: 'icheckbox_square-blue',
+            //    radioClass: 'iradio_square-blue',
+            //    increaseArea: '20%' // optional
+
+            //});
+            $('#chkShowInactive').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' // optional
+            });
+
+
+            //var table = $('.sampleeee').DataTable();
+            var table = $('#tblEmployeeList').DataTable();
+
+
+            $('#addDependent').click(function () {
+                var name = $('#txtnamedependent').val();
+                var relation = $('#txtrelationdependent').val();
+
+                if (!name) {
+                    $("#txtnamedependent").css("border", "2px solid red");
+                    setTimeout(function () {
+                        $("#txtnamedependent").removeAttr("style");
+                    }, 2000);
+                }
+                else if (!relation) {
+                    $("#txtrelationdependent").css("border", "2px solid red");
+                    setTimeout(function () {
+                        $("#txtrelationdependent").removeAttr("style");
+                    }, 2000);
+                }
+
+                else {
+                    if ($('#dependentTable tr > td:contains(' + name + ')').length) {
+                        $.alert('<i class="fa fa-exclamation"></i> Dependent already exists')
+                    }
+                    else {
+                        $('#dependentTable tbody:last-child').append(
+                            '<tr>' +
+                                '<td class="tdnamedependent">' + name + '</td>' +
+                                '<td class="tdrelationdependent">' + relation + '</td>' +
+                                '<td><a id="btnremove" class="btn"><i class="fa fa-trash"></i> Remove</a></td>' +
+                            '</tr>'
+                        );
+                    }
+                }
+            });
+
+            $(document).on('click', '#btnremove', function () {
+                $(this).closest('tr').remove();
+                return false;
+            });
+
+            $('.datepicker').datepicker({
+                autoclose: true,
+                format: 'MM dd, yyyy'
+            })
+
+            //get company type
+            $('#company_id').change(function () {
+                $.ajax({
+                    url: '../Admin/GetCompanyType',
+                    method: 'post',
+                    data: {
+                        company_id: $(this).val()
+                    },
+                    success: function (data) {
+                        $('#slccompensationtype').text(data.companytype)
+                    },
+                    error: function (data) {
+                        $.alert(xhr.message)
+                    }
+                });
+            });
+
+            $("#addEmployeeForm").on('submit', function (e) {
+                e.preventDefault();
+                showLoader('#boxEmployeeList');
+
+                var empno = $('#txtemployeenumber').val();
+                var firstname = $('#txtfirstname').val();
+                var middlename = $('#txtmiddlename').val();
+                var lastname = $('#txtlastname').val();
+                var gender = $('#slcgenderr :selected').val();
+                var maritalstatus = $('#txtmaritalstatus').val();
+                var birthday = $('#dtbirthdate').val();
+                var height = $('#txtheight').val();
+                var weight = $('#txtweight').val();
+                var birthplace = $('#txtbirthplace').val();
+                var nationality = $('#txtnationality').val();
+                var religion = $('#txtreligion').val();
+                var contactno = $('#txtcontactno').val();
+                var datehired = $('#dtdatehired').val();
+
+                var currentcountry = $('#txtcurrentcountry').val();
+                var currentregion = $('#txtcurrentregion').val();
+                var currentcity = $('#txtcurrentcity').val();
+                var currentstreet = $('#txtcurrentstreet').val();
+                var currentbarangay = $('#txtcurrentbarangay').val();
+                var currentsitio = $('#txtcurrentsitio').val();
+
+                var provcountry = $('#txtprovcountry').val();
+                var provregion = $('#txtprovregion').val();
+                var provstreet = $('#txtprovstreet').val();
+                var provsitio = $('#txtprovsitio').val();
+                var provbarangay = $('#txtprovbarangay').val();
+                var provcity = $('#txtprovcity').val();
+                var email = $('#txtemail').val();
+
+                var is_probationary = false;
+                var probationaryUntil = '';
+                if ($('#chkprobitionary').is(':checked')) {
+                    probationaryUntil = $('#txtdtprobuntil').val();
+                    is_probationary = true;
+                }
+
+                var companytype = $('#slccompensationtype').text();
+                var company_id = $('#company_id :selected').val();
+                var job_id = $('#job_id :selected').val();
+
+                var ssdeductiontype = 'Auto';
+                var has_sss = false;
+                var sss_no = '';
+                if ($('#chksss').is(':checked')) {
+                    sss_no = $('#txtssno').val();
+                    has_sss = true;
+                    sss_type_deduction: 'Auto';
+                }
+
+                var pagibigdeductionype = 'Auto';
+                var has_pagibig = false;
+                var pagibig_no = '';
+                if ($('#chkpagibig').is(':checked')) {
+                    pagibig_no = $('#txtpagibigno').val();
+                    has_pagibig = true;
+                    pagibigdeductionype = 'Auto'
+                }
+
+                var philhealthdeductiontype = 'Auto';
+                var hasphilhealth = false;
+                var philhealth_no = '';
+                if ($('#chkphilhealth').is(':checked')) {
+                    philhealth_no = $('#txtphilhealthno').val();
+                    hasphilhealth = true;
+                    philhealthdeductiontype = 'Auto'
+                }
+
+                var has_tin = false;
+                var tin_number = '';
+                if ($('#chktin').is(':checked')) {
+                    tin_number = $('#txttinno').val();
+                    has_tin = true;
+                }
+
+
+                var CompensationType = '';
+                if (companytype == 'SECURITY') {
+                    CompensationType = 'MONTHLY';
+                }
+                else if (companytype == 'MANPOWER') {
+                    CompensationType = 'DAILY';
+                }
+                else if (companytype == '') {
+                    CompensationType = '';
+                }
+
+                var ValidityStart = $('#dtvalidstart').val();
+                var CompensationRate = $('#txtcompensationrate').val();
+                var atm_number = $('#txtatmnumber').val();
+
+                var currentdateTime = new Date();
+
+
+
+                var emp_dependent = [];
+                $('#dependentTable > tbody > tr').each(function () {
+                    var sub = {
+                        name: $(this).find('.tdnamedependent').text(),
+                        relation: $(this).find('.tdrelationdependent').text(),
+                        isActive: true,
+                    };
+                    emp_dependent.push(sub);
+                });
+
+                var Employee = {
+                    employee_no: empno,
+                    FirstName: firstname,
+                    MiddleName: middlename,
+                    LastName: lastname,
+                    DateHired: datehired,
+                    Gender: gender,
+                    Citizenship: nationality,
+                    BirthDate: birthday,
+                    BirthPlace: birthplace,
+                    JobID: job_id,
+                    //PreparedBy: $('#prepared_by').val(),
+                    //PreparedDate: currentdateTime,
+                    LastEditBy: $('#prepared_by').val(),
+                    LastEditDate: currentdateTime,
+                    IsActive: true,
+                    company_id: company_id,
+                    contact_no: contactno,
+                    birth_place: birthplace,
+                    height: height,
+                    weight: weight,
+                    probitionary: is_probationary,
+                    end_probitionary_date: probationaryUntil,
+                    province_address: provcountry,
+                    email: email,
+                    Current_country: currentcountry,
+                    MaritalStatus: maritalstatus,
+                    religion: religion,
+                    Current_region: currentregion,
+                    Current_city_municipality: currentcity,
+                    Current_street: currentstreet,
+                    Current_barangay: currentbarangay,
+                    Current_sitio: currentsitio,
+                    provincial_country: provcountry,
+                    provincial_region: provregion,
+                    provincial_city_municipality: provcity,
+                    provincial_street: provstreet,
+                    provincial_barangay: provbarangay,
+                    provincial_sitio: provsitio,
+                    renew_contract: false,
+                    SSS_Number: sss_no,
+                    PagIbig_Number: pagibig_no,
+                    PhilHealth_Number: philhealth_no,
+                    TIN_Number: tin_number,
+                    atm_number: atm_number
+                }
+
+                var EmployeeGovernment = {
+                    with_sss: has_sss,
+                    sss_type_deduction: ssdeductiontype,
+                    with_pagibig: has_pagibig,
+                    pagibig_type_deduction: pagibigdeductionype,
+                    with_philhealth: hasphilhealth,
+                    philhealth_type_deduction: philhealthdeductiontype,
+                    with_tin: has_tin,
+                }
+
+                var CompensationHistory = {
+                    ValidityStart: ValidityStart,
+                    CompensationRate: CompensationRate,
+                    PreparedBy: $('#prepared_by').val(),
+                }
+
+                var params = {
+                    Employee: Employee,
+                    EmployeeGovernment: EmployeeGovernment,
+                    CompensationHistory: CompensationHistory,
+                    probationaryUntil: probationaryUntil,
+                    companytype: companytype,
+                    dependents: emp_dependent,
+                }
+
+                $.ajax({
+                    url: '@Url.Action("SaveEmployee", "Admin")',
+                    type: 'post',
+                    data: $.toDictionary(params),
+                    success: function (data) {
+                        if (data == true) {
+                            $.alert('<i class="fa fa-check" style="color:green"></i>  Employee successfully registered')
+
+                            $('.btnFilterEmployeeList').trigger('click');
+                            $('#mdlEmployeeForm').modal('hide');
+                            hideLoader('#boxEmployeeList');
+
+                            document.getElementById("addEmployeeForm").reset();
+                        }
+                        else {
+                            $.alert('<i class="fa fa-exclamation-triangle" style="color:red"></i>  Oops! Something went wrong')
+
+                            $('.btnFilterEmployeeList').trigger('click');
+                            $('#mdlEmployeeForm').modal('hide');
+                            hideLoader('#boxEmployeeList');
+                        }
+                    },
+                    error: function (data) {
+                        $.alert(data.responseText)
+                    }
+                })
+
+                //if (empno.match(/^\d+$/))
+                //{
+                //$.ajax({
+                //    url: '../Admin/CheckEmployeeNumber',
+                //    method: 'post',
+                //    data: {
+                //        empno: empno
+                //    },
+                //    success: function (data) {
+                //        if (data == true) {
+                //            $.dialog({
+                //                title: '',
+                //                content: '<span style="color:red;"><i class="fa fa-exclamation"></i> Employee Number Already Exists</span>',
+                //            })
+                //            return false;
+                //        }
+                //        else {
+                //            $.ajax({
+                //                url: '../Admin/SaveEmployee',
+                //                type: 'post',
+                //                data: $.toDictionary(params),
+                //                success: function (data) {
+                //                    $('#mdlEmployeeForm').modal('hide');
+                //                    hideLoader('#boxEmployeeList');
+                //                    $.alert(data.message);
+                //                    $('.btnFilterEmployeeList').trigger('click');
+                //                },
+                //                error: function (data) {
+                //                    $.alert(xhr.message)
+                //                }
+                //            })
+                //        }
+                //    },
+                //    error: function () { }
+                //})
+                //}
+                //else
+                //{
+                //    $.dialog({
+                //        title: '',
+                //        content: '<span style="color:blue;"><i class="fa fa-exclamation-circle"></i> Only Numeric values are allowed</span>',
+                //    })
+                //}
+
+
+
+
+            });
+
+            $('#btnNewEmployee').click(function () {
+                $('#mdlEmployeeForm').modal('show');
+            });
+
+            $('#chkprobitionary').click(function () {
+                var chk = $('#chkprobitionary').is(':checked');
+
+                if (chk) {
+                    $('#txtdtprobuntil').prop('disabled', '');
+                    $('#txtdtprobuntil').prop('required', true);
+                } else {
+                    $('#txtdtprobuntil').prop('disabled', 'disabled');
+                }
+            });
+
+            $('#chksss').click(function () {
+                var chk = $('#chksss').is(':checked');
+
+                if (chk) {
+                    $('#txtssno').prop('disabled', '');
+                    $('#txtssno').prop('required', true);
+                } else {
+                    $('#txtssno').prop('disabled', 'disabled');
+                }
+            });
+
+            $('#chkpagibig').click(function () {
+                var chk = $('#chkpagibig').is(':checked');
+
+                if (chk) {
+                    $('#txtpagibigno').prop('disabled', '');
+                    $('#txtpagibigno').prop('required', true);
+                } else {
+                    $('#txtpagibigno').prop('disabled', 'disabled');
+                }
+            });
+
+            $('#chkphilhealth').click(function () {
+                var chk = $('#chkphilhealth').is(':checked');
+
+                if (chk) {
+                    $('#txtphilhealthno').prop('disabled', '');
+                    $('#txtphilhealthno').prop('required', true);
+                } else {
+                    $('#txtphilhealthno').prop('disabled', 'disabled');
+                }
+            });
+
+            $('#chktin').click(function () {
+                var chk = $('#chktin').is(':checked');
+
+                if (chk) {
+                    $('#txttinno').prop('disabled', '');
+                    $('#txttinno').prop('required', true);
+                } else {
+                    $('#txttinno').prop('disabled', 'disabled');
+                }
+            });
+
+            $('.btnFilterEmployeeList').click(function () {
+                showLoader('#boxEmployeeList');
+                //var searchkey = $('#txtSearchKey').val();
+                var company = $('#company :selected').val();
+                var job = $('#jobsearch :selected').val();
+                var showinactive = false;
+
+                if ($('#chkShowInactive').is(':checked')) {
+                    showinactive = true;
+                }
+
+                $.ajax({
+                    url: '@Url.Action("FilterEmployee", "Admin")',
+                    type: 'post',
+                    data:
+                        {
+                            //searchkey: searchkey,
+                            company: company,
+                            job: job,
+                            showinactive: showinactive
+                        },
+                    success: function (data) {
+                        table.destroy();
+                        $('#table_employee').html(data);
+                        hideLoader('#boxEmployeeList');
+                        //$('#tblEmployeeList').fnDestroy();
+
+                        //table = $('.sampleeee').DataTable();
+                        table = $('#tblEmployeeList').DataTable();
+
+
+                        //var table = $('#tblEmployeeList').dataTable();
+
+
+                    },
+                    error: function () { }
+                })
+            });
+
+            $(document).on('click', '.btnEditEmployee', function () {
+                //e.preventDefault();
+                showLoader('#boxEmployeeList');
+                var id = $(this).attr('empid');
+                $.ajax({
+                    url: '../Admin/EditEmployee_Get',
+                    method: 'post',
+                    data: { empid: id },
+                    success: function (dataa) {
+
+                        $('#editcontent').html(dataa);
+                        $('#mdl_EDIT_EmployeeForm').modal('show');
+                        hideLoader('#boxEmployeeList');
+
+                        //get the dependents
+                        $.ajax({
+                            url: '../Admin/GetAll_EmployeeDependent',
+                            method: 'post',
+                            data: { empid: id },
+                            success: function (data) {
+                                $('#GetEmployeeDependentsResult').html(data);
+                            },
+                            error: function (data) {
+                                $.alert(data.responseText);
+                            }
+                        })
+                    },
+                    error: function (data) {
+                        $.alert(data.responseText);
+                    }
+                })
+            });//end
+
+            $('#formedit').on('submit', function (e) {
+                e.preventDefault();
+
+                showLoader('#boxEmployeeList');
+
+                var ID = $('#idEdited').val();
+                var firstname = $('#txtfirstnameEdited').val();
+                var middlename = $('#txtmiddlenameEdited').val();
+                var lastname = $('#txtlastnameEdited').val();
+                var gender = $('#slcgenderrEdited :selected').val();
+                var maritalstatus = $('#txtmaritalstatusEdited').val();
+                var birthday = $('#dtbirthdateEdited').val();
+                var height = $('#txtheightEdited').val();
+                var weight = $('#txtweightEdited').val();
+                var birthplace = $('#txtbirthplaceEdited').val();
+                var nationality = $('#txtnationalityEdited').val();
+                var religion = $('#txtreligionEdited').val();
+                var contactno = $('#txtcontactnoEdited').val();
+                var datehired = $('#dtdatehiredEdited').val();
+
+                var currentcountry = $('#txtcurrentcountryEdited').val();
+                var currentregion = $('#txtcurrentregionEdited').val();
+                var currentcity = $('#txtcurrentcityEdited').val();
+                var currentstreet = $('#txtcurrentstreetEdited').val();
+                var currentbarangay = $('#txtcurrentbarangayEdited').val();
+                var currentsitio = $('#txtcurrentsitioEdited').val();
+
+                var provcountry = $('#txtprovcountryEdited').val();
+                var provregion = $('#txtprovregionEdited').val();
+                var provstreet = $('#txtprovstreetEdited').val();
+                var provsitio = $('#txtprovsitioEdited').val();
+                var provbarangay = $('#txtprovbarangayEdited').val();
+                var provcity = $('#txtprovcityEdited').val();
+                var email = $('#txtemailEdited').val();
+
+                var is_probationary = false;
+                var probationaryUntil = '';
+                if ($('#chkprobitionaryEdited').is(':checked')) {
+                    probationaryUntil = $('#txtdtprobuntilEdited').val();
+                    is_probationary = true;
+                }
+                var companytype = $('#slccompensationtypeEdited').text();
+                var company_id = $('#company_idEdited :selected').val();
+                var job_id = $('#job_idEdited :selected').val();
+
+                var ssdeductiontype = 'Auto';
+                var has_sss = false;
+                var sss_no = '';
+                if ($('#chksssEdited').is(':checked')) {
+                    sss_no = $('#txtssnoEdited').val();
+                    has_sss = true;
+                    sss_type_deduction: 'Auto';
+                } else {
+                    sss_no = '';
+                }
+
+                var pagibigdeductionype = 'Auto';
+                var has_pagibig = false;
+                var pagibig_no = '';
+                if ($('#chkpagibigEdited').is(':checked')) {
+                    pagibig_no = $('#txtpagibignoEdited').val();
+                    has_pagibig = true;
+                    pagibigdeductionype = 'Auto'
+                } else {
+                    pagibig_no = '';
+                }
+
+                var philhealthdeductiontype = 'Auto';
+                var hasphilhealth = false;
+                var philhealth_no = '';
+                if ($('#chkphilhealthEdited').is(':checked')) {
+                    philhealth_no = $('#txtphilhealthnoEdited').val();
+                    hasphilhealth = true;
+                    philhealthdeductiontype = 'Auto'
+                } else {
+                    var philhealth_no = '';
+                }
+
+                var has_tin = false;
+                var tin_number = '';
+                if ($('#chktinEdited').is(':checked')) {
+                    tin_number = $('#txttinnoEdited').val();
+                    has_tin = true;
+                } else {
+                    tin_number = '';
+                }
+
+                var CompensationType = '';
+                if (companytype == 'SECURITY') {
+                    CompensationType = 'MONTHLY';
+                }
+                else if (companytype == 'MANPOWER') {
+                    CompensationType = 'DAILY';
+                }
+                else if (companytype == '') {
+                    CompensationType = '';
+                }
+
+                var ValidityStart = $('#dtvalidstartEdited').val();
+                var CompensationRate = $('#txtcompensationrateEdited').val();
+                var atm_number = $('#txtEditedAtmNumber').val();
+
+
+                var currentdateTime = $('#datetimenow').val();
+                
+
+                var Employee = {
+                    //Employe+: ID,
+                    FirstName: firstname,
+                    MiddleName: middlename,
+                    LastName: lastname,
+                    DateHired: datehired,
+                    Gender: gender,
+                    Citizenship: nationality,
+                    BirthDate: birthday,
+                    BirthPlace: birthplace,
+                    JobID: job_id,
+                    PreparedBy: $('#prepared_by').val(),
+                    PreparedDate: currentdateTime,
+                    LastEditBy: $('#prepared_by').val(),
+                    LastEditDate: currentdateTime,
+                    IsActive: true,
+                    company_id: company_id,
+                    contact_no: contactno,
+                    birth_place: birthplace,
+                    height: height,
+                    weight: weight,
+                    probitionary: is_probationary,
+                    end_probitionary_date: probationaryUntil,
+                    province_address: provcountry,
+                    email: email,
+                    Current_country: currentcountry,
+                    MaritalStatus: maritalstatus,
+                    religion: religion,
+                    Current_region: currentregion,
+                    Current_city_municipality: currentcity,
+                    Current_street: currentstreet,
+                    Current_barangay: currentbarangay,
+                    Current_sitio: currentsitio,
+                    provincial_country: provcountry,
+                    provincial_region: provregion,
+                    provincial_city_municipality: provcity,
+                    provincial_street: provstreet,
+                    provincial_barangay: provbarangay,
+                    provincial_sitio: provsitio,
+                    renew_contract: false,
+                    SSS_Number: sss_no,
+                    PagIbig_Number: pagibig_no,
+                    PhilHealth_Number: philhealth_no,
+                    TIN_Number: tin_number,
+                    atm_number: atm_number,
+                }
+
+                var EmployeeGovernment = {
+                    with_sss: has_sss,
+
+                    sss_type_deduction: ssdeductiontype,
+                    with_pagibig: has_pagibig,
+
+                    pagibig_type_deduction: pagibigdeductionype,
+                    with_philhealth: hasphilhealth,
+
+                    philhealth_type_deduction: philhealthdeductiontype,
+                    with_tin: has_tin,
+
+                }
+
+                var CompensationHistory = {
+                    ValidityStart: ValidityStart,
+                    CompensationRate: CompensationRate,
+                    PreparedBy: $('#prepared_by').val(),
+                }
+
+                var emp_dependent = [];
+                $('#dependentTableEditForm > tbody > tr').each(function () {
+                    var sub = {
+                        name: $(this).find('#editDependentName').val(),
+                        relation: $(this).find('#editDependentRelation').val(),
+                        isActive: true,
+                        preparedBy: $(this).find('#editPreparedBy').val(),
+                        preparedDate: $(this).find('#editPreparedDate').val(),
+                    };
+                    emp_dependent.push(sub);
+                });
+
+                var params = {
+                    Employee: Employee,
+                    EmployeeGovernment: EmployeeGovernment,
+                    CompensationHistory: CompensationHistory,
+                    probationaryUntil: probationaryUntil,
+                    companytype: companytype,
+                    dependents: emp_dependent,
+                    ID: ID
+                }
+
+                $.ajax({
+                    url: '@Url.Action("EditEmployee_Post", "Admin")',
+                    type: 'post',
+                    data: $.toDictionary(params),
+                    success: function (data) {
+                        if (data == true) {
+                            $('#mdl_EDIT_EmployeeForm').modal('hide');
+                            hideLoader('#boxEmployeeList');
+                            $.alert('Edited Successfully');
+                            $('.btnFilterEmployeeList').trigger('click');
+                        }
+                        else {
+                            $.alert(data.responseText)
+                        }
+                    },
+                    error: function (data) {
+                        $.alert(data.responseText)
+                    }
+                })
+            });//end
+
+            $(document).on('click', '.btnViewEmployee', function () {
+                var id = $(this).attr('empid');
+                showLoader('#boxEmployeeList');
+                $.ajax({
+                    url: '../Admin/ViewEmployeeDetail',
+                    method: 'post',
+                    data: { id: id },
+                    success: function (data) {
+                        $('.result').html(data);
+                        $('#mdl_VIEW_EmployeeForm').modal('show');
+
+                        hideLoader('#boxEmployeeList');
+                    },
+                    error: function (data) { }
+                })
+            });//end
+
+            $(document).on('click', '.btnDeactivateEmployee', function () {
+                var id = $(this).attr('empid');
+
+                $.confirm({
+                    title: 'Deactivation',
+                    content: 'Are you sure to deactivate employee?',
+                    buttons: {
+                        yes: function () {
+                            $.ajax({
+                                url: '../Admin/DeactivateEmployee',
+                                method: 'post',
+                                data: { empid: id },
+                                success: function (data) {
+                                    if (data == true) {
+                                        $.dialog({
+                                            title: '',
+                                            content: 'Successfully Deactivated',
+                                        })
+                                    }
+                                    else {
+                                        $.dialog({
+                                            title: '',
+                                            content: 'Deactivation Failed',
+                                        })
+                                    }
+                                    $('.btnFilterEmployeeList').trigger('click');
+                                }
+                            })
+                        },
+                        no: function () {
+                            hideLoader('#boxEmployeeList');
+                        }
+                    }
+                });
+            })//end
+
+            $(document).on('click', '.btnActivateEmployee', function () {
+                var id = $(this).attr('empid');
+
+                $.confirm({
+                    title: 'Activation',
+                    content: 'Are you sure to activate employee?',
+                    buttons: {
+                        yes: function () {
+                            $.ajax({
+                                url: '../Admin/ActivateEmployee',
+                                method: 'post',
+                                data: { empid: id },
+                                success: function (data) {
+                                    if (data == true) {
+                                        $.dialog({
+                                            title: '',
+                                            content: 'Successfully Activated',
+                                        })
+                                    }
+                                    else {
+                                        $.dialog({
+                                            title: '',
+                                            content: 'Activation Failed',
+                                        })
+                                    }
+                                    $('.btnFilterEmployeeList').trigger('click');
+                                }
+                            })
+                        },
+                        no: function () {
+                            hideLoader('#boxEmployeeList');
+                        }
+                    }
+                });
+            })//end
+
+            //$('#btncheckemployeenumber').click(function () {
+            //    var empno = $('#txtemployeenumber').val();
+            //    if (empno.match(/^\d+$/)) {
+            //        $.ajax({
+            //            url: '../Admin/CheckEmployeeNumber',
+            //            method: 'post',
+            //            data: {
+            //                empno: empno
+            //            },
+            //            success: function (data) {
+            //                if (data == true) {
+            //                    $.dialog({
+            //                        title: '',
+            //                        content: '<span style="color:red;"><i class="fa fa-exclamation"></i> Employee Number Already Exists</span>',
+            //                    })
+            //                }
+            //                else {
+            //                    $.dialog({
+            //                        title: '',
+            //                        content: '<span style="color:green;"><i class="fa fa-check-circle"></i> Available</span>',
+            //                    })
+            //                }
+            //            },
+            //            error: function () { }
+            //        })
+            //    }
+            //    else {
+            //        $.dialog({
+            //            title: '',
+            //            content: '<span style="color:blue;"><i class="fa fa-exclamation-circle"></i> Only Numeric values are allowed</span>',
+            //        })
+            //    }
+            //});
+
+
+            $(document).on('click', '.btnremoveEditForm', function () {
+                var thiss = $(this);
+                var id = thiss.closest('tr').find('.tdnamedependentEditForm').attr('id')
+                var emp_id = thiss.closest('tr').find('.tdnamedependentEditForm').attr('emp_id');
+
+                $.confirm({
+                    title: 'Confirmation',
+                    content: 'Are you sure to remove this dependent',
+                    buttons: {
+                        yes: function () {
+                            $.ajax({
+                                url: '@Url.Action("RemoveDependent","Admin")',
+                                method: 'post',
+                                data: {
+                                    id: id,
+                                    emp_id: emp_id,
+                                },
+                                success: function (data) {
+                                    if (data == true) {
+                                        thiss.closest('tr').remove();
+                                        $.alert('Dependent Removed')
+                                    }
+                                    else {
+                                        $.alert('Something went wrong')
+                                    }
+                                },
+                                error: function (data) { $.alert(data.responseText) }
+                            })
+                        },
+                        no: function () { }
+                    },
+                });
+            });
+
+        });
+    </script>
+}

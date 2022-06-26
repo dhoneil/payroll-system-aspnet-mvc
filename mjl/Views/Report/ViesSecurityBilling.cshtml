@@ -1,0 +1,188 @@
+﻿@using mjl.Models.Database;
+@using mjl.Models;
+
+@{
+
+
+    List<Employee_Payslip> listEmpPayslip = (List<Employee_Payslip>)ViewBag.listEmpPayslip;
+    Company company = (Company)ViewBag.company;
+    DateTime date_from = (DateTime)ViewBag.date_from;
+    DateTime date_to = (DateTime)ViewBag.date_to;
+    BillingSecurity company_bill = new BillingSecurity();
+    bool has_billing = (bool)ViewBag.hasBilling;
+
+    if (has_billing) {
+        company_bill = (BillingSecurity)ViewBag.billing;
+    }
+
+    int counter = BillingSecurityModel.getNextIDBilling();
+    decimal total_amount = 0;
+    decimal admin_fee_total = 0;
+    int count_emp = 0;
+}
+
+<div class="row" style="margin-bottom:10px;">
+    <div class="col-md-12">
+        @if (has_billing)
+        {
+            <button class="btn btn-default btn-print-security-billing" id="@company_bill.bill_id"><i class="fa fa-print"></i> Print</button>
+            
+        }
+        else {
+           <p>Note : You need to submit the billing before you can print.</p>
+        }
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-7">
+        <div class="box box-info">
+            <div class="box-header with-border">
+                <h3 class="box-title">Billing Form</h3>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 style="text-align:center">PRIMERO EAGLE SECURITY AGENCY</h3>
+                        <h4 style="text-align:center">P. Basubas St., Tipolo Mandaue City</h4>
+                        <h5 style="text-align:center">Tel # 032-2395872/09173260020/09233623884</h5>
+                    </div>
+                    <div class="col-md-12">
+                        <table class="table table-condensed table-sm">
+                            <tbody>
+                                <tr>
+                                    <td>To : <b>@company.name.ToUpper()</b></td>
+                                    <td style="text-align:right">Date Covered : <b>@date_from.ToString("MM-dd-yyyy")  -  @date_to.ToString("MM-dd-yyyy")</b></td>
+                                </tr>
+                                <tr>
+                                    <td>Address : <b>@company.address.ToUpper()</b></td>
+                                    <td style="text-align:right">Control No. <b>
+                                            @if (has_billing)
+                                            {
+                                                @company_bill.bill_id.ToString().PadLeft(9, '0') 
+                                            }
+                                            else {
+                                                @counter.ToString().PadLeft(9, '0') 
+                                            }
+                                        </b>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr style="background-color:#e7e7e7;">
+                                    <th>Description</th>
+                                    <th style="width:150px">Billing Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (has_billing)
+                                {
+                                    <tr>
+                                        <td>
+                                            <textarea class="form-control" id="description">@company_bill.bill_description.EmptyNull()</textarea>
+                                        </td>
+                                        <td>
+                                            <input class="form-control billing_amount" id="billing_amount" style="text-align:right;width:150px" type="text" value="@company_bill.bill_amount.Value" />
+                                        </td>
+                                    </tr>
+                                }
+                                else {
+                                    <tr>
+                                        <td>
+                                            <textarea class="form-control" id="description"></textarea>
+                                        </td>
+                                        <td>
+                                            <input class="form-control billing_amount" id="billing_amount" style="text-align:right;width:150px" type="text" value="@(listEmpPayslip.Sum(s => s.gross_pay.Value) + (listEmpPayslip.Count * company.admin_fee.Value))" />
+                                        </td>
+                                    </tr>
+                                }
+                            
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        @if (has_billing)
+                        {
+                            <button class="btn btn-primary update_billing" id="@company_bill.bill_id"><i class="fa fa-refresh"></i> Update Billing</button>
+                        }
+                        else {
+                             <button class="btn btn-primary submit_billing"><i class="fa fa-thumbs-o-up"></i> Submit Billing</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+    </div>
+    <div class="col-md-5">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Payslip Covered</h3>
+            </div>
+            <div class="box-body">
+                <div class="col-md-12">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Count</th>
+                                <th>Name</th>
+                                <th>Gross Pay</th>
+                                <th>Admin Fee</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                                @if (listEmpPayslip.Count > 0)
+                                {
+                                    foreach (var items in listEmpPayslip)
+                                    {
+                                        Employee emp_data = EmployeeModel.getEmployeeByID(items.employee_id.Value);
+                                        count_emp++;
+                                        total_amount += items.gross_pay.Value;
+                                        admin_fee_total += company.admin_fee.Value;
+                                        <tr>
+                                            <td style="text-align:center;width:50px">@count_emp</td>
+                                            <td>@emp_data.LastName.ToUpper() , @emp_data.FirstName.ToUpper()</td>
+                                            <td style="text-align:right;width:150px">@items.gross_pay.Value.ToNumericFormat()</td>
+                                            <td style="text-align:right;width:150px">@company.admin_fee.Value.ToNumericFormat()</td>
+                                        </tr>
+                                        }
+                                }
+                                else
+                                {
+                                        <tr>
+                                            <td colspan="3">NO PAYSLIP FOUND(0)</td>
+                                        </tr>
+                                }
+                            
+                            <tr>
+                                <td style="font-weight:bold;text-align:right" colspan="2">Total</td>
+                                <td style="font-weight:bold;text-align:right;width:150px">@total_amount</td>
+                                <td style="font-weight:bold;text-align:right;width:150px">@admin_fee_total</td>
+                            </tr>
+                            <tr style="background-color:#e7e7e7;">
+                                <td style="font-weight:bold;text-align:right" colspan="2">Grand Total</td>
+                                @{ 
+                                    decimal grand_total = total_amount + admin_fee_total;
+                                }
+                                <td colspan="2" style="font-weight:bold;text-align:right;width:150px">@grand_total.ToNumericFormat()</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+     
+    </div>
+</div>
+
+

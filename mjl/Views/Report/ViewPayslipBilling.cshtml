@@ -1,0 +1,334 @@
+﻿@using mjl.Models.Database;
+@using mjl.Models;
+@using System.Collections.Generic;
+
+@{
+    List<Employee_Payslip> listEmpPayslip = (List<Employee_Payslip>)ViewBag.listEmpPayslip;
+    Company company = (Company)ViewBag.company;
+    DateTime date_from = (DateTime)ViewBag.date_from;
+    DateTime date_to = (DateTime)ViewBag.date_to;
+
+}
+
+@*<h3 style="text-align:center">@company.name.ToUpper()</h3>
+    <h4 style="text-align:center">@company.address.ToUpper() , @company.city.ToUpper()</h4>
+    <h5 style="text-align:center">Contact # : @company.contact_number.ToUpper()</h5>*@
+
+<button class="btn btn-default btn_print_manpower_billing"><i class="fa fa-print"></i> Print</button>
+<div class="printManPowerBilling">
+    <h3 style="text-align:center">PRIMERO EAGLE SECURITY AGENCY</h3>
+    <h4 style="text-align:center">P. Basubas St., Tipolo Mandaue City</h4>
+    <h5 style="text-align:center">Tel # 032-2395872/09173260020/09233623884</h5>
+    <div class="col-md-12">
+        <table class="table table-condensed table-sm">
+            <tbody>
+                <tr>
+                    <td>To : <b>@company.name.ToUpper()</b></td>
+                    <td style="text-align:right">Date Covered : <b>@date_from.ToString("MM-dd-yyyy")  -  @date_to.ToString("MM-dd-yyyy")</b></td>
+                </tr>
+                <tr>
+                    <td>Address : <b>@company.address.ToUpper()</b></td>
+                    <td style="text-align:right">Date Printed : <b>@DateTime.Now.ToString("MM-dd-yyyy  hh:mm tt")</b></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <table class="table table-condensed table-bordered table-sm" style="font-size:12px;">
+        <thead>
+            <tr>
+                <td>EMP#</td>
+                <td colspan="26">Full Name</td>
+                <td style="text-align:center;vertical-align:middle">ADJ</td>
+                <td style="text-align:center;vertical-align:middle">Admin Fee</td>
+            </tr>
+            <tr>
+                <th style="text-align:center;vertical-align:middle">Days</th>
+                @{
+                    foreach (DateTime date in SystemHelper.EachDay(date_from, date_to))
+                    {
+                        <td style="text-align:center">@date.Day</td>
+                    }
+                }
+                <td rowspan="3" style="text-align:center;vertical-align:middle">Total</td>
+                <td rowspan="3" style="text-align:center;vertical-align:middle">OT Rate <br /> x 1.25</td>
+                <td style="text-align:center">RD</td>
+                <td style="text-align:center">REG HLD</td>
+                <td style="text-align:center">REG RD</td>
+                <td style="text-align:center">SPCL HLD</td>
+                <td style="text-align:center">SPCL RD</td>
+                <td style="text-align:center">Double HD</td>
+                <td rowspan="3" style="text-align:center;vertical-align:middle">LH Paid</td>
+                <td>Night Diff</td>
+                <td rowspan="2" style="text-align:center;vertical-align:middle">Gross Pay</td>
+            </tr>
+            <tr>
+                <td>DAILY</td>
+                @{
+                    foreach (DateTime date in SystemHelper.EachDay(date_from, date_to))
+                    {
+                        <td style="text-align:center">HRS</td>
+                    }
+                }
+                <td>HRS(1.30)</td>
+                <td>HRS(2.00)</td>
+                <td>HRS(2.60)</td>
+                <td>HRS(1.30)</td>
+                <td>HRS(1.50)</td>
+                <td>HRS(5.07)</td>
+                <td>HRS</td>
+
+            </tr>
+            <tr>
+                <td>HOURLY</td>
+                @{
+                    foreach (DateTime date in SystemHelper.EachDay(date_from, date_to))
+                    {
+                        <td style="text-align:center">OT</td>
+                    }
+                }
+                <td>OT(1.69)</td>
+                <td>OT(2.60)</td>
+                <td>OT(3.38)</td>
+                <td>OT(1.69)</td>
+                <td>OT(1.95)</td>
+                <td>OT(3.90)</td>
+                <td>Paid</td>
+                <td style="text-align:center;vertical-align:middle">Total</td>
+
+            </tr>
+            <tr>
+                <td colspan="100"></td>
+            </tr>
+        </thead>
+        <tbody>
+            @if (listEmpPayslip.Count > 0)
+            {
+
+                foreach (var payslip_report in listEmpPayslip)
+                {
+                    Employee emp_data = EmployeeModel.getEmployeeByID(payslip_report.employee_id.Value);
+
+                    decimal rate_by_hour = CompensationModel.getHourlyRate(emp_data.EmployeeID);
+                    decimal daily = rate_by_hour * 8;
+                    string compensation_type = CompensationModel.getCompensationType(emp_data.EmployeeID);
+                    int employee_id = emp_data.EmployeeID;
+                    int company_id = emp_data.company_id.Value;
+
+                    decimal total_ordinary_hrs = 0;
+                    decimal total_ordinary_ot = 0;
+                    decimal total_overtime_hld_paid = 0;
+                    decimal total_hrs_paid = 0;
+
+                    decimal totalbillingadjustment = BillingSecurityModel.getSumByPayslip(payslip_report.payslip_id);
+
+                    total_overtime_hld_paid += PayslipModel.getPayslipDetailsByName("Restday Overtime", payslip_report.payslip_id).Sum(s => s.amount).Value;
+                    total_overtime_hld_paid += PayslipModel.getPayslipDetailsByName("Regular Holiday Overtime", payslip_report.payslip_id).Sum(s => s.amount).Value;
+                    total_overtime_hld_paid += PayslipModel.getPayslipDetailsByName("Regular Holiday Restday Overtime", payslip_report.payslip_id).Sum(s => s.amount).Value;
+                    total_overtime_hld_paid += PayslipModel.getPayslipDetailsByName("Special Holiday Overtime", payslip_report.payslip_id).Sum(s => s.amount).Value;
+                    total_overtime_hld_paid += PayslipModel.getPayslipDetailsByName("Special Holiday Restday Overtime", payslip_report.payslip_id).Sum(s => s.amount).Value;
+                    total_overtime_hld_paid += PayslipModel.getPayslipDetailsByName("Double Holiday Overtime", payslip_report.payslip_id).Sum(s => s.amount).Value;
+
+                    total_hrs_paid += PayslipModel.getPayslipDetailsByName("Restday", payslip_report.payslip_id).Sum(s => s.amount).Value;
+                    total_hrs_paid += PayslipModel.getPayslipDetailsByName("Regular Holiday", payslip_report.payslip_id).Sum(s => s.amount).Value;
+                    total_hrs_paid += PayslipModel.getPayslipDetailsByName("Regular Holiday Restday", payslip_report.payslip_id).Sum(s => s.amount).Value;
+                    total_hrs_paid += PayslipModel.getPayslipDetailsByName("Special Holiday", payslip_report.payslip_id).Sum(s => s.amount).Value;
+                    total_hrs_paid += PayslipModel.getPayslipDetailsByName("Special Holiday Restday", payslip_report.payslip_id).Sum(s => s.amount).Value;
+                    total_hrs_paid += PayslipModel.getPayslipDetailsByName("Double Holiday", payslip_report.payslip_id).Sum(s => s.amount).Value;
+
+
+                    decimal night_diff_hrs = PayslipModel.getPayslipDetailsByName("Night Differential", payslip_report.payslip_id).Sum(s => s.hours).Value;
+                    decimal night_diff_amount = PayslipModel.getPayslipDetailsByName("Night Differential", payslip_report.payslip_id).Sum(s => s.amount).Value;
+
+                    decimal rest_day_hrs = PayslipModel.getPayslipDetailsByName("Restday", payslip_report.payslip_id).Sum(s => s.hours).Value;
+                    decimal rest_day_ot = PayslipModel.getPayslipDetailsByName("Restday Overtime", payslip_report.payslip_id).Sum(s => s.hours).Value;
+
+                    decimal regular_hld_hrs = PayslipModel.getPayslipDetailsByName("Regular Holiday", payslip_report.payslip_id).Sum(s => s.hours).Value;
+                    decimal regular_hld_ot = PayslipModel.getPayslipDetailsByName("Regular Holiday Overtime", payslip_report.payslip_id).Sum(s => s.hours).Value;
+
+                    decimal regular_restday_hld_hrs = PayslipModel.getPayslipDetailsByName("Regular Holiday Restday", payslip_report.payslip_id).Sum(s => s.hours).Value;
+                    decimal regular_restday_hld__ot = PayslipModel.getPayslipDetailsByName("Regular Holiday Restday Overtime", payslip_report.payslip_id).Sum(s => s.hours).Value;
+
+                    decimal special_hld_hrs = PayslipModel.getPayslipDetailsByName("Special Holiday", payslip_report.payslip_id).Sum(s => s.hours).Value;
+                    decimal special_hld_ot = PayslipModel.getPayslipDetailsByName("Special Holiday Overtime", payslip_report.payslip_id).Sum(s => s.hours).Value;
+
+                    decimal special_restday_hld_hrs = PayslipModel.getPayslipDetailsByName("Special Holiday Restday", payslip_report.payslip_id).Sum(s => s.hours).Value;
+                    decimal special_restday_hld__ot = PayslipModel.getPayslipDetailsByName("Special Holiday Restday Overtime", payslip_report.payslip_id).Sum(s => s.hours).Value;
+
+                    decimal double_hld_hrs = PayslipModel.getPayslipDetailsByName("Double Holiday", payslip_report.payslip_id).Sum(s => s.hours).Value;
+                    decimal double_hld_hrs_ot = PayslipModel.getPayslipDetailsByName("Double Holiday Overtime", payslip_report.payslip_id).Sum(s => s.hours).Value;
+
+                    <tr>
+                        <td>#@employee_id</td>
+                        <td colspan="26">@emp_data.LastName , @emp_data.FirstName</td>
+                        <td>@totalbillingadjustment.ToNumericFormat() <a id="btnnewaddjustment" class="_new" style="text-align:right;cursor:pointer;" payslip_id="@payslip_report.payslip_id">New</a></td>
+                        <td style="text-align:center;vertical-align:middle">@company.admin_fee.Value.ToNumericFormat()</td>
+                    </tr>
+                
+                    <tr>
+                        <td>@daily.ToAccountingFormat()</td>
+                        @{
+                            foreach (DateTime day in SystemHelper.EachDay(date_from, date_to))
+                            {
+                                decimal duty_hrs = 0;
+                                string remarks_schedule = Scheduler.verifyScheduleAvailable(emp_data.EmployeeID, day);
+
+                                if (DtrComputation.verifyDTRComputationSingle(employee_id, day))
+                                {
+                                    DailyTimeRecord dtr_day = DtrComputation.getDtrReport(employee_id, day);
+                                    if (dtr_day.total_duty_hrs >= 8)
+                                    {
+                                        if (HolidayModel.VerifygetHolidayByDateandCompany(day, emp_data.company_id.Value) || remarks_schedule == "Restday")
+                                        {
+
+                                        }
+                                        else
+                                        {
+                                            duty_hrs = 8;
+                                            total_ordinary_hrs += duty_hrs;
+                                        }
+
+
+                                    }
+                                    else
+                                    {
+
+                                        if (HolidayModel.VerifygetHolidayByDateandCompany(day, emp_data.company_id.Value) || remarks_schedule == "Restday")
+                                        {
+
+                                        }
+                                        else
+                                        {
+                                            duty_hrs = dtr_day.total_duty_hrs.Value;
+                                            total_ordinary_hrs += duty_hrs;
+                                        }
+
+                                    }
+                                    <td style="text-align:center">@duty_hrs.ToNumericFormat()</td>
+
+                                }
+                                else
+                                {
+                                    <td style="text-align:center">0.00</td>
+                                }
+                            }
+                        }
+                        @{
+                            //decimal total_ordinary_hrs_paid = ((rate_by_hour * 1.25m) * total_ordinary_hrs);
+                            decimal basic_pay = (total_ordinary_hrs / 8) * daily;
+                        }
+                        <td>@total_ordinary_hrs.ToNumericFormat()</td>
+                        <td>@basic_pay.ToAccountingFormat()</td>
+                        <td>@rest_day_hrs.ToNumericFormat()</td>
+                        <td>@regular_hld_hrs.ToNumericFormat()</td>
+                        <td>@regular_restday_hld_hrs.ToNumericFormat()</td>
+                        <td>@special_hld_hrs.ToNumericFormat()</td>
+                        <td>@special_restday_hld_hrs.ToNumericFormat()</td>
+                        <td>@double_hld_hrs.ToNumericFormat()</td>
+                        <td>@total_hrs_paid.ToNumericFormat()</td>
+                        <td>@night_diff_hrs.ToNumericFormat()</td>
+                        <td colspan="3" style="text-align:center;vertical-align:middle">@payslip_report.gross_pay.Value.ToNumericFormat()</td>
+
+                    </tr>
+                     
+                    <tr>
+                        <td>@rate_by_hour.ToAccountingFormat()</td>
+                        @{
+                            foreach (DateTime day in SystemHelper.EachDay(date_from, date_to))
+                            {
+                                decimal ot_hrs = 0;
+                                string remarks_schedule = Scheduler.verifyScheduleAvailable(emp_data.EmployeeID, day);
+
+                                if (DtrComputation.verifyDTRComputationSingle(employee_id, day))
+                                {
+
+                                    DailyTimeRecord dtr_day = DtrComputation.getDtrReport(employee_id, day);
+                                    if (dtr_day.total_overtime_hrs > 0)
+                                    {
+
+                                        if (HolidayModel.VerifygetHolidayByDateandCompany(day, emp_data.company_id.Value) || remarks_schedule == "Restday")
+                                        {
+
+                                        }
+                                        else
+                                        {
+                                            ot_hrs = dtr_day.total_overtime_hrs.Value;
+                                            total_ordinary_ot += ot_hrs;
+                                        }
+                                        <td style="text-align:center">@ot_hrs.ToNumericFormat()</td>
+                                    }
+                                    else
+                                    {
+                                        <td style="text-align:center">0.00</td>
+                                    }
+
+                                }
+                                else
+                                {
+                                    <td style="text-align:center">0.00</td>
+                                }
+                            }
+                        }
+                        @{
+                            decimal total_ordinary_hrs_paid = ((rate_by_hour * 1.25m) * total_ordinary_ot);
+
+                        }
+                        <td>@total_ordinary_ot.ToNumericFormat()</td>
+                        <td>@total_ordinary_hrs_paid.ToNumericFormat()</td>
+                        <td>@rest_day_ot.ToNumericFormat()</td>
+                        <td>@regular_hld_ot.ToNumericFormat()</td>
+                        <td>@regular_restday_hld__ot.ToNumericFormat()</td>
+                        <td>@special_hld_ot.ToNumericFormat() </td>
+                        <td>@special_restday_hld__ot.ToNumericFormat()</td>
+                        <td>@double_hld_hrs_ot.ToNumericFormat()</td>
+                        <td>@total_overtime_hld_paid.ToNumericFormat()</td>
+                        <td>@night_diff_amount.ToNumericFormat()</td>
+                        <td style="text-align:center;vertical-align:middle">@((payslip_report.gross_pay.Value + company.admin_fee.Value).ToNumericFormat())</td>
+
+                    </tr>
+                    
+                }
+            }
+
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+
+<div class="modal fade" id="mdleditpayslipadjustments">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title"><i class="fa fa-edit"></i> Edit Billing Adjustment</h4>
+            </div>
+            <div class="modal-body">
+                <div id="listhere">
+
+                </div>
+                <input type="hidden" id="payslip_idedit" value=" " />
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <label for="adjustmentname">Adjustment Name</label>
+                        <input type="text" class="form-control input-sm" id="adjustmentnameedit">
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="adjustmentamount">Amount</label>
+                        <input type="text" class="form-control input-sm" id="adjustmentamountedit">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                @*<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" id="btnUpdatebillingadjustment">Save changes</button>*@
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

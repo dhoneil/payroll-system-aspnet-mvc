@@ -1,0 +1,388 @@
+﻿@using mjl.Models.Database;
+@using mjl.Models;
+
+@{ 
+
+    Employee_Payslip emp_payslip = (Employee_Payslip)ViewBag.emp_payslip;
+
+    List<Employee_Payslip_Details> payslip_details_less = (List<Employee_Payslip_Details>)ViewBag.payslip_details_less;
+    List<Employee_Payslip_Details> payslip_details_add = (List<Employee_Payslip_Details>)ViewBag.payslip_details_add;
+    List<Employee_Payslip_Government> payslip_government = (List<Employee_Payslip_Government>)ViewBag.payslip_government;
+
+
+    List<Employee_Payslip_Adjustment> payslip_adjustment_charge = (List<Employee_Payslip_Adjustment>)ViewBag.payslip_adjustment_charge;
+    List<Employee_Payslip_Adjustment> payslip_adjustment_deduction = (List<Employee_Payslip_Adjustment>)ViewBag.payslip_adjustment_deduction;
+    List<Employee_Payslip_Adjustment> payslip_adjustment_additional = (List<Employee_Payslip_Adjustment>)ViewBag.payslip_adjustment_additional;
+
+
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">LESS</h3>
+                    </div>
+                    <div class="box-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr style="background-color:#f2f2f2;">
+                                    <th>NAME</th>
+                                    <th style="width:100px;">AMOUNT</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    foreach (var emp_payslip_details_less in payslip_details_less)
+                                    {
+                                        if (@emp_payslip.status.ToUpper() == "APPROVED") {
+                                            <tr>
+                                                <td>@emp_payslip_details_less.name.ToUpper() ( @Convert.ToString(emp_payslip_details_less.days).EmptyNull() @Convert.ToString(emp_payslip_details_less.hours).EmptyNull() )</td>
+                                                <td>@emp_payslip_details_less.amount.ToString()</td>
+                                            </tr>
+                                        }
+                                        else {
+                                            <tr>
+                                                <td>@emp_payslip_details_less.name.ToUpper() ( @Convert.ToString(emp_payslip_details_less.days).EmptyNull() @Convert.ToString(emp_payslip_details_less.hours).EmptyNull() )</td>
+                                                <td><input type="text" class="form-control input_amount input_less" id="@emp_payslip_details_less.payslip_less_id" payslip_id="@emp_payslip_details_less.payslip_id.Value" style="text-align:right" value="@emp_payslip_details_less.amount.ToString()" /></td>
+                                            </tr>
+                                        }
+
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Additional</h3>
+                    </div>
+                    <div class="box-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr style="background-color:#f2f2f2;">
+                                    <th>NAME</th>
+                                    <th style="width:100px;">AMOUNT</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    foreach (var emp_payslip_details_less in payslip_details_add)
+                                    {
+                                        if (@emp_payslip.status.ToUpper() == "APPROVED") {
+                                            if (emp_payslip_details_less.name.ToUpper() == "RESTDAY")
+                                            {
+                                                <tr>
+                                                    <td colspan="2" style="text-align:center;background-color:#3c8dbc;color:#fff">RESTDAY</td>
+                                                </tr>
+                                            }
+                                            else if (emp_payslip_details_less.name.ToUpper() == "REGULAR HOLIDAY")
+                                            {
+                                                 <tr>
+                                                    <td colspan="2" style="text-align:center;background-color:#3c8dbc;color:#fff">REGULAR HOLIDAY</td>
+                                                </tr>
+                                            }
+                                            else if (emp_payslip_details_less.name.ToUpper() == "SPECIAL HOLIDAY")
+                                            {
+                                                 <tr>
+                                                    <td colspan="2" style="text-align:center;background-color:#3c8dbc;color:#fff">SPECIAL HOLIDAY</td>
+                                                </tr>
+                                            }
+                                            else if (emp_payslip_details_less.name.ToUpper() == "DOUBLE HOLIDAY")
+                                            {
+                                                 <tr>
+                                                    <td colspan="2" style="text-align:center;background-color:#3c8dbc;color:#fff">DOUBLE HOLIDAY</td>
+                                                </tr>
+                                            }
+                                            <tr>
+                                                <td>@emp_payslip_details_less.name.ToUpper() ( @Convert.ToString(emp_payslip_details_less.days).EmptyNull() @Convert.ToString(emp_payslip_details_less.hours).EmptyNull() )</td>
+                                                <td>@emp_payslip_details_less.amount.ToString()</td>
+                                            </tr>
+                                        }
+                                        else {
+                                            if (emp_payslip_details_less.name.ToUpper() == "RESTDAY")
+                                            {
+                                                <tr>
+                                                    <td colspan="2" style="text-align:center;background-color:#3c8dbc;color:#fff">RESTDAY</td>
+                                                </tr>
+                                            }
+                                            else if (emp_payslip_details_less.name.ToUpper() == "REGULAR HOLIDAY")
+                                            {
+                                                 <tr>
+                                                    <td colspan="2" style="text-align:center;background-color:#3c8dbc;color:#fff">REGULAR HOLIDAY</td>
+                                                </tr>
+                                            }
+                                            else if (emp_payslip_details_less.name.ToUpper() == "SPECIAL HOLIDAY")
+                                            {
+                                                 <tr>
+                                                    <td colspan="2" style="text-align:center;background-color:#3c8dbc;color:#fff">SPECIAL HOLIDAY</td>
+                                                </tr>
+                                            }
+                                            else if (emp_payslip_details_less.name.ToUpper() == "DOUBLE HOLIDAY")
+                                            {
+                                                 <tr>
+                                                    <td colspan="2" style="text-align:center;background-color:#3c8dbc;color:#fff">DOUDBLE HOLIDAY</td>
+                                                </tr>
+                                            }
+                                            <tr>
+                                                <td>@emp_payslip_details_less.name.ToUpper() ( @Convert.ToString(emp_payslip_details_less.days).EmptyNull() @Convert.ToString(emp_payslip_details_less.hours).EmptyNull() )</td>
+                                                <td><input type="text" class="form-control input_amount input_less" id="@emp_payslip_details_less.payslip_less_id" payslip_id="@emp_payslip_details_less.payslip_id.Value" style="text-align:right" value="@emp_payslip_details_less.amount.ToString()" /></td>
+                                            </tr>
+                                        }
+                                   
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Additional Adjustment</h3>
+            </div>
+            <div class="box-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr style="background-color:#f2f2f2;">
+                            <th>NAME</th>
+                            <th style="width:100px;">AMOUNT</th>
+                            @if (emp_payslip.status.ToUpper() != "APPROVED") {
+                                <th>OPT</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        @{ 
+                            if (payslip_adjustment_additional.Count > 0)
+                            {
+                                foreach (var payslip_adjustment in payslip_adjustment_additional)
+                                {
+                                    if (emp_payslip.status.ToUpper() == "APPROVED") {
+                                         <tr>
+                                            <td>@payslip_adjustment.name.ToUpper()</td>
+                                            <td>@payslip_adjustment.amount.Value.ToNumericFormat()</td>
+                                        </tr>
+                                    } else {
+                                        <tr>
+                                            <td>@payslip_adjustment.name.ToUpper()</td>
+                                            <td>@payslip_adjustment.amount.Value.ToNumericFormat()</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-danger remove_adjustment_entry" payslip_id="@payslip_adjustment.payslip_id.Value" payslip_adjustment_id="@payslip_adjustment.payslip_adjustment_id"><i class="fa fa-times"></i></button>
+                                            </td>
+                                        </tr>
+                                    }
+                                   
+                                }
+                            }
+                            else {
+                                <tr>
+                                    <td colspan="3" style="text-align:center;"><p>NO RECORD FOUND</p></td>
+                                </tr>
+                            }
+
+                        }
+                    </tbody>
+                    <tfoot>
+                        @if (emp_payslip.status.ToUpper() != "APPROVED")
+                        {
+                            <tr>
+                                <td>
+                                    Name
+                                    <input type="text" class="form-control entry_adjustment_name" />
+                                </td>
+                                <td>
+                                    Amount
+                                    <input type="text" class="form-control input_amount entry_adjustment_amount" style="text-align:right" />
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm pull-right btn-save-adjustment-entry" style="margin-top:20px;" payslip_id="@emp_payslip.payslip_id"><i class="fa fa-plus"></i> ADD</button>
+                                </td>
+                            </tr>
+                        }
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Government Deduction</h3>
+                    </div>
+                    <div class="box-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr style="background-color:#f2f2f2;">
+                                    <th>NAME</th>
+                                    <th style="width:100px;">AMOUNT</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    foreach (var government_deduction in payslip_government)
+                                    {
+                                        if (emp_payslip.status.ToUpper() == "APPROVED") {
+                                            <tr>
+                                                <td>@government_deduction.name.ToUpper()</td>
+                                                <td>@government_deduction.amount.Value.ToNumericFormat()</td>
+                                            </tr>
+                                           
+                                        } else {
+                                            <tr>
+                                                <td>@government_deduction.name.ToUpper()</td>
+                                                <td>
+                                                    <input type="text" class="form-control input_amount input_government" payslip_id="@government_deduction.payslip_id.Value" payslip_government_id="@government_deduction.payslip_government_id" style="text-align:right" value="@government_deduction.amount.Value.ToNumericFormat()" />
+                                                </td>
+                                            </tr>
+                                        }
+                                     
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Charges Deduction</h3>
+                    </div>
+                    <div class="box-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr style="background-color:#f2f2f2;">
+                                    <th>NAME</th>
+                                    <th style="width:100px;">AMOUNT</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    if (payslip_adjustment_charge.Count > 0)
+                                    {
+                                        foreach (var emp_payslip_charges in payslip_adjustment_charge)
+                                        {
+                                            if (emp_payslip.status.ToUpper() == "APPROVED") {
+                                                <tr>
+                                                    <td>@emp_payslip_charges.name.ToUpper()</td>
+                                                    <td>
+                                                        @emp_payslip_charges.amount.Value.ToNumericFormat()
+                                                    </td>
+                                                </tr>
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td>@emp_payslip_charges.name.ToUpper()</td>
+                                                    <td>
+                                                        <input type="text" class="form-control input_amount input_charges" payslip_id="@emp_payslip_charges.payslip_id" payslip_adjustment_id="@emp_payslip_charges.payslip_adjustment_id" style="text-align:right" value="@emp_payslip_charges.amount.Value.ToNumericFormat()" />
+                                                    </td>
+                                                </tr>
+                                            }
+                                         
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="2" style="text-align:center;"><p>NO RECORD FOUND</p></td>
+                                        </tr>
+                                    }
+
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                 <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Entry Deduction</h3>
+                    </div>
+                    <div class="box-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr style="background-color:#f2f2f2;">
+                                    <th>NAME</th>
+                                    <th style="width:100px;">AMOUNT</th>
+                                    @if (emp_payslip.status.ToUpper() != "APPROVED")
+                                    {
+                                        <th>OPT</th>
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    if (payslip_adjustment_deduction.Count > 0)
+                                    {
+                                        foreach (var emp_payslip_adjustment_deduction in payslip_adjustment_deduction)
+                                        {
+                                            if (emp_payslip.status.ToUpper() == "APPROVED") {
+                                                <tr>
+                                                    <td>@emp_payslip_adjustment_deduction.name.ToUpper()</td>
+                                                    <td>
+                                                        @emp_payslip_adjustment_deduction.amount.Value.ToNumericFormat()
+                                                    </td>
+                                               
+                                                </tr>
+                                            } else {
+                                                <tr>
+                                                    <td>@emp_payslip_adjustment_deduction.name.ToUpper()</td>
+                                                    <td>
+                                                        @emp_payslip_adjustment_deduction.amount.Value.ToNumericFormat()
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-danger remove_deduction_entry" payslip_id="@emp_payslip_adjustment_deduction.payslip_id.Value" payslip_adjustment_id="@emp_payslip_adjustment_deduction.payslip_adjustment_id"><i class="fa fa-times"></i></button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                          
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="3" style="text-align:center;"><p>NO RECORD FOUND</p></td>
+                                        </tr>
+                                    }
+
+                                }
+                            </tbody>
+                            <tfoot>
+                                 @if (emp_payslip.status.ToUpper() != "APPROVED")
+                                 {
+                                    <tr>
+                                        <td>
+                                            Name
+                                            <input type="text" class="form-control entry_deduction_name" />
+                                        </td>
+                                        <td>
+                                            Amount
+                                            <input type="text" class="form-control input_amount entry_deduction_amount" style="text-align:right" />
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-primary btn-sm pull-right btn-save-entry-deduction" style="margin-top:20px;" payslip_id="@emp_payslip.payslip_id"><i class="fa fa-plus"></i> ADD</button>
+                                        </td>
+                                    </tr>
+                                 }
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,306 @@
+﻿@{
+    ViewBag.Title = "Company Holiday";
+}
+
+
+<div class="row">
+    <div class="col-md-3">
+        <button class="btn btn-primary btn-block margin-bottom" id="btnNewHolidayCompany"><i class="fa fa-plus"></i> New Company Holiday</button>
+        <div class="box box-solid">
+            <div class="box-header with-border">
+                <div class="box-title">Filter Option</div>
+                <div class="box-tools">
+                    <button class="btn btn-box-tool" type="button" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="form-group">
+                    <label>Search Key</label>
+                    <input class="form-control input-sm" placeholder="Search for Holiday Name or Company" id="txtSearch" />
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="checkbox" style="padding-left:0px;">
+                                <input type="checkbox" class="flat-red" id="chkShowInactive" name="chkShowInactive" />
+                                <label for="chkShowInactive" style="margin-left:5px;">Show Inactive</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="checkbox" style="padding-left:0px;">
+                                <input type="checkbox" class="flat-red" id="chkOnlyThisYear" name="chkOnlyThisYear" />
+                                <label for="chkOnlyThisYear" style="margin-left:5px;">Only This Year</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button id="btnfilterjob" class="btn btn-default btn-block"><i class="fa fa-refresh"></i> Filter</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="box box-primary" id="tblCompanyHoliday">
+            <div class="box-header with-border">
+                <div class="box-title">Company Holiday List</div>
+            </div>
+            <div class="box-body">
+                <div class="table-responsive mailbox-messages result">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdlCompanyHoliday">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title"><h4>Add Holiday Company</h4></div>
+            </div>
+            <form id="form_new_holiday">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Holiday Name</label>
+                        <input class="form-control" id="txtHolidayName" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Holiday Type</label>
+                        <select class="form-control" id="txtHolidayType" required>
+                            <option value="">[[ SELECT TYPE ]]</option>
+                            <option value="REGULAR">Regular Holiday</option>
+                            <option value="SPECIAL">Special Holiday</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Holiday Date</label>
+                        <input class="form-control" id="txtHolidayDate" pattern="\d{1,2}/\d{1,2}/\d{4}" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Company</label>
+                        <div class="form-group">
+                            @Html.DropDownList("company_id", (IEnumerable<SelectListItem>)ViewBag.company, new { @class = "form-control", @id = "select_company" })
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" id="mdlfooter">
+                    <button type="submit" class="btn btn-default btn-sm" id="btnsaveholiday"><i class="fa fa-save"></i> Save</button>
+                    <button class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fa fa-close"></i> Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdlCompanyHolidayUpdate">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title"><h4>Update Holiday Company</h4></div>
+            </div>
+            <form id="form_update_holiday">
+                <div class="modal-body">
+                    <input type="hidden" id="holiday_id_update"/>
+                    <div class="form-group">
+                        <label>Holiday Name</label>
+                        <input class="form-control" id="txtHolidayNameUpdate" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Holiday Type</label>
+                        <select class="form-control" id="txtHolidayTypeUpdate">
+                            <option value="REGULAR">Regular Holiday</option>
+                            <option value="SPECIAL">Special Holiday</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Holiday Date</label>
+                        <input class="form-control" id="txtHolidayDateUpdate" pattern="\d{1,2}/\d{1,2}/\d{4}" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Company</label>
+                        <div class="form-group">
+                            @Html.DropDownList("company_id_update", (IEnumerable<SelectListItem>)ViewBag.companyedit, new { @class = "form-control", @id = "select_company_Update" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select class="form-control" id="txtStatusUpdate">
+                            <option value="False">InActive</option>
+                            <option value="True">Active</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer" id="mdlfooter">
+                    <button type="submit" class="btn btn-default btn-sm" id="btnUpdateHoliday"><i class="fa fa-save"></i> Update</button>
+                    <button class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fa fa-close"></i> Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#chkShowInactive').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' // optional
+            });
+
+            $('#chkOnlyThisYear').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' // optional
+            });
+
+            $('#txtHolidayDate').datepicker();
+            $('#txtHolidayDateUpdate').datepicker();
+
+            $('#form_update_holiday').on('submit', function (e) {
+                e.preventDefault();
+
+                if (confirm("Do you want to update this holiday?")) {
+                   
+                    var btnoriginal_innerHTML = $('#btnUpdateHoliday').html();
+
+                    var params = {
+
+                        "HolidayID": $('#holiday_id_update').val(),
+                        "HolidayName": $('#txtHolidayNameUpdate').val(),
+                        "HolidayType": $('#txtHolidayTypeUpdate').val(),
+                        "HolidayDate": $('#txtHolidayDateUpdate').val(),
+                        "CompanyID": $('#select_company_Update').val(),
+                        "IsActive": $('#txtStatusUpdate').val()
+                    }
+
+                    $('#btnUpdateHoliday').attr("disabled", "disabled");
+                    $('#btnUpdateHoliday').html('<i class="fa fa-spin fa-refresh"></i> Processing...');
+
+                    $.ajax({
+                        url: 'updateCompanyHoliday',
+                        type: 'POST',
+                        data: params,
+                        success: function (data) {
+
+                            $('#btnUpdateHoliday').html(btnoriginal_innerHTML);
+                            $('#mdlCompanyHolidayUpdate').modal('hide');
+
+                        }, error: function (xhr, status, error) {
+                            alertDialog({ text: xhr.responseText });
+                        }
+                    });
+                    $('#btnUpdateHoliday').removeAttr("disabled");
+                    $('#btnfilterjob').trigger('click');
+                }
+            });
+            
+            $(document).on('click', '.btnEditHoliday', function () {
+                $('#mdlCompanyHolidayUpdate').modal('show');
+
+
+                var holiday_name = $(this).closest('tr').find('.holiday_name').val();
+                var holiday_type = $(this).closest('tr').find('.holiday_type').val();
+                var holiday_date = $(this).closest('tr').find('.holiday_date').val();
+                var company_id = $(this).closest('tr').find('.company_id_edit').val();
+                var holiday_status = $(this).closest('tr').find('.holiday_status').val();
+                var holiday_id = $(this).closest('tr').find('.holiday_id').val();
+
+                $('#txtHolidayNameUpdate').val(holiday_name);
+                $('#txtHolidayTypeUpdate').val(holiday_type);
+                $('#txtHolidayDateUpdate').val(holiday_date);
+                $('#select_company_Update').val(company_id);
+                $('#txtStatusUpdate').val(holiday_status);
+                $('#holiday_id_update').val(holiday_id);
+
+            });
+            
+            $('#form_new_holiday').on('submit', function (e) {
+                e.preventDefault();
+                var btnoriginal_innerHTML = $('#btnsaveholiday').html();
+
+                var params = {
+
+                    "HolidayName": $('#txtHolidayName').val(),
+                    "HolidayType": $('#txtHolidayType').val(),
+                    "HolidayDate": $('#txtHolidayDate').val(),
+                    "CompanyID": $('#select_company').val()
+
+                }
+
+                if ($('#select_company').val() > 0) {
+                    if (confirm("Do you want to set this holiday on this COMPANY?")) {
+                        $('#btnsaveholiday').attr("disabled", "disabled");
+                        $('#btnsaveholiday').html('<i class="fa fa-spin fa-refresh"></i> Processing...');
+                        $.ajax({
+                            url: 'insertCompanyHoliday',
+                            type: 'POST',
+                            data: params,
+                            success: function (data) {
+                                $('#btnsaveholiday').html(btnoriginal_innerHTML);
+                                $('#mdlCompanyHoliday').modal('hide');
+                            }, error: function (xhr, status, error) {
+                                alertDialog({ text: xhr.responseText });
+                            }
+                        });
+                        $('#btnsaveholiday').removeAttr("disabled");
+                        $('#btnfilterjob').trigger('click');
+                    }
+                } else {
+                    if (confirm("Do you want to set this holiday in ALL COMPANY?")) {
+                        $('#btnsaveholiday').attr("disabled", "disabled");
+                        $('#btnsaveholiday').html('<i class="fa fa-spin fa-refresh"></i> Processing...');
+                        $.ajax({
+                            url: 'insertCompanyHoliday',
+                            type: 'POST',
+                            data: params,
+                            success: function (data) {
+                                $('#btnsaveholiday').html(btnoriginal_innerHTML);
+                                $('#mdlCompanyHoliday').modal('hide');
+                            }, error: function (xhr, status, error) {
+                                alertDialog({ text: xhr.responseText });
+                            }
+                        });
+                        $('#btnsaveholiday').removeAttr("disabled");
+                        $('#btnfilterjob').trigger('click');
+                    }
+                }
+                return false;
+            });
+
+            $('#btnNewHolidayCompany').click(function () {
+                $('#mdlCompanyHoliday').modal('show');
+
+                var company_id = $(this).attr('company_id');
+                
+
+            });
+
+
+            $('#btnfilterjob').click(function () {
+                showLoader('#tblCompanyHoliday');
+
+                var search_key = $('#txtSearch').val();
+                var active = $('input[name=chkShowInactive]').prop('checked');
+                var thisYear = $('input[name=chkOnlyThisYear]').prop('checked');
+
+                $.ajax({
+                    url: '_ViewCompanyHoliday',
+                    type: 'post',
+                    data:
+                    { search_key: search_key, status: active, onthisyear: thisYear },
+                    success: function (data) {
+                        $('.result').html(data);
+                        hideLoader('#tblCompanyHoliday');
+                    },
+                    error: function () { }
+                })
+            });
+
+        });
+    </script>
+
+}

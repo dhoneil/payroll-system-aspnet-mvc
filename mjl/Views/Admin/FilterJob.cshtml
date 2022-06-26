@@ -1,0 +1,116 @@
+﻿@using mjl.Models;
+@using mjl.Models.Database;
+
+<table class="table table-hover table-striped table-condensed table-bordered" id="tblCompany">
+    <thead>
+        <tr>
+            <th>JOB</th>
+            <th>JOB DESCRIPTION</th>
+            <th>Prepared ( Name | Date )</th>
+            <th>Last Edit ( Name | Date )</th>
+            <th>Status</th>
+            <th>OPTIONS</th>
+        </tr>
+    </thead>
+    @{
+        List<Job> lstjob = ViewBag.lstjob;
+    }
+    @if (lstjob.Count() > 0)
+    {
+        foreach (Job job in lstjob)
+        {
+            <tr>
+                 <input type="hidden" value="@job.JobID" class="job_id"/>
+                 <input type="hidden" value="@job.JobName" class="job_name"/>
+                 <input type="hidden" value="@job.JobDescription" class="job_description"/>
+                 <input type="hidden" value="@job.IsActive.Value.ToString()" class="job_status"/>
+                <td>@job.JobName</td>
+                <td>@job.JobDescription</td>
+                <td>
+                    @{
+                        string prepared_name = "";
+                        User preparedEmployee = UserModel.gerUserById(job.PreparedBy.Value);
+                        prepared_name = preparedEmployee.FirstName + ' ' + preparedEmployee.LastName;
+                    }
+                    @prepared_name.ToUpper() | @job.PreparedDate.ToDateTimeFormat()
+                </td>
+                <td>
+                    @{
+                        string lastedit_name = "N/A";
+                        string edit_date = "N/A";
+                        if (job.LastEditBy.HasValue)
+                        {
+                            User lasteditEmployee = UserModel.gerUserById(job.LastEditBy.Value);
+                            lastedit_name = lasteditEmployee.FirstName + ' ' + lasteditEmployee.LastName;
+                            edit_date = job.LastEditDate.ToDateTimeFormat();
+                        }
+                     }
+                    @lastedit_name.ToUpper() | @edit_date
+                </td>
+                <td>
+                    @if (job.IsActive.Value) {
+                        <span class="label label-primary">Active</span>
+                    }
+                    else {
+                        <span class="label label-danger">In Active</span>
+                    }
+                </td>
+                <td>
+                    <button type='button' class='btn btn-xs btn-default btnEditJob' title='Edit'><i class='fa fa-pencil'></i></button>
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="6" style="text-align:center"><i class="fa fa-database"></i> No data found</td>
+        </tr>
+    }
+</table>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.btnremovejob').click(function () {
+                var main = $(this);
+                var id = main.closest('tr').find('.btnremovejob').attr('job_id');
+                var is_active = false;
+
+                $.confirm({
+                    title: 'System',
+                    content: 'Click <b>OK</b> to continue changes.',
+                    buttons: {
+                        ok: function () {
+                            showLoader('#tbljobcontainer');
+
+                            $.ajax({
+                                url: '../admin/UpdateJob',
+                                type: 'post',
+                                data: {
+                                    JobID: id,
+                                    isActive: is_active
+                                },
+                                success: function (data) {
+                                    $.alert(data.message);
+
+                                    var job_name = $('#txtfilterjobname').val();
+
+                                    $.ajax({
+                                        url: '../admin/filterjob',
+                                        type: 'post',
+                                        data: { JobName: job_name },
+                                        success: function (data) {
+                                            $('#tbljob').html(data);
+                                            hideLoader('#tbljobcontainer');
+                                        },
+                                        error: function () { }
+                                    })
+                                },
+                                error: function () { }
+                            })
+                        },
+                        cancel: function () { }
+                    }
+                })
+            });
+        });
+    </script>

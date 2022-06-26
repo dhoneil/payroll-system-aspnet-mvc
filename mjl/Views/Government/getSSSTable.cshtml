@@ -1,0 +1,23 @@
+﻿@using mjl.Models.Database;
+@using mjl.Models;
+
+@{ 
+    List<SSS_Contribution> list = (List<SSS_Contribution>)ViewBag.listSSTable;
+
+}
+<table class="table table-bordered table-condensed">
+    <thead>
+        <tr>
+            <th>RANGE OF COMPENSATION</th>
+            <th>Total Contribution EE</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var items in list) {
+            <tr>
+                <td>@items.start_range.Value.ToNumericFormat() - @items.end_range.Value.ToNumericFormat()</td>
+                <td>@items.total_contribution_ee.Value.ToNumericFormat()</td>
+            </tr>
+        }
+    </tbody>
+</table>

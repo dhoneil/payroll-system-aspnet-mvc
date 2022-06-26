@@ -1,0 +1,80 @@
+﻿@using mjl.Models;
+@using mjl.Models.Database;
+
+@{ 
+    List<Company> lstcompany = ViewBag.lstcompany;
+    int count = 0;
+}
+<table class="table table-hover table-striped table-condensed table-bordered" id="tblCompany">
+    <thead>
+        <tr>
+            <th>NAME</th>
+            <th>OWNER NAME</th>
+            <th>Prepared ( Name | Date )</th>
+            <th>Last Edit ( Name | Date )</th>
+            <th>Status</th>
+            <th>OPTIONS</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (lstcompany.Count() > 0)
+        {
+
+            foreach (Company company in lstcompany)
+            {
+                count++;
+            <tr>
+                <input type="hidden" value="@company.company_id" class="company_id"/>
+                <input type="hidden" value="@company.name" class="name"/>
+                <input type="hidden" value="@company.owner_name" class="owner_name"/>
+                <input type="hidden" value="@company.type" class="type"/>
+                <input type="hidden" value="@company.address" class="address"/>
+                <input type="hidden" value="@company.city" class="city"/>
+                <input type="hidden" value="@company.contact_number" class="contact_number"/>
+                <input type="hidden" value="@company.is_active.Value.ToString()" class="company_status"/>
+                <input type="hidden" value="@company.admin_fee.Value.ToNumericFormat()" class="admin_fee"/>
+
+                <td>@company.name</td>
+                <td>@company.owner_name</td>
+                <td>
+                    @{
+                        string prepared_name = "";
+                        User preparedEmployee = UserModel.gerUserById(company.prepared_by.Value);
+                        prepared_name = preparedEmployee.FirstName + ' ' + preparedEmployee.LastName;
+                    }
+                    @prepared_name.ToUpper() | @company.prepared_date.ToDateTimeFormat()
+
+                </td>
+                <td>
+                    @{
+                        string lastedit_name = "N/A";
+                        string edit_date = "N/A";
+                        if (company.last_edit_by.HasValue)
+                        {
+                            User lasteditEmployee = UserModel.gerUserById(company.last_edit_by.Value);
+                            lastedit_name = lasteditEmployee.FirstName + ' ' + lasteditEmployee.LastName;
+                            edit_date = company.last_edit_date.ToDateTimeFormat();
+                        }
+                     }
+                    @lastedit_name.ToUpper() | @edit_date
+                </td>
+                <td>@if (company.is_active.Value) {
+                        <span class="label label-primary">Active</span>
+                    }
+                    else {
+                        <span class="label label-danger">In Active</span>
+                    }
+                </td>
+                <td>
+                    <button type='button' class='btn btn-xs btn-default btnEdit' title='Edit'><i class='fa fa-pencil'></i></button>
+                </td>
+            </tr>
+            }
+        }
+        else {
+            <tr>
+                <td colspan="5" style="text-align:center">No Data Found</td>
+            </tr>
+        }
+    </tbody>
+</table>

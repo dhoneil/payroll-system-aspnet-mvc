@@ -1,0 +1,668 @@
+﻿
+@{
+    ViewBag.Title = "Scheduler";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="modal fade" id="editRestdayWithSched" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Restday Schedule on <span class="restday_date">. . .</span> from <span class="restday_name">. . .</span><br/><small>( Note : This schedule will effect if he/she will work in his/her restday. )</small></h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" class="restday_employee_id" />
+                <input type="hidden" class="restday_sched_date" />
+                <div class="row">
+                    <form class="form-vertical">
+                        <div class="form-group col-md-6">
+                            <label for="r_time_in">Time In</label><span> ( 12 Hours Format )</span>
+                            <input type="text" class="form-control" id="r_time_in" readonly>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="r_time_out">Time Out</label><span> ( 12 Hours Format )</span>
+                            <input type="text" class="form-control" id="r_time_out" readonly>
+                        </div>
+                    </form>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <button type="button" class="btn btn-primary btn-block" id="btnSubmitRD" style="margin-top:25px;">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editSchedule" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Edit Schedule on <span class="edit_date">. . .</span> from <span class="edit_name">. . .</span></h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" class="edit_employee_id" />
+                <div class="row">
+                    <form class="form-vertical">
+                        <div class="form-group col-md-6">
+                            <label for="n_time_in">Time In</label><span> ( 12 Hours Format )</span>
+                            <input type="text" class="form-control" id="n_time_in" readonly>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="n_time_out">Time Out</label><span> ( 12 Hours Format )</span>
+                            <input type="text" class="form-control" id="n_time_out" readonly>
+                        </div>
+                    </form>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <button type="button" class="btn btn-primary btn-block" id="btnEditSched" style="margin-top:25px;">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="scheduler" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">New Schedule</h4>
+            </div>
+            <div class="modal-body">
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab_1" data-toggle="tab">Company or Job</a></li>
+                        <li><a href="#tab_2" data-toggle="tab">Employee</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab_1">
+                            <form id="form_new_schedule_byCompanyJOb">
+                                <div class="form-vertical row">
+                                    <div class="col-md-12">
+                                        <p style="text-align:center;background-color:#367fa9;padding:5px;color:white">Assign Schedule By Company and Job</p>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Company</label>
+                                        <div class="form-group">
+                                            @Html.DropDownList("company_id", (IEnumerable<SelectListItem>)ViewBag.company, new { @class = "form-control input-sm", @id = "c_select_company" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Job</label>
+                                        <div class="form-group">
+                                            @Html.DropDownList("JobID", (IEnumerable<SelectListItem>)ViewBag.job, new { @class = "form-control input-sm", @id = "c_select_job" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p style="text-align:center;background-color:#367fa9;padding:5px;color:white">Schedule Details</p>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Effectivity Date</label>
+                                        <div class="input-group date">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input type="date" class="form-control pull-right" id="c_effectivity_date" required="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Expiry Date</label>
+                                        <div class="input-group date">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input type="date" class="form-control pull-right" id="c_expiry_date" required="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="c_time_in">Time In</label><span> ( 12 Hours Format )</span>
+                                        <input type="text" class="form-control" id="c_time_in" pattern="^(0?[1-9]|1[012])(:[0-5]\d) [APap][mM]$" placeholder="HH:MM _M" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="c_time_out">Time Out</label><span> ( 12 Hours Format )</span>
+                                        <input type="text" class="form-control" id="c_time_out" pattern="^(0?[1-9]|1[012])(:[0-5]\d) [APap][mM]$" placeholder="HH:MM _M" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="c_restday">Restday</label><span> ( Once a week )</span>
+                                        <select class="form-control" id="c_restday" required>
+                                            <option value="">[ SELECT ]</option>
+                                            <option value="0">SUNDAY</option>
+                                            <option value="1">MONDAY</option>
+                                            <option value="2">TUESDAY</option>
+                                            <option value="3">WEDNESDAY</option>
+                                            <option value="4">THURSDAY</option>
+                                            <option value="5">FRIDAY</option>
+                                            <option value="6">SATURDAY</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <button type="submit" class="btn btn-primary btn-block" id="btnAddScheduleCompany" style="margin-top:25px;">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane" id="tab_2">
+                            @*<form id="form_new_schedule_byEmployee">*@
+                                <div class="form-vertical row">
+                                    <div class="col-md-12">
+                                        <p style="text-align:center;background-color:#367fa9;padding:5px;color:white">Assign Schedule By Employee</p>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Company</label>
+                                        <div class="form-group">
+                                            @Html.DropDownList("company_id", (IEnumerable<SelectListItem>)ViewBag.company, new { @class = "form-control input-sm", @id = "e_select_company" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Job</label>
+                                        <div class="form-group">
+                                            @Html.DropDownList("JobID", (IEnumerable<SelectListItem>)ViewBag.job, new { @class = "form-control input-sm", @id = "e_select_job" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Employee</label>
+                                        <div class="form-group">
+                                            <select id="e_select_employee" class="form-control select2" required style="width:100%;"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p style="text-align:center;background-color:#367fa9;padding:5px;color:white">Schedule Details</p>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Effectivity Date</label>
+                                        <div class="input-group date">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input type="date" class="form-control pull-right" id="e_effectivity_date" required="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Expiry Date</label>
+                                        <div class="input-group date">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input type="date" class="form-control pull-right" id="e_expiry_date" required="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="e_time_in">Time In</label><span> ( 12 Hours Format )</span>
+                                        <input type="text" class="form-control" id="e_time_in" pattern="^(0?[1-9]|1[012])(:[0-5]\d) [APap][mM]$" placeholder="HH:MM _M" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="e_time_out">Time Out</label><span> ( 12 Hours Format )</span>
+                                        <input type="text" class="form-control" id="e_time_out" pattern="^(0?[1-9]|1[012])(:[0-5]\d) [APap][mM]$" placeholder="HH:MM _M" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="e_restday">Restday</label><span> ( Once a week )</span>
+                                        <select class="form-control" id="e_restday" required>
+                                            <option value="">[ SELECT ]</option>
+                                            <option value="0">SUNDAY</option>
+                                            <option value="1">MONDAY</option>
+                                            <option value="2">TUESDAY</option>
+                                            <option value="3">WEDNESDAY</option>
+                                            <option value="4">THURSDAY</option>
+                                            <option value="5">FRIDAY</option>
+                                            <option value="6">SATURDAY</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <button type="submit" class="btn btn-primary btn-block" id="btnAddScheduleEmployee" style="margin-top:25px;">Submit</button>
+                                    </div>
+
+                                </div>
+                            @*</form>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">Filter Options</h3>
+                <div class="box-tools">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="form-vertical row">
+                    <div class="form-group col-md-2">
+                        <label>Year / Month</label>
+                        <div class="form-group">
+                            <input type="text" class="form-control input-sm" id="date"  readonly/>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Company</label>
+                        <div class="form-group">
+                            @Html.DropDownList("company_id", (IEnumerable<SelectListItem>)ViewBag.company, new { @class = "form-control input-sm", @id = "select_company" })
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Job</label>
+                        <div class="form-group">
+                            @Html.DropDownList("JobID", (IEnumerable<SelectListItem>)ViewBag.job, new { @class = "form-control input-sm", @id = "select_job" })
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Employee</label>
+                        <div class="form-group">
+                            <select style="margin-top:5px;" id="select_employee" class="form-control select2"></select>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label class="control-label" for="">Options</label>
+                        <button type="button" class="btn btn-sm btn-default btn-block" id="btnView">
+                            <i class="fa fa-refresh"></i> Filter
+                        </button>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label class="control-label" for="">New</label>
+                        <button type="button" class="btn btn-sm btn-default btn-block" id="btnAddSchedule">
+                            <i class="fa fa-plus"></i> Add Schedule
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div id="viewResult" class="box box-solid">
+            <div class="box-header"></div>
+            <div class="box-body">
+                <div class="result">
+                    <p style="text-align:center">*** CLICK FILTER TO SHOW RESULT ***</p>
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+@section Scripts{
+    <script src="~/Scripts/jquery.inputmask.bundle.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#select_company').on('change', function () {
+                select_employee();
+            });
+            $('#select_company').trigger('change');
+            $('#select_job').on('change', function () {
+                select_employee();
+            });
+            $('#btnAddSchedule').on('click', function () {
+                $('#scheduler').modal('show');
+            });
+
+            $('#form_new_schedule_byCompanyJOb').on('submit', function (e) {
+                e.preventDefault();
+
+                var params = {
+
+                    company_id: $('#c_select_company').val(),
+                    job_id: $('#c_select_job').val(),
+                    employee_id: 0,
+                    effectivity_date: $('#c_effectivity_date').val(),
+                    expiry_date: $('#c_expiry_date').val(),
+                    Timein: $('#c_time_in').val(),
+                    Timeout: $('#c_time_out').val(),
+                    restday: $('#c_restday').val()
+
+                }
+                if (confirm("This schedule will override in their current schedule after you continue. Do you want to continue?")) {
+                    $.ajax({
+                        url: 'saveScheduleByCompanyJob',
+                        type: 'POST',
+                        data: params,
+                        success: function (data) {
+                            alert('Sucessfully Added');
+                            $('#scheduler').modal('hide');
+                            refreshView();
+                        }, error: function (xhr, status, error) {
+                            alertDialog({ text: xhr.responseText });
+                        }
+                    });
+                }
+            });
+
+            //$('#form_new_schedule_byEmployee').on('submit', function (e) {
+            //    e.preventDefault();
+
+            //    var params = {
+
+            //        company_id: 0,
+            //        job_id: 0,
+            //        employee_id: $('#e_select_employee').val(),
+            //        effectivity_date: $('#e_effectivity_date').val(),
+            //        expiry_date: $('#e_expiry_date').val(),
+            //        Timein: $('#e_time_in').val(),
+            //        Timeout: $('#e_time_out').val(),
+            //        restday: $('#e_restday').val()
+
+            //    }
+
+            //    if (confirm("This schedule will override in his/her current schedule after you continue. Do you want to continue?")) {
+            //        $.ajax({
+            //            url: 'saveScheduleByCompanyJob',
+            //            type: 'POST',
+            //            data: params,
+            //            success: function (data) {
+            //                alert('Sucessfully Added');
+            //                $('#scheduler').modal('hide');
+            //                refreshView();
+            //            }, error: function (xhr, status, error) {
+            //                alertDialog({ text: xhr.responseText });
+            //            }
+            //        });
+            //    }
+
+
+            //});
+
+            $(document).on('click', '#btnAddScheduleEmployee', function () {
+                $.ajax({
+                    url: '@Url.Action("saveScheduleByCompanyJob", "Schedule")',
+                    method: 'post',
+                    data: {
+                        company_id:0,
+                        job_id:0,
+                        employee_id:$('#e_select_employee').val(),
+                        effectivity_date:$('#e_effectivity_date').val(),
+                        expiry_date:$('#e_expiry_date').val(),
+                        Timein:$('#e_time_in').val(),
+                        Timeout:$('#e_time_out').val(),
+                        restday:$('#e_restday').val()
+                    },
+                    success: function (data) {
+                        alert('Sucessfully Added');
+                        $('#scheduler').modal('hide');
+                        refreshView();
+                    },
+                    error: function (xhr, status, error) {
+                        alertDialog({ text: xhr.responseText });
+                    }
+                })
+            });
+
+
+            $('#e_select_company').on('change', function () {
+                assign_select_employee();
+            });
+            $('#e_select_job').on('change', function () {
+                assign_select_employee();
+            });
+
+            $('#btnSubmitRD').on('click', function () {
+              
+                var time_in = $('#r_time_in').val();
+                var time_out = $('#r_time_out').val();
+
+                if (time_in == "" && time_out == "") {
+                    alert("You must set his/her regular schedule");
+                } else {
+
+                    if (confirm("Do you want to set this day into his/her restday?")) {
+                        $.ajax({
+                            url: 'setRestday',
+                            type: 'POST',
+                            data: {
+                                employee_id: $('#select_employee').val(),
+                                date: $('.restday_date').text(),
+                                Timein: time_in,
+                                Timeout: time_out
+                            }, success: function (data) {
+                                alert('Sucessfully Added');
+                                refreshView();
+                            }, error: function (xhr, status, error) {
+                                alertDialog({ text: xhr.responseText });
+                            }
+                        });
+                    }
+                    $('#editRestdayWithSched').modal('hide');
+                }
+            });
+
+            $(document).on('click', '.btn-edit-sched', function () {
+                $(window).scrollTop(0);
+                $('#editSchedule').modal('show');
+
+                var date = $(this).attr('date');
+                var time_in = $(this).attr('time_in');
+                var time_out = $(this).attr('time_out');
+
+                $('.edit_date').text(date);
+                $('.edit_name').text($('#select_employee :selected').text());
+                $('.edit_employee_id').val($('#select_employee').val());
+                $('#n_time_in').val(time_in);
+                $('#n_time_out').val(time_out);
+                $('#editRestdayWithSched').modal('hide');
+
+            });
+
+            $(document).on('click', '.btn-restday-set', function () {
+                $(window).scrollTop(0);
+                var date = $(this).attr('date');
+
+                $('.restday_date').text(date);
+                $('.restday_name').text($('#select_employee :selected').text());
+                $('.restday_employee_id').val($('#select_employee').val());
+                $('.restday_sched_date').val(date);
+
+              
+                $('#editRestdayWithSched').modal('show');
+             
+            });
+
+            $(document).on('click', '#btnEditSched', function () {
+                if (confirm("Do you want to continue to override his/her schedule?")) {
+                    $.ajax({
+                        url: 'saveDailyScheulde',
+                        type: 'POST',
+                        data: {
+                            employee_id: $('.edit_employee_id').val(),
+                            date: $('.edit_date').text(),
+                            Timein: $('#n_time_in').val(),
+                            Timeout: $('#n_time_out').val(),
+                        }, success: function (data) {
+                            alert('Sucessfully Added');
+                            $('#editSchedule').modal('hide');
+                            refreshView();
+                        }, error: function (xhr, status, error) {
+                            alertDialog({ text: xhr.responseText });
+                        }
+                    });
+                }
+            });
+
+            $('#btnView').on('click', function () {
+
+                var employee_id = $('#select_employee').val();
+                var date = $('#date').val();
+
+                if (employee_id != "") {
+                    showLoader('#viewResult');
+                    $.ajax({
+                        url: 'getScheduleView',
+                        type: 'POST',
+                        data: {
+                            employee_id: employee_id,
+                            date: date
+                        },
+                        success: function (data) {
+                            $('.result').html(data);
+                            hideLoader('#viewResult');
+                        }, error: function (xhr, status, error) {
+                            alertDialog({ text: xhr.responseText });
+                        }
+                    });
+                } else {
+                    alert("You need to select an employee");
+                }
+
+
+            });
+
+            $("#date").datepicker({
+                format: "MM yyyy",
+                viewMode: "months",
+                minViewMode: "months"
+            });
+
+            //$('#c_effectivity_date').datepicker();
+            //$('#c_expiry_date').datepicker();
+
+
+            $('#c_time_in').inputmask(
+                "hh:mm t", {
+                    placeholder: "HH:MM _M",
+                    insertMode: false,
+                    showMaskOnHover: false,
+                    hourFormat: 12
+                }
+            );
+
+            $('#c_time_out').inputmask(
+                "hh:mm t", {
+                    placeholder: "HH:MM _M",
+                    insertMode: false,
+                    showMaskOnHover: false,
+                    hourFormat: 12
+                }
+            );
+
+            //$('#e_effectivity_date').datepicker();
+            //$('#e_expiry_date').datepicker();
+            
+            $('#e_time_in').inputmask(
+                "hh:mm t", {
+                    placeholder: "HH:MM _M",
+                    insertMode: false,
+                    showMaskOnHover: false,
+                    hourFormat: 12
+                }
+            );
+
+            $('#e_time_out').inputmask(
+                "hh:mm t", {
+                    placeholder: "HH:MM _M",
+                    insertMode: false,
+                    showMaskOnHover: false,
+                    hourFormat: 12
+                }
+            );
+            
+            $('#n_time_in').timepicker({
+                showPeriod: true,
+                showLeadingZero: true,
+                minutes: {
+                    interval: 1,
+                },
+            });
+            $('#n_time_out').timepicker({
+                showPeriod: true,
+                showLeadingZero: true,
+                minutes: {
+                    interval: 1,
+                },
+            });
+
+            $('#r_time_in').timepicker({
+                showPeriod: true,
+                showLeadingZero: true,
+                minutes: {
+                    interval: 1,
+                },
+            });
+            $('#r_time_out').timepicker({
+                showPeriod: true,
+                showLeadingZero: true,
+                minutes: {
+                    interval: 1,
+                },
+            });
+
+
+            function assign_select_employee() {
+                $.ajax({
+                    url: "/Filter/getEmployee",
+                    type: "POST",
+                    data: {
+                        "job_id": $("#e_select_job").val(),
+                        "company_id": $("#e_select_company").val()
+                    },
+                    success: function (data) {
+
+                        if (data.length > 0) {
+                            $('#e_select_employee').html('');
+                            var options = '';
+                            options += '<option value="">[[ SELECT ]]</option>';
+                            for (var i = 0; i < data.length; i++) {
+                                options += '<option value="' + data[i].emp_id + '">' + data[i].name + '</option>';
+                            }
+                            $('#e_select_employee').append(options);
+                        }
+                    }
+
+                });
+            }
+
+            function select_employee() {
+                $.ajax({
+                    url: "@Url.Action("getEmployee", "Filter")",
+                    type: "POST",
+                    data: {
+                        "job_id": $("#select_job").val(),
+                        "company_id": $("#select_company").val()
+                    },
+                    success: function (data) {
+
+                        if (data.length > 0) {
+                            $('#select_employee').html('');
+                            var options = '';
+                            options += '<option value="">[[ SELECT ]]</option>';
+                            for (var i = 0; i < data.length; i++) {
+                                options += '<option value="' + data[i].emp_id + '">' + data[i].name + '</option>';
+                            }
+                            $('#select_employee').append(options);
+                        }
+                    }
+
+                });
+            }
+
+            function refreshView() {
+                $('#btnView').trigger('click');
+            }
+        });
+    </script>
+}

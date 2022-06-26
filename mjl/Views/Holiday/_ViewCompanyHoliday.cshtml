@@ -1,0 +1,81 @@
+﻿@using mjl.Models;
+@using mjl.Models.Database;
+
+@{
+    List<viewCompanyHoliday> listCompanyHoliday = ViewBag.list;
+}
+<table class="table table-bordered table-condensed">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Prepared ( Name | Date )</th>
+            <th>Last Edit ( Name | Date )</th>
+            <th>Status</th>
+            <th>Option</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (listCompanyHoliday.Count() > 0)
+        {
+            foreach (viewCompanyHoliday CompanyHoliday in listCompanyHoliday)
+            {
+                <tr>
+                    <input type="hidden" value="@CompanyHoliday.HolidayID" class="holiday_id"/>
+                    <input type="hidden" value="@CompanyHoliday.company_id" class="company_id_edit"/>
+                    <input type="hidden" value="@CompanyHoliday.HolidayName" class="holiday_name"/>
+                    <input type="hidden" value="@CompanyHoliday.HolidayDate.ToDateTimeSimpleFormat()" class="holiday_date"/>
+                    <input type="hidden" value="@CompanyHoliday.HolidayType" class="holiday_type"/>
+                    <input type="hidden" value="@CompanyHoliday.IsActive.Value.ToString()" class="holiday_status"/>
+
+                    <td>@CompanyHoliday.HolidayName.ToUpper()</td>
+                    <td>@CompanyHoliday.HolidayDate.ToDateTimeFormat()</td>
+                    <td>@CompanyHoliday.HolidayType.ToUpper()</td>
+                    <td>
+                       @{
+                           string prepared_name = "";
+                           User preparedEmployee = UserModel.gerUserById(CompanyHoliday.prepared_by.Value);
+                           prepared_name = preparedEmployee.FirstName + ' ' + preparedEmployee.LastName;
+                        }
+                        @prepared_name.ToUpper() | @CompanyHoliday.prepared_date.ToDateTimeFormat()
+                    </td>
+                    <td>
+                        @{
+                            string lastedit_name = "N/A";
+                            string edit_date = "N/A";
+                            if (CompanyHoliday.last_edit_by.HasValue)
+                            {
+                                User lasteditEmployee = UserModel.gerUserById(CompanyHoliday.last_edit_by.Value);
+                                lastedit_name = lasteditEmployee.FirstName + ' ' + lasteditEmployee.LastName;
+                                edit_date = CompanyHoliday.last_edit_date.ToDateTimeFormat();
+                            }
+                        }
+                        @lastedit_name.ToUpper() | @edit_date
+                    </td>
+                    <td>@if (CompanyHoliday.IsActive.Value) {
+                        <span class="label label-primary">Active</span>
+                    }
+                    else {
+                        <span class="label label-danger">In Active</span>
+                    }</td>
+                    <td>
+                        <button type='button' class='btn btn-xs btn-default btnEditHoliday' title='Edit'><i class='fa fa-pencil'></i></button>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="6" style="text-align:center"><i class="fa fa-database"></i> No data found</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+
+
+

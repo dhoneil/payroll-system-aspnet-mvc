@@ -1,0 +1,855 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="dbPayrollModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="BillingAdjustments">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="payslip_id" Type="int" />
+    <Property Name="name" Type="varchar" MaxLength="50" />
+    <Property Name="amount" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="is_active" Type="bit" />
+    <Property Name="prepared_by" Type="int" />
+    <Property Name="prepared_date" Type="datetime" />
+    <Property Name="last_edit_by" Type="int" />
+    <Property Name="last_edit_date" Type="datetime" />
+  </EntityType>
+  <EntityType Name="BillingSecurities">
+    <Key>
+      <PropertyRef Name="bill_id" />
+    </Key>
+    <Property Name="bill_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="bill_description" Type="varchar(max)" />
+    <Property Name="bill_amount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="company_id" Type="int" />
+    <Property Name="date_from" Type="datetime" />
+    <Property Name="date_to" Type="datetime" />
+    <Property Name="prepared_by" Type="int" />
+    <Property Name="prepared_date" Type="datetime" />
+    <Property Name="updated_by" Type="int" />
+    <Property Name="update_date" Type="datetime" />
+    <Property Name="status" Type="datetime" />
+    <Property Name="remarks" Type="varchar(max)" />
+  </EntityType>
+  <EntityType Name="Companies">
+    <Key>
+      <PropertyRef Name="company_id" />
+    </Key>
+    <Property Name="company_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar(max)" />
+    <Property Name="type" Type="varchar" MaxLength="50" />
+    <Property Name="owner_name" Type="nvarchar(max)" />
+    <Property Name="admin_fee" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="address" Type="nvarchar(max)" />
+    <Property Name="city" Type="nvarchar(max)" />
+    <Property Name="contact_number" Type="nvarchar(max)" />
+    <Property Name="prepared_by" Type="int" />
+    <Property Name="prepared_date" Type="datetime" />
+    <Property Name="last_edit_by" Type="int" />
+    <Property Name="last_edit_date" Type="datetime" />
+    <Property Name="is_active" Type="bit" />
+  </EntityType>
+  <EntityType Name="CompanyHolidays">
+    <Key>
+      <PropertyRef Name="HolidayID" />
+    </Key>
+    <Property Name="HolidayID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="HolidayName" Type="varchar" MaxLength="50" />
+    <Property Name="HolidayType" Type="varchar" MaxLength="50" />
+    <Property Name="HolidayDate" Type="datetime" />
+    <Property Name="CompanyID" Type="int" />
+    <Property Name="prepared_by" Type="int" />
+    <Property Name="prepared_date" Type="datetime" />
+    <Property Name="last_edit_by" Type="int" />
+    <Property Name="last_edit_date" Type="datetime" />
+    <Property Name="IsActive" Type="bit" />
+  </EntityType>
+  <EntityType Name="CompensationHistories">
+    <Key>
+      <PropertyRef Name="HistoryID" />
+    </Key>
+    <Property Name="HistoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EmployeeID" Type="int" />
+    <Property Name="CompensationType" Type="varchar" MaxLength="50" />
+    <Property Name="ValidityStart" Type="datetime" />
+    <Property Name="CompensationRate" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="PreparedBy" Type="int" />
+    <Property Name="PreparedDate" Type="datetime" />
+    <Property Name="LastEditBy" Type="int" />
+    <Property Name="LastEditDate" Type="datetime" />
+    <Property Name="IsActive" Type="bit" />
+  </EntityType>
+  <EntityType Name="DailyTimeRecords">
+    <Key>
+      <PropertyRef Name="RecordID" />
+    </Key>
+    <Property Name="RecordID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EmployeeID" Type="int" Nullable="false" />
+    <Property Name="RecordDate" Type="datetime" Nullable="false" />
+    <Property Name="SystemEqDate" Type="int" Nullable="false" />
+    <Property Name="TimeLogIn" Type="datetime" />
+    <Property Name="TimeLogOut" Type="datetime" />
+    <Property Name="TimeLogType" Type="int" Nullable="false" />
+    <Property Name="PreparedBy" Type="int" Nullable="false" />
+    <Property Name="PreparedDate" Type="datetime" Nullable="false" />
+    <Property Name="LastEditBy" Type="int" Nullable="false" />
+    <Property Name="LastEditDate" Type="datetime" Nullable="false" />
+    <Property Name="Source" Type="nvarchar(max)" />
+    <Property Name="HasComputedPayslip" Type="bit" Nullable="false" />
+    <Property Name="total_duty_hrs" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="total_overtime_hrs" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="holiday_hrs" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="nigthdiff" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="lates" Type="int" />
+    <Property Name="undertime" Type="int" />
+    <Property Name="isHalfDay" Type="bit" />
+  </EntityType>
+  <EntityType Name="employee_master">
+    <Key>
+      <PropertyRef Name="cust_acct_no" />
+      <PropertyRef Name="countryid" />
+      <PropertyRef Name="comp_code" />
+      <PropertyRef Name="franchise" />
+      <PropertyRef Name="store_code" />
+      <PropertyRef Name="employee_no" />
+    </Key>
+    <Property Name="cust_acct_no" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="countryid" Type="int" Nullable="false" />
+    <Property Name="comp_code" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="franchise" Type="int" Nullable="false" />
+    <Property Name="store_code" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="employee_no" Type="decimal" Precision="10" Scale="0" Nullable="false" />
+    <Property Name="username" Type="varchar" MaxLength="30" />
+    <Property Name="first_name" Type="varchar" MaxLength="50" />
+    <Property Name="middle_name" Type="varchar" MaxLength="50" />
+    <Property Name="last_name" Type="varchar" MaxLength="50" />
+    <Property Name="birthday" Type="datetime" />
+    <Property Name="civil_id_no" Type="varchar" MaxLength="30" />
+    <Property Name="civil_id_expired" Type="datetime" />
+    <Property Name="health_card_no" Type="varchar" MaxLength="30" />
+    <Property Name="health_crd_exp" Type="datetime" />
+    <Property Name="level" Type="int" />
+    <Property Name="password" Type="varchar" MaxLength="30" />
+    <Property Name="status" Type="varchar" MaxLength="1" />
+    <Property Name="inac_date" Type="datetime" />
+    <Property Name="act_date" Type="datetime" />
+    <Property Name="passport" Type="varchar" MaxLength="30" />
+    <Property Name="passport_expr" Type="datetime" />
+    <Property Name="address_flat" Type="varchar" MaxLength="10" />
+    <Property Name="address_floor" Type="varchar" MaxLength="10" />
+    <Property Name="address_censuno" Type="varchar" MaxLength="20" />
+    <Property Name="address_buildingno" Type="varchar" MaxLength="20" />
+    <Property Name="address_street" Type="varchar" MaxLength="30" />
+    <Property Name="address_blockno" Type="varchar" MaxLength="20" />
+    <Property Name="address_area" Type="int" />
+    <Property Name="address_city" Type="int" />
+    <Property Name="address_country" Type="int" />
+    <Property Name="origin_address" Type="varchar" MaxLength="100" />
+    <Property Name="origin_city" Type="varchar" MaxLength="30" />
+    <Property Name="origin_country" Type="int" />
+    <Property Name="first_name_a" Type="varchar" MaxLength="50" />
+    <Property Name="middle_name_a" Type="varchar" MaxLength="50" />
+    <Property Name="last_name_a" Type="varchar" MaxLength="50" />
+    <Property Name="father_name_a" Type="varchar" MaxLength="50" />
+    <Property Name="father_last_a" Type="varchar" MaxLength="50" />
+    <Property Name="salary_rate" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="address_avenue" Type="varchar" MaxLength="60" />
+    <Property Name="dept_code" Type="varchar" MaxLength="10" />
+    <Property Name="sect_code" Type="varchar" MaxLength="10" />
+    <Property Name="photo" Type="varbinary(max)" />
+    <Property Name="genderid" Type="int" />
+    <Property Name="maritalid" Type="int" />
+    <Property Name="nationalityid" Type="int" />
+    <Property Name="worksched" Type="int" />
+    <Property Name="driverlicense" Type="varchar" MaxLength="50" />
+    <Property Name="driverexpired" Type="datetime" />
+    <Property Name="Contract" Type="bit" />
+    <Property Name="noyears" Type="int" />
+    <Property Name="contract_expired" Type="datetime" />
+    <Property Name="residency_no" Type="varchar" MaxLength="50" />
+    <Property Name="residency_expired" Type="datetime" />
+    <Property Name="bankid" Type="int" />
+    <Property Name="bank_account_no" Type="varchar" MaxLength="50" />
+    <Property Name="Passport_countryid" Type="int" />
+    <Property Name="passport_issuedat" Type="varchar" MaxLength="50" />
+    <Property Name="datehired" Type="datetime" />
+    <Property Name="statusid" Type="int" />
+    <Property Name="photo_filename" Type="varchar" MaxLength="300" />
+    <Property Name="photo_imagetype" Type="varchar" MaxLength="50" />
+    <Property Name="phoneno" Type="varchar" MaxLength="30" />
+    <Property Name="mobileno" Type="varchar" MaxLength="30" />
+    <Property Name="email" Type="varchar" MaxLength="60" />
+    <Property Name="compmobno" Type="varchar" MaxLength="30" />
+    <Property Name="compemailadd" Type="varchar" MaxLength="60" />
+    <Property Name="shift_code" Type="varchar" MaxLength="2" />
+    <Property Name="clientassign" Type="varchar" MaxLength="20" />
+    <Property Name="shift_type" Type="int" />
+    <Property Name="birthplace" Type="varchar" MaxLength="100" />
+    <Property Name="salary_typeid" Type="int" />
+    <Property Name="salary_periodid" Type="int" />
+    <Property Name="height" Type="int" />
+    <Property Name="weight" Type="int" />
+    <Property Name="religionid" Type="int" />
+    <Property Name="spouse" Type="varchar" MaxLength="120" />
+    <Property Name="spouse_occupation" Type="varchar" MaxLength="80" />
+    <Property Name="fathers_name" Type="varchar" MaxLength="150" />
+    <Property Name="fathers_occupation" Type="varchar" MaxLength="120" />
+    <Property Name="mothers_name" Type="varchar" MaxLength="120" />
+    <Property Name="mothers_occupation" Type="varchar" MaxLength="150" />
+    <Property Name="parent_address" Type="varchar" MaxLength="200" />
+    <Property Name="skillandlanguage" Type="varchar" MaxLength="200" />
+    <Property Name="caseemergency" Type="varchar" MaxLength="80" />
+    <Property Name="caseemergencycontact" Type="varchar" MaxLength="50" />
+    <Property Name="caseemergencyaddress" Type="varchar" MaxLength="200" />
+    <Property Name="sssno" Type="varchar" MaxLength="50" />
+    <Property Name="pagibig" Type="varchar" MaxLength="50" />
+    <Property Name="philhealth" Type="varchar" MaxLength="50" />
+    <Property Name="tinno" Type="varchar" MaxLength="50" />
+    <Property Name="probitionary" Type="int" />
+    <Property Name="noofmonths" Type="int" />
+    <Property Name="endprob" Type="datetime" />
+    <Property Name="housing" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="transpo" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="sil" Type="int" />
+    <Property Name="vl" Type="int" />
+    <Property Name="sl" Type="int" />
+    <Property Name="renewcontract" Type="bit" />
+    <Property Name="restday" Type="int" />
+    <Property Name="allowance_petrol" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="allowance_telephone" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="allowance_travel" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="allowance_car" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="allowance_job_nature" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="allowance_foods" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="allowance_others" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cash_bond" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="pagibig_contr" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="philhealth_contr" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="fingerprintid" Type="varchar" MaxLength="30" />
+    <Property Name="security_lisence" Type="varchar" MaxLength="50" />
+    <Property Name="sl_dateexpire" Type="datetime" />
+    <Property Name="signaturephoto" Type="varbinary(max)" />
+    <Property Name="photos" Type="bit" />
+    <Property Name="sss_deduct" Type="bit" />
+    <Property Name="pagibig_deduct" Type="bit" />
+    <Property Name="philhealthdeduct" Type="bit" />
+    <Property Name="chargefee" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="runningbalance" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="defaulthrswork" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="chargepaydaydeduct" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="sprsdhrsprem" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="defaultothrswork" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="nsdhrswork" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="totalhrsworby8" Type="bit" />
+    <Property Name="billingfee" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="incentive" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="Gender" Type="varchar" MaxLength="50" />
+    <Property Name="Nationality" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Employee_Payslip">
+    <Key>
+      <PropertyRef Name="payslip_id" />
+    </Key>
+    <Property Name="payslip_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="company_id" Type="int" />
+    <Property Name="employee_id" Type="int" />
+    <Property Name="employee_rate" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="date_from" Type="datetime" />
+    <Property Name="date_to" Type="datetime" />
+    <Property Name="total_additionals" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="total_less" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="total_deduction" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="gross_pay" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="net_pay" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="status" Type="varchar" MaxLength="50" />
+    <Property Name="prepared_by" Type="int" />
+    <Property Name="prepared_date" Type="datetime" />
+    <Property Name="cancelled_by" Type="int" />
+    <Property Name="cancelled_date" Type="datetime" />
+    <Property Name="approved_by" Type="int" />
+    <Property Name="approved_date" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Employee_Payslip_Adjustment">
+    <Key>
+      <PropertyRef Name="payslip_adjustment_id" />
+    </Key>
+    <Property Name="payslip_adjustment_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="payslip_id" Type="int" />
+    <Property Name="name" Type="varchar" MaxLength="50" />
+    <Property Name="amount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="type" Type="varchar" MaxLength="50" />
+    <Property Name="prepared_by" Type="int" />
+    <Property Name="prepared_date" Type="datetime" />
+    <Property Name="cancelled_by" Type="int" />
+    <Property Name="cancelled_date" Type="datetime" />
+    <Property Name="lastedit_by" Type="int" />
+    <Property Name="lastedit_date" Type="datetime" />
+    <Property Name="status" Type="varchar" MaxLength="50" />
+    <Property Name="isCharges" Type="bit" />
+  </EntityType>
+  <EntityType Name="Employee_Payslip_Details">
+    <Key>
+      <PropertyRef Name="payslip_less_id" />
+    </Key>
+    <Property Name="payslip_less_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="payslip_id" Type="int" />
+    <Property Name="name" Type="varchar" MaxLength="50" />
+    <Property Name="days" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="hours" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="amount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="type" Type="varchar" MaxLength="50" />
+    <Property Name="last_edit_by" Type="int" />
+    <Property Name="last_edit_date" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Employee_Payslip_Government">
+    <Key>
+      <PropertyRef Name="payslip_government_id" />
+    </Key>
+    <Property Name="payslip_government_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="payslip_id" Type="int" />
+    <Property Name="name" Type="varchar" MaxLength="50" />
+    <Property Name="amount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="last_edit_by" Type="int" />
+    <Property Name="last_edit_date" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Employee_Schedule">
+    <Key>
+      <PropertyRef Name="ScheduleID" />
+    </Key>
+    <Property Name="ScheduleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EmployeeID" Type="int" />
+    <Property Name="EffectiveDate" Type="datetime" />
+    <Property Name="ExpiryDate" Type="datetime" />
+    <Property Name="TimeIn" Type="time" Precision="7" />
+    <Property Name="TimeOut" Type="time" Precision="7" />
+    <Property Name="Restday" Type="int" />
+    <Property Name="Remarks" Type="varchar(max)" />
+    <Property Name="prepared_by" Type="int" />
+    <Property Name="prepared_date" Type="datetime" />
+    <Property Name="latest_edit_by" Type="int" />
+    <Property Name="latest_edit_date" Type="datetime" />
+    <Property Name="isOutOverDay" Type="bit" />
+  </EntityType>
+  <EntityType Name="employee_timesheet">
+    <Key>
+      <PropertyRef Name="emp_timesheet_id" />
+    </Key>
+    <Property Name="emp_timesheet_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="employee_id" Type="int" />
+    <Property Name="date_from" Type="datetime" />
+    <Property Name="date_to" Type="datetime" />
+    <Property Name="regular_days" Type="int" />
+    <Property Name="holiday_days" Type="int" />
+    <Property Name="restday_days" Type="int" />
+    <Property Name="absent_days" Type="int" />
+    <Property Name="overtime_hours" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="lates" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="undertime" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="status" Type="varchar" MaxLength="50" />
+    <Property Name="prepared_by" Type="int" />
+    <Property Name="prepared_date" Type="datetime" />
+    <Property Name="cancelled_by" Type="int" />
+    <Property Name="cancelled_date" Type="datetime" />
+    <Property Name="lastedit_by" Type="int" />
+    <Property Name="lastedit_date" Type="datetime" />
+  </EntityType>
+  <EntityType Name="EmployeeCharges">
+    <Key>
+      <PropertyRef Name="ChargeID" />
+    </Key>
+    <Property Name="ChargeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ChargeName" Type="varchar" MaxLength="50" />
+    <Property Name="EmployeeID" Type="int" />
+    <Property Name="date_from" Type="datetime" />
+    <Property Name="date_to" Type="datetime" />
+    <Property Name="status" Type="varchar" MaxLength="50" />
+    <Property Name="prepared_by" Type="int" />
+    <Property Name="prepared_date" Type="datetime" />
+    <Property Name="lastedit_by" Type="int" />
+    <Property Name="lastedit_date" Type="datetime" />
+    <Property Name="ChargeAmount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Released_by" Type="int" />
+    <Property Name="Released_date" Type="datetime" />
+    <Property Name="Cancelled_by" Type="int" />
+    <Property Name="Cancelled_date" Type="datetime" />
+    <Property Name="payslip_adjustment_id" Type="int" />
+    <Property Name="payslip_id" Type="int" />
+  </EntityType>
+  <EntityType Name="EmployeeDependents">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="emp_id" Type="bigint" />
+    <Property Name="name" Type="varchar" MaxLength="50" />
+    <Property Name="relation" Type="varchar" MaxLength="50" />
+    <Property Name="isActive" Type="bit" />
+    <Property Name="preparedBy" Type="int" />
+    <Property Name="preparedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="EmployeeGovernments">
+    <Key>
+      <PropertyRef Name="goverment_deduction_id" />
+    </Key>
+    <Property Name="goverment_deduction_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="emp_id" Type="int" />
+    <Property Name="with_sss" Type="bit" />
+    <Property Name="sss_type_deduction" Type="varchar" MaxLength="50" />
+    <Property Name="sss_amount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="with_philhealth" Type="bit" />
+    <Property Name="philhealth_type_deduction" Type="varchar" MaxLength="50" />
+    <Property Name="philhealth_amount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="with_pagibig" Type="bit" />
+    <Property Name="pagibig_type_deduction" Type="varchar" MaxLength="50" />
+    <Property Name="pagibig_amount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="prepared_by" Type="int" />
+    <Property Name="prepared_date" Type="datetime" />
+    <Property Name="last_edit_by" Type="int" />
+    <Property Name="last_edit_date" Type="datetime" />
+    <Property Name="with_tin" Type="bit" />
+  </EntityType>
+  <EntityType Name="Employees">
+    <Key>
+      <PropertyRef Name="EmployeeID" />
+    </Key>
+    <Property Name="EmployeeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="employee_no" Type="int" />
+    <Property Name="FirstName" Type="nvarchar(max)" />
+    <Property Name="LastName" Type="nvarchar(max)" />
+    <Property Name="MiddleName" Type="nvarchar(max)" />
+    <Property Name="DateHired" Type="datetime" />
+    <Property Name="Gender" Type="nvarchar(max)" />
+    <Property Name="Citizenship" Type="nvarchar(max)" />
+    <Property Name="BirthDate" Type="datetime" />
+    <Property Name="BirthPlace" Type="nvarchar(max)" />
+    <Property Name="JobID" Type="int" />
+    <Property Name="PreparedBy" Type="int" />
+    <Property Name="PreparedDate" Type="datetime" />
+    <Property Name="LastEditBy" Type="int" />
+    <Property Name="LastEditDate" Type="datetime" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="company_id" Type="int" />
+    <Property Name="contact_no" Type="varchar" MaxLength="50" />
+    <Property Name="birth_place" Type="varchar" MaxLength="50" />
+    <Property Name="height" Type="varchar" MaxLength="50" />
+    <Property Name="weight" Type="varchar" MaxLength="50" />
+    <Property Name="probitionary" Type="bit" />
+    <Property Name="prob_no_of_months" Type="int" />
+    <Property Name="end_probitionary_date" Type="datetime" />
+    <Property Name="province_address" Type="varchar(max)" />
+    <Property Name="email" Type="varchar" MaxLength="50" />
+    <Property Name="Current_country" Type="varchar" MaxLength="50" />
+    <Property Name="MaritalStatus" Type="varchar" MaxLength="50" />
+    <Property Name="religion" Type="varchar" MaxLength="100" />
+    <Property Name="Current_region" Type="varchar" MaxLength="50" />
+    <Property Name="Current_city_municipality" Type="varchar" MaxLength="50" />
+    <Property Name="Current_street" Type="varchar" MaxLength="50" />
+    <Property Name="Current_barangay" Type="varchar" MaxLength="50" />
+    <Property Name="Current_sitio" Type="varchar" MaxLength="50" />
+    <Property Name="provincial_country" Type="varchar" MaxLength="50" />
+    <Property Name="provincial_region" Type="varchar" MaxLength="50" />
+    <Property Name="provincial_city_municipality" Type="varchar" MaxLength="50" />
+    <Property Name="provincial_street" Type="varchar" MaxLength="50" />
+    <Property Name="provincial_barangay" Type="varchar" MaxLength="50" />
+    <Property Name="provincial_sitio" Type="varchar" MaxLength="50" />
+    <Property Name="renew_contract" Type="bit" />
+    <Property Name="SSS_Number" Type="varchar" MaxLength="50" />
+    <Property Name="PagIbig_Number" Type="varchar" MaxLength="50" />
+    <Property Name="PhilHealth_Number" Type="varchar" MaxLength="50" />
+    <Property Name="TIN_Number" Type="varchar" MaxLength="50" />
+    <Property Name="atm_number" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="EmployeeSpouses">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="emp_id" Type="varchar" MaxLength="50" />
+    <Property Name="firstname" Type="varchar" MaxLength="50" />
+    <Property Name="middlename" Type="varchar" MaxLength="50" />
+    <Property Name="lastname" Type="varchar" MaxLength="50" />
+    <Property Name="preparedBy" Type="int" />
+    <Property Name="preparedDate" Type="datetime" />
+    <Property Name="isActive" Type="bit" />
+  </EntityType>
+  <EntityType Name="Jobs">
+    <Key>
+      <PropertyRef Name="JobID" />
+    </Key>
+    <Property Name="JobID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="JobName" Type="nvarchar(max)" />
+    <Property Name="JobDescription" Type="nvarchar(max)" />
+    <Property Name="PreparedBy" Type="int" />
+    <Property Name="PreparedDate" Type="datetime" />
+    <Property Name="LastEditBy" Type="int" />
+    <Property Name="LastEditDate" Type="datetime" />
+    <Property Name="IsActive" Type="bit" />
+  </EntityType>
+  <EntityType Name="SSS_Contribution">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="start_range" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="end_range" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="monthly_salary_credit" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="social_security_er" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="social_security_ee" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="social_security_total" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ec_er" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="total_contribution_er" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="total_contribution_ee" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="grand_total_contribution" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="total_contribution" Type="decimal" Precision="18" Scale="2" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Password" Type="nvarchar(max)" />
+    <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="View_billingAdjustments">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="bigint" Nullable="false" />
+    <Property Name="payslip_id" Type="int" />
+    <Property Name="name" Type="varchar" MaxLength="50" />
+    <Property Name="amount" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="is_active" Type="bit" />
+    <Property Name="prepared_by" Type="int" />
+    <Property Name="prepared_date" Type="datetime" />
+    <Property Name="last_edit_by" Type="int" />
+    <Property Name="last_edit_date" Type="datetime" />
+    <Property Name="Expr1" Type="int" />
+    <Property Name="Expr5" Type="int" />
+    <Property Name="employee_id" Type="int" />
+    <Property Name="employee_rate" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="date_from" Type="datetime" />
+    <Property Name="date_to" Type="datetime" />
+    <Property Name="total_additionals" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="total_less" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="total_deduction" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="gross_pay" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="net_pay" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="status" Type="varchar" MaxLength="50" />
+    <Property Name="Expr2" Type="int" />
+    <Property Name="Expr3" Type="datetime" />
+    <Property Name="cancelled_by" Type="int" />
+    <Property Name="cancelled_date" Type="datetime" />
+    <Property Name="approved_by" Type="int" />
+    <Property Name="approved_date" Type="datetime" />
+    <Property Name="fname" Type="nvarchar(max)" />
+    <Property Name="lname" Type="nvarchar(max)" />
+    <Property Name="fname_edit" Type="nvarchar(max)" />
+    <Property Name="lname_edit" Type="nvarchar(max)" />
+    <Property Name="e_ID" Type="int" />
+  </EntityType>
+  <EntityType Name="viewChargeReports">
+    <Key>
+      <PropertyRef Name="ChargeID" />
+      <PropertyRef Name="Expr1" />
+      <PropertyRef Name="Expr2" />
+    </Key>
+    <Property Name="ChargeID" Type="int" Nullable="false" />
+    <Property Name="ChargeName" Type="varchar" MaxLength="50" />
+    <Property Name="EmployeeID" Type="int" />
+    <Property Name="date_from" Type="datetime" />
+    <Property Name="date_to" Type="datetime" />
+    <Property Name="status" Type="varchar" MaxLength="50" />
+    <Property Name="prepared_by" Type="int" />
+    <Property Name="prepared_date" Type="datetime" />
+    <Property Name="lastedit_by" Type="int" />
+    <Property Name="lastedit_date" Type="datetime" />
+    <Property Name="ChargeAmount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Released_by" Type="int" />
+    <Property Name="Released_date" Type="datetime" />
+    <Property Name="Cancelled_by" Type="int" />
+    <Property Name="Cancelled_date" Type="datetime" />
+    <Property Name="payslip_adjustment_id" Type="int" />
+    <Property Name="payslip_id" Type="int" />
+    <Property Name="Expr1" Type="int" Nullable="false" />
+    <Property Name="employee_no" Type="int" />
+    <Property Name="FirstName" Type="nvarchar(max)" />
+    <Property Name="LastName" Type="nvarchar(max)" />
+    <Property Name="MiddleName" Type="nvarchar(max)" />
+    <Property Name="DateHired" Type="datetime" />
+    <Property Name="Gender" Type="nvarchar(max)" />
+    <Property Name="Citizenship" Type="nvarchar(max)" />
+    <Property Name="BirthDate" Type="datetime" />
+    <Property Name="BirthPlace" Type="nvarchar(max)" />
+    <Property Name="JobID" Type="int" />
+    <Property Name="PreparedBy" Type="int" />
+    <Property Name="PreparedDate" Type="datetime" />
+    <Property Name="LastEditBy" Type="int" />
+    <Property Name="LastEditDate" Type="datetime" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="company_id" Type="int" />
+    <Property Name="contact_no" Type="varchar" MaxLength="50" />
+    <Property Name="birth_place" Type="varchar" MaxLength="50" />
+    <Property Name="probitionary" Type="bit" />
+    <Property Name="prob_no_of_months" Type="int" />
+    <Property Name="end_probitionary_date" Type="datetime" />
+    <Property Name="province_address" Type="varchar(max)" />
+    <Property Name="email" Type="varchar" MaxLength="50" />
+    <Property Name="Current_country" Type="varchar" MaxLength="50" />
+    <Property Name="MaritalStatus" Type="varchar" MaxLength="50" />
+    <Property Name="religion" Type="varchar" MaxLength="100" />
+    <Property Name="Current_region" Type="varchar" MaxLength="50" />
+    <Property Name="Current_city_municipality" Type="varchar" MaxLength="50" />
+    <Property Name="Current_street" Type="varchar" MaxLength="50" />
+    <Property Name="Current_barangay" Type="varchar" MaxLength="50" />
+    <Property Name="Current_sitio" Type="varchar" MaxLength="50" />
+    <Property Name="provincial_country" Type="varchar" MaxLength="50" />
+    <Property Name="provincial_region" Type="varchar" MaxLength="50" />
+    <Property Name="provincial_city_municipality" Type="nchar" MaxLength="10" />
+    <Property Name="provincial_street" Type="varchar" MaxLength="50" />
+    <Property Name="provincial_barangay" Type="varchar" MaxLength="50" />
+    <Property Name="provincial_sitio" Type="varchar" MaxLength="50" />
+    <Property Name="renew_contract" Type="bit" />
+    <Property Name="SSS_Number" Type="varchar" MaxLength="50" />
+    <Property Name="PagIbig_Number" Type="varchar" MaxLength="50" />
+    <Property Name="PhilHealth_Number" Type="varchar" MaxLength="50" />
+    <Property Name="TIN_Number" Type="varchar" MaxLength="50" />
+    <Property Name="atm_number" Type="varchar" MaxLength="50" />
+    <Property Name="Expr2" Type="int" Nullable="false" />
+    <Property Name="name" Type="nvarchar(max)" />
+    <Property Name="type" Type="varchar" MaxLength="50" />
+    <Property Name="owner_name" Type="nvarchar(max)" />
+    <Property Name="admin_fee" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="address" Type="nvarchar(max)" />
+    <Property Name="city" Type="nvarchar(max)" />
+    <Property Name="contact_number" Type="nvarchar(max)" />
+    <Property Name="Expr3" Type="int" />
+    <Property Name="Expr4" Type="datetime" />
+    <Property Name="last_edit_by" Type="int" />
+    <Property Name="last_edit_date" Type="datetime" />
+    <Property Name="is_active" Type="bit" />
+    <Property Name="weight" Type="varchar" MaxLength="50" />
+    <Property Name="height" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="viewCompanyHolidays">
+    <Key>
+      <PropertyRef Name="HolidayID" />
+      <PropertyRef Name="company_id" />
+    </Key>
+    <Property Name="HolidayID" Type="int" Nullable="false" />
+    <Property Name="HolidayName" Type="varchar" MaxLength="50" />
+    <Property Name="HolidayType" Type="varchar" MaxLength="50" />
+    <Property Name="HolidayDate" Type="datetime" />
+    <Property Name="CompanyID" Type="int" />
+    <Property Name="prepared_by" Type="int" />
+    <Property Name="prepared_date" Type="datetime" />
+    <Property Name="last_edit_by" Type="int" />
+    <Property Name="last_edit_date" Type="datetime" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="company_id" Type="int" Nullable="false" />
+    <Property Name="name" Type="nvarchar(max)" />
+    <Property Name="owner_name" Type="nvarchar(max)" />
+    <Property Name="address" Type="nvarchar(max)" />
+    <Property Name="city" Type="nvarchar(max)" />
+    <Property Name="contact_number" Type="nvarchar(max)" />
+    <Property Name="Expr1" Type="int" />
+    <Property Name="Expr2" Type="datetime" />
+    <Property Name="Expr3" Type="int" />
+    <Property Name="Expr4" Type="datetime" />
+    <Property Name="is_active" Type="bit" />
+  </EntityType>
+  <EntityType Name="viewEmployeeCharges">
+    <Key>
+      <PropertyRef Name="ChargeID" />
+      <PropertyRef Name="Expr1" />
+    </Key>
+    <Property Name="ChargeID" Type="int" Nullable="false" />
+    <Property Name="ChargeName" Type="varchar" MaxLength="50" />
+    <Property Name="EmployeeID" Type="int" />
+    <Property Name="date_from" Type="datetime" />
+    <Property Name="date_to" Type="datetime" />
+    <Property Name="status" Type="varchar" MaxLength="50" />
+    <Property Name="prepared_by" Type="int" />
+    <Property Name="prepared_date" Type="datetime" />
+    <Property Name="lastedit_by" Type="int" />
+    <Property Name="lastedit_date" Type="datetime" />
+    <Property Name="ChargeAmount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Released_by" Type="int" />
+    <Property Name="Released_date" Type="datetime" />
+    <Property Name="Cancelled_by" Type="int" />
+    <Property Name="Cancelled_date" Type="datetime" />
+    <Property Name="payslip_adjustment_id" Type="int" />
+    <Property Name="payslip_id" Type="int" />
+    <Property Name="Expr1" Type="int" Nullable="false" />
+    <Property Name="employee_no" Type="int" />
+    <Property Name="FirstName" Type="nvarchar(max)" />
+    <Property Name="LastName" Type="nvarchar(max)" />
+    <Property Name="MiddleName" Type="nvarchar(max)" />
+    <Property Name="DateHired" Type="datetime" />
+    <Property Name="Gender" Type="nvarchar(max)" />
+    <Property Name="Citizenship" Type="nvarchar(max)" />
+    <Property Name="BirthDate" Type="datetime" />
+    <Property Name="BirthPlace" Type="nvarchar(max)" />
+    <Property Name="JobID" Type="int" />
+    <Property Name="PreparedBy" Type="int" />
+    <Property Name="PreparedDate" Type="datetime" />
+    <Property Name="LastEditBy" Type="int" />
+    <Property Name="LastEditDate" Type="datetime" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="company_id" Type="int" />
+    <Property Name="contact_no" Type="varchar" MaxLength="50" />
+    <Property Name="birth_place" Type="varchar" MaxLength="50" />
+    <Property Name="probitionary" Type="bit" />
+    <Property Name="prob_no_of_months" Type="int" />
+    <Property Name="end_probitionary_date" Type="datetime" />
+    <Property Name="province_address" Type="varchar(max)" />
+    <Property Name="email" Type="varchar" MaxLength="50" />
+    <Property Name="Current_country" Type="varchar" MaxLength="50" />
+    <Property Name="MaritalStatus" Type="varchar" MaxLength="50" />
+    <Property Name="religion" Type="varchar" MaxLength="100" />
+    <Property Name="Current_region" Type="varchar" MaxLength="50" />
+    <Property Name="Current_city_municipality" Type="varchar" MaxLength="50" />
+    <Property Name="Current_street" Type="varchar" MaxLength="50" />
+    <Property Name="Current_barangay" Type="varchar" MaxLength="50" />
+    <Property Name="Current_sitio" Type="varchar" MaxLength="50" />
+    <Property Name="provincial_country" Type="varchar" MaxLength="50" />
+    <Property Name="provincial_region" Type="varchar" MaxLength="50" />
+    <Property Name="provincial_city_municipality" Type="nchar" MaxLength="10" />
+    <Property Name="provincial_street" Type="varchar" MaxLength="50" />
+    <Property Name="provincial_barangay" Type="varchar" MaxLength="50" />
+    <Property Name="provincial_sitio" Type="varchar" MaxLength="50" />
+    <Property Name="renew_contract" Type="bit" />
+    <Property Name="height" Type="varchar" MaxLength="50" />
+    <Property Name="weight" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="ViewEmployeeV2">
+    <Key>
+      <PropertyRef Name="EmployeeID" />
+    </Key>
+    <Property Name="EmployeeID" Type="int" Nullable="false" />
+    <Property Name="employee_no" Type="int" />
+    <Property Name="FirstName" Type="nvarchar(max)" />
+    <Property Name="LastName" Type="nvarchar(max)" />
+    <Property Name="MiddleName" Type="nvarchar(max)" />
+    <Property Name="DateHired" Type="datetime" />
+    <Property Name="Gender" Type="nvarchar(max)" />
+    <Property Name="Citizenship" Type="nvarchar(max)" />
+    <Property Name="BirthDate" Type="datetime" />
+    <Property Name="BirthPlace" Type="nvarchar(max)" />
+    <Property Name="JobID" Type="int" />
+    <Property Name="PreparedBy" Type="int" />
+    <Property Name="PreparedDate" Type="datetime" />
+    <Property Name="LastEditBy" Type="int" />
+    <Property Name="LastEditDate" Type="datetime" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="company_id" Type="int" />
+    <Property Name="contact_no" Type="varchar" MaxLength="50" />
+    <Property Name="birth_place" Type="varchar" MaxLength="50" />
+    <Property Name="probitionary" Type="bit" />
+    <Property Name="prob_no_of_months" Type="int" />
+    <Property Name="end_probitionary_date" Type="datetime" />
+    <Property Name="province_address" Type="varchar(max)" />
+    <Property Name="email" Type="varchar" MaxLength="50" />
+    <Property Name="Current_country" Type="varchar" MaxLength="50" />
+    <Property Name="MaritalStatus" Type="varchar" MaxLength="50" />
+    <Property Name="religion" Type="varchar" MaxLength="100" />
+    <Property Name="Current_region" Type="varchar" MaxLength="50" />
+    <Property Name="Current_city_municipality" Type="varchar" MaxLength="50" />
+    <Property Name="Current_street" Type="varchar" MaxLength="50" />
+    <Property Name="Current_barangay" Type="varchar" MaxLength="50" />
+    <Property Name="Current_sitio" Type="varchar" MaxLength="50" />
+    <Property Name="provincial_country" Type="varchar" MaxLength="50" />
+    <Property Name="provincial_region" Type="varchar" MaxLength="50" />
+    <Property Name="provincial_city_municipality" Type="nchar" MaxLength="10" />
+    <Property Name="provincial_street" Type="varchar" MaxLength="50" />
+    <Property Name="provincial_barangay" Type="varchar" MaxLength="50" />
+    <Property Name="provincial_sitio" Type="varchar" MaxLength="50" />
+    <Property Name="renew_contract" Type="bit" />
+    <Property Name="SSS_Number" Type="varchar" MaxLength="50" />
+    <Property Name="PagIbig_Number" Type="varchar" MaxLength="50" />
+    <Property Name="PhilHealth_Number" Type="varchar" MaxLength="50" />
+    <Property Name="TIN_Number" Type="varchar" MaxLength="50" />
+    <Property Name="Expr1" Type="int" />
+    <Property Name="JobName" Type="nvarchar(max)" />
+    <Property Name="JobDescription" Type="nvarchar(max)" />
+    <Property Name="Expr2" Type="int" />
+    <Property Name="Expr3" Type="datetime" />
+    <Property Name="Expr4" Type="int" />
+    <Property Name="Expr5" Type="datetime" />
+    <Property Name="Expr6" Type="bit" />
+    <Property Name="HistoryID" Type="int" />
+    <Property Name="Expr7" Type="int" />
+    <Property Name="CompensationType" Type="varchar" MaxLength="50" />
+    <Property Name="ValidityStart" Type="datetime" />
+    <Property Name="CompensationRate" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Expr8" Type="int" />
+    <Property Name="Expr9" Type="datetime" />
+    <Property Name="Expr10" Type="int" />
+    <Property Name="Expr11" Type="datetime" />
+    <Property Name="Expr12" Type="bit" />
+    <Property Name="goverment_deduction_id" Type="bigint" />
+    <Property Name="emp_id" Type="int" />
+    <Property Name="with_sss" Type="bit" />
+    <Property Name="sss_type_deduction" Type="varchar" MaxLength="50" />
+    <Property Name="sss_amount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="with_philhealth" Type="bit" />
+    <Property Name="philhealth_type_deduction" Type="varchar" MaxLength="50" />
+    <Property Name="philhealth_amount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="with_pagibig" Type="bit" />
+    <Property Name="pagibig_type_deduction" Type="varchar" MaxLength="50" />
+    <Property Name="pagibig_amount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="prepared_by" Type="int" />
+    <Property Name="prepared_date" Type="datetime" />
+    <Property Name="last_edit_by" Type="int" />
+    <Property Name="last_edit_date" Type="datetime" />
+    <Property Name="Expr13" Type="int" />
+    <Property Name="name" Type="nvarchar(max)" />
+    <Property Name="type" Type="varchar" MaxLength="50" />
+    <Property Name="owner_name" Type="nvarchar(max)" />
+    <Property Name="admin_fee" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="address" Type="nvarchar(max)" />
+    <Property Name="city" Type="nvarchar(max)" />
+    <Property Name="contact_number" Type="nvarchar(max)" />
+    <Property Name="Expr14" Type="int" />
+    <Property Name="Expr15" Type="datetime" />
+    <Property Name="Expr16" Type="int" />
+    <Property Name="Expr17" Type="datetime" />
+    <Property Name="is_active" Type="bit" />
+    <Property Name="with_tin" Type="bit" />
+    <Property Name="atm_number" Type="varchar" MaxLength="50" />
+    <Property Name="height" Type="varchar" MaxLength="50" />
+    <Property Name="weight" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityContainer Name="dbPayrollModelStoreContainer">
+    <EntitySet Name="BillingAdjustments" EntityType="Self.BillingAdjustments" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="BillingSecurities" EntityType="Self.BillingSecurities" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Companies" EntityType="Self.Companies" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CompanyHolidays" EntityType="Self.CompanyHolidays" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CompensationHistories" EntityType="Self.CompensationHistories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DailyTimeRecords" EntityType="Self.DailyTimeRecords" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="employee_master" EntityType="Self.employee_master" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Employee_Payslip" EntityType="Self.Employee_Payslip" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Employee_Payslip_Adjustment" EntityType="Self.Employee_Payslip_Adjustment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Employee_Payslip_Details" EntityType="Self.Employee_Payslip_Details" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Employee_Payslip_Government" EntityType="Self.Employee_Payslip_Government" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Employee_Schedule" EntityType="Self.Employee_Schedule" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="employee_timesheet" EntityType="Self.employee_timesheet" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EmployeeCharges" EntityType="Self.EmployeeCharges" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EmployeeDependents" EntityType="Self.EmployeeDependents" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EmployeeGovernments" EntityType="Self.EmployeeGovernments" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EmployeeSpouses" EntityType="Self.EmployeeSpouses" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Jobs" EntityType="Self.Jobs" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SSS_Contribution" EntityType="Self.SSS_Contribution" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="View_billingAdjustments" EntityType="Self.View_billingAdjustments" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="viewChargeReports" EntityType="Self.viewChargeReports" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="viewCompanyHolidays" EntityType="Self.viewCompanyHolidays" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="viewEmployeeCharges" EntityType="Self.viewEmployeeCharges" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ViewEmployeeV2" EntityType="Self.ViewEmployeeV2" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

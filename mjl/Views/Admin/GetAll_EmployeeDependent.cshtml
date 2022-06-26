@@ -1,0 +1,18 @@
+﻿@using mjl.Models;
+@using mjl.Models.Database;
+
+@{
+    List<EmployeeDependent> lstdep = (List<EmployeeDependent>)ViewBag.lstdep;
+}
+
+@foreach (EmployeeDependent x in lstdep)
+{
+    <tr>
+        <td hidden>@x.name</td>
+        <td class="tdnamedependentEditForm" id="@x.id" emp_id="@x.emp_id"><input class="form-control input-sm" type="text" id="editDependentName" value="@x.name" /></td>
+        <td class="tdrelationdependentEditForm"><input class="form-control input-sm" type="text" id="editDependentRelation" value="@x.relation" /></td>
+        <td class="tdrelationdependentEditForm" hidden><input class="form-control input-sm" type="text" id="editPreparedBy" value="@x.preparedBy" /></td>
+        <td class="tdrelationdependentEditForm" hidden><input class="form-control input-sm" type="text" id="editPreparedDate" value="@x.preparedDate" /></td>
+        <td><a id="" class="btn btnremoveEditForm"><i class="fa fa-trash"></i> Remove</a></td>
+    </tr>
+}

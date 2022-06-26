@@ -1,0 +1,88 @@
+﻿@using mjl.Models;
+@using mjl.Models.Database;
+
+
+@{
+    List<viewEmployeeCharge> chargelist = ViewBag.chargelist;
+}
+<table class="table table-hover table-striped table-condensed table-bordered" id="tblCompany">
+    <thead>
+        <tr>
+            <th>Employee</th>
+            <th>CHARGE&nbsp;NAME</th>
+            <th>Amount</th>
+            <th>Dates&nbsp;Sched</th>
+            <th>Prepared&nbsp;(&nbsp;Name&nbsp;|&nbsp;Date&nbsp;)</th>
+            <th>Last&nbsp;Edit&nbsp;(&nbsp;Name&nbsp;|&nbsp;Date&nbsp;)</th>
+            <th>Status</th>
+            <th>OPTIONS</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (chargelist.Count() > 0)
+        {
+
+            foreach (viewEmployeeCharge charge in chargelist)
+            {
+                <tr>
+                     <input type="hidden" value="@charge.ChargeID" class="charge_id" />
+                      <input type="hidden" value="@charge.FirstName.ToUpper()  @charge.LastName.ToUpper()" class="name" />
+                     <input type="hidden" value="@charge.ChargeName" class="change_name" />
+                     <input type="hidden" value="@charge.ChargeAmount" class="charge_amount" />
+                     <input type="hidden" value="@charge.date_from.Value.ToString("yyyy-MM-dd")" class="date_from" />
+                     <input type="hidden" value="@charge.date_to.Value.ToString("yyyy-MM-dd")" class="date_to" />
+
+                    <td>@charge.FirstName.ToUpper()  @charge.LastName.ToUpper()</td>
+                    <td>@charge.ChargeName.ToUpper()</td>
+                    <td>@charge.ChargeAmount.Value.ToNumericFormat()</td>
+                    <td>From : @charge.date_from.ToDateTimeFormat() <br/> To : @charge.date_to.ToDateTimeFormat()</td>
+                    <td>
+                        @{
+                            string prepared_name = "";
+                            User preparedEmployee = UserModel.gerUserById(charge.prepared_by.Value);
+                            prepared_name = preparedEmployee.FirstName + ' ' + preparedEmployee.LastName;
+                        }
+                        @prepared_name.ToUpper() | @charge.prepared_date.ToDateTimeFormat()
+
+                    </td>
+                    <td>
+                        @{
+                            string lastedit_name = "N/A";
+                            string edit_date = "N/A";
+                            if (charge.lastedit_by.HasValue)
+                            {
+                                User lasteditEmployee = UserModel.gerUserById(charge.lastedit_by.Value);
+                                lastedit_name = lasteditEmployee.FirstName + ' ' + lasteditEmployee.LastName;
+                                edit_date = charge.lastedit_date.ToDateTimeFormat();
+                            }
+                        }
+                        @lastedit_name.ToUpper() | @edit_date
+                    </td>
+                    <td>
+                        @if (charge.status.ToUpper() == "FOR APPROVAL")
+                        {
+                            <span class="label label-warning">Pending</span>
+                        }
+                        else if (charge.status.ToUpper() == "APPROVED") {
+                            <span class="label label-primary">Released</span>
+                        }
+                        else
+                        {
+                            <span class="label label-danger">Cancelled</span>
+                        }
+                </td>
+                <td>
+                    <button type='button' class='btn btn-xs btn-default btnEdit' title='Edit'><i class='fa fa-pencil'></i></button>
+                    <button type='button' class='btn btn-xs btn-default btnView' title='View' charge_id ="@charge.ChargeID"><i class='fa fa-eye'></i></button>
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="8" style="text-align:center">No Data Found</td>
+        </tr>
+    }
+    </tbody>
+</table>

@@ -1,0 +1,79 @@
+﻿@using mjl.Models.Database;
+@using mjl.Models;
+@{
+    if (String.IsNullOrEmpty(sysSession.UserID) || String.IsNullOrEmpty(sysSession.name))
+    {
+        Response.Redirect(SystemHelper.BaseUrl());
+    }
+
+    string Controller = ViewContext.RouteData.GetRequiredString("controller");
+    string Action = ViewContext.RouteData.GetRequiredString("action");
+}
+<aside class="main-sidebar">
+    <section class="sidebar">
+        <div class="user-panel">
+            <div class="pull-left image">
+                <img src="~/Content/Images/no_user.png" class="img-circle" alt="User Image" />
+            </div>
+            <div class="pull-left info">
+                <p>@sysSession.name</p>
+                <a href="javascript:void(0);"><i class="fa fa-circle text-success"></i> Online</a>
+            </div>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="header">MAIN NAVIGATION</li>
+            <li>
+                <a href="@Url.Action("Index","DashBoard")">
+                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="treeview @(Controller == "Admin" || Controller == "Report" || Controller == "Government" || Controller == "PaySlip" || Controller == "Timekeeping" || Controller == "Holiday" || Controller == "Schedule" ? "active" : "")">
+                <a href="javascript:void(0);">
+                    <i class="fa fa-files-o"></i> <span>HRIS</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="treeview @(Controller == "Admin" || Controller == "Government" || Controller == "Holiday"  || Controller  == "Schedule" ? "active" : "")">
+                        <a href="javascript:void(0);">
+                            <i class="fa fa-table"></i> <span>Manage</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="@(Action == "Companies" ? "active" : "")"><a href="@Url.Action("Companies","Admin")"><i class="fa fa-circle-o"></i>Company</a></li>
+                            <li class="@(Action == "Jobs" ? "active" : "")"><a href="@Url.Action("Jobs","Admin")"><i class="fa fa-circle-o"></i>Jobs</a></li>
+                            <li class="@(Action == "Employees" ? "active" : "")"><a href="@Url.Action("Employees","Admin")"><i class="fa fa-circle-o"></i>Employees</a></li>
+                            <li class="@(Action == "ViewCompanyHoliday" ? "active" : "")"><a href="@Url.Action("ViewCompanyHoliday","Holiday")"><i class="fa fa-circle-o"></i>Company Holiday</a></li>
+                            <li class="@(Action == "Scheduler" ? "active" : "")"><a href="@Url.Action("Scheduler","Schedule")"><i class="fa fa-circle-o"></i>Scheduler</a></li>
+                            <li class="@(Action == "GovernmentDeduction" ? "active" : "")"><a href="@Url.Action("GovernmentDeduction","Government")"><i class="fa fa-circle-o"></i>Government Deduction</a></li>
+                            <li class="@(Action == "ScheduleDeduction" ? "active" : "")"><a href="@Url.Action("ScheduleDeduction","Admin")"><i class="fa fa-circle-o"></i>Charge</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview @(Controller == "PaySlip" || Controller == "Timekeeping" ? "active" : "")">
+                        <a href="javascript:void(0);">
+                            <i class="fa fa-table"></i> <span>Transaction</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="@(Action == "GenerateTimesheet" ? "active" : "")"><a href="@Url.Action("GenerateTimesheet","Timekeeping")"><i class="fa fa-circle-o"></i> Generate Timesheet</a></li>
+                            <li class="@(Action == "GeneratePayslip" ? "active" : "")"><a href="@Url.Action("GeneratePayslip","PaySlip")"><i class="fa fa-circle-o"></i> Generate Payslip</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview @(Controller == "Report" ? "active" : "")">
+                        <a href="javascript:void(0);">
+                            <i class="fa fa-table"></i> <span>Report</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="@(Action == "ChargeReport" ? "active" : "")"><a href="@Url.Action("ChargeReport","Report")"><i class="fa fa-circle-o"></i> Charge Report</a></li>
+                            <li class="@(Action == "PayslipReport" ? "active" : "")"><a href="@Url.Action("PayslipReport","Report")"><i class="fa fa-circle-o"></i> Payslip Report</a></li>
+                            <li class="@(Action == "GeneratePayslipBilling" ? "active" : "")"><a href="@Url.Action("GeneratePayslipBilling","Report")"><i class="fa fa-circle-o"></i> Generate Billing</a></li>
+                        </ul>
+                    </li>
+
+
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+</aside>

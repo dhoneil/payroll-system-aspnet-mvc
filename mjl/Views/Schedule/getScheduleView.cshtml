@@ -1,0 +1,103 @@
+﻿@using mjl.Models;
+@using mjl.Models.Database;
+@{
+
+    var date_from = (DateTime)ViewBag.date_from;
+    var date_to = (DateTime)ViewBag.date_to;
+    var prevMonth = (DateTime)ViewBag.prevMonth;
+
+    var employee_id = (int)ViewBag.employee_id;
+
+    string[] days = { "-", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+
+}
+<p>Note : ( If you will change his/her schedule the existing DTR of that day will remove. )</p>
+<h4 style="text-align:center">@date_to.ToString("MMMM yyyy")</h4>
+<table class="table table-bordered table-condensed">
+    <thead>
+        <tr>
+            <th>SUN</th>
+            <th>MON</th>
+            <th>TUE</th>
+            <th>WED</th>
+            <th>THU</th>
+            <th>FRI</th>
+            <th>SAT</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            @{
+
+                //THIS IS FOR THE CALENDAR DAY 1
+                Dictionary<string, int> dicDayNumber = new Dictionary<string, int>();
+                dicDayNumber.Add("SUNDAY", 1);
+                dicDayNumber.Add("MONDAY", 2);
+                dicDayNumber.Add("TUESDAY", 3);
+                dicDayNumber.Add("WEDNESDAY", 4);
+                dicDayNumber.Add("THURSDAY", 5);
+                dicDayNumber.Add("FRIDAY", 6);
+                dicDayNumber.Add("SATURDAY", 7);
+
+                foreach (DateTime day in SystemHelper.EachDay(date_from, date_to))
+                {
+                    //string remarks_schedule = Scheduler.verifyScheduleAvailable(employee_id, day.Date);
+                    string remarks_schedule = Scheduler.verifyScheduleAvailable(employee_id, day.Date);
+                    string schedule = "";
+
+
+                    if (remarks_schedule == "NoSchedule")
+                    {
+                        string date_schedule = day.ToString("MMMM dd, yyyy");
+                        schedule = "<div style='background-color:#8F1D21;color:#ffffff;padding:6px;'>NO SCHEDULE FOUND <a class='btn btn-xs btn-edit-sched' date='" + date_schedule + "' time_in = '' time_out = '' style='color:inherit;'><i class='fa fa-edit'></i> New Schedule</a> </br> <a date='" + date_schedule + "'  class='btn btn-restday-set btn-xs' style='color:inherit;'><i class='fa fa-home'></i> Set as RESTDAY</a></div>";
+
+                    }
+                    else if (remarks_schedule == "Restday")
+                    {
+                        string date_schedule = day.ToString("MMMM dd, yyyy");
+                        schedule = "<div style='background-color:#2b5797;color:#ffffff;padding:6px;'>RESTDAY <br/> <a class='btn btn-xs btn-edit-sched' date='" + date_schedule + "' time_in = '' time_out = '' style='color:inherit;'><i class='fa fa-edit'></i> New Schedule</a></br><a  date='" + date_schedule + "' class='btn btn-restday-set btn-xs' style='color:inherit;'><i class='fa fa-home'></i> Edit Schedule RESTDAY</a></div>";
+                    }
+                    else
+                    {
+                        string date_schedule = day.ToString("MMMM dd, yyyy");
+                        Employee_Schedule emp_sched = Scheduler.getEmployeeSchedule(employee_id, day);
+                        DateTime dateSchedIn = DateTime.Parse(emp_sched.TimeIn.Value.ToString());
+                        DateTime dateSchedOut = DateTime.Parse(emp_sched.TimeOut.Value.ToString());
+
+                        schedule = "<div style='background-color:#2c3e50;color:#ffffff;padding:6px;'>" + dateSchedIn.ToString("hh:mm tt") + " - " + dateSchedOut.ToString("hh:mm tt") + " <a class='btn btn-xs btn-edit-sched' date='" + date_schedule + "' time_in = '"+ dateSchedIn.ToString("hh:mm tt") + "' time_out = '" + dateSchedOut.ToString("hh:mm tt") + "' style='color:inherit;'><i class='fa fa-edit'></i> Edit Schedule</a> </br> <a  date='" + date_schedule + "' class='btn btn-restday-set btn-xs' style='color:inherit;'><i class='fa fa-home'></i> Set as RESTDAY</a></div>";
+                    }
+
+                    if (day.Day == 1)
+                    {
+
+                        for (int i = 1; i < dicDayNumber[day.DayOfWeek.ToString().ToUpper()]; i++)
+                        {
+
+                            @Html.Raw("<td>&nbsp</td>");
+                        }
+
+                        @Html.Raw("<td><div>" + day.Day + "</div><div style='padding:10px;'>" + schedule + "</div>" + "</td>");
+
+                        if (day.DayOfWeek.ToString().ToUpper() == "SATURDAY")
+                        {
+                            @Html.Raw("</tr>");
+                            @Html.Raw("<tr>");
+                        }
+                    }
+                    else
+                    {
+                        @Html.Raw("<td><div>" + day.Day + "</div><div style='padding:10px;'>" + schedule + "</div>" + "</td>");
+
+
+                        if (day.DayOfWeek.ToString().ToUpper() == "SATURDAY")
+                        {
+                            @Html.Raw("</tr>");
+                            @Html.Raw("<tr>");
+                        }
+                    }
+
+                }
+            }
+            
+    </tbody>
+</table>

@@ -1,0 +1,50 @@
+﻿@using mjl.Models.Database;
+@using mjl.Models;
+
+@{
+    List<View_billingAdjustments> data = (List<View_billingAdjustments>)ViewBag.billingadjustments;
+}
+
+
+@if (data.Count > 0)
+{
+    foreach (var x in data)
+    {
+        <tr>
+            <td class="tdname">@x.name</td>
+            <td class="tdamount">@x.amount</td>
+            <td>@x.lname,&nbsp;@x.fname</td>
+            @*<td>@x.lname_edit&nbsp;<span class="text-muted">@x.last_edit_date.Value.ToShortDateString()</span></td>*@
+            <td>
+                <center>
+                    <button adjustment_id="@x.id" type="button" class="btn btn-xs btn-danger btnremoveadjustment" title="Remove Adjustment"><i class="fa fa-remove"></i></button>
+                </center>
+            </td>
+        </tr>
+    }
+}
+else
+{
+    <tr>
+        <td colspan="4"><center>No data found</center></td>
+    </tr>
+}
+<tr>
+    <td>
+        <div class="form-group ">
+            @*<label for="adjustmentname">Adjustment Name</label>*@
+            <input type="text" class="form-control input-sm adjustmentname" id="">
+        </div>
+    </td>
+    <td>
+        <div class="form-group ">
+            @*<label for="adjustmentamount">Amount</label>*@
+            <input type="text" class="form-control input-sm adjustmentamount" id="">
+        </div>
+    </td>
+    <td colspan="2">
+        <center>
+            <a class="btn btn-primary btn-xs btnaddnewadjustment"><i class="fa fa-plus"></i></a>
+        </center>
+    </td>
+</tr>

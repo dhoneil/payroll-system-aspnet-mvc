@@ -1,0 +1,69 @@
+﻿@using mjl.Models.Database
+@using System.Configuration
+@using mjl.Models;
+
+@{
+    ViewBag.Layout = null;
+
+    if (String.IsNullOrEmpty(sysSession.UserID) || String.IsNullOrEmpty(sysSession.name))
+    {
+        Response.Redirect(SystemHelper.BaseUrl());
+    }
+
+}
+
+<header class="main-header">
+    <a href="javascript:void(0);" class="logo"><b>@ConfigurationManager.AppSettings["company_name"]</b></a>
+    <nav class="navbar navbar-static-top" role="navigation">
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+        </a>
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                <li class="dropdown user user-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="float:left;padding-top:14px;padding-bottom:13px;">
+                        <img src="~/Content/Images/no_user.png" class="user-image" alt="User Image" />
+                        <span class="hidden-xs" style="float:left;">@sysSession.name</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="user-header">
+                            <img src="~/Content/Images/no_user.png" class="img-circle" alt="User Image" />
+                            <p>
+                                @sysSession.name
+                                @*<small>Member since @string.Format("{0: MMM dd, yyyy}", current_user.CreatedDate)</small>*@
+                            </p>
+                        </li>
+                        <li class="user-body">
+                        </li>
+                        <li class="user-footer">
+                            <div class="pull-left">
+                                <a href="@Url.Action("UserProfile","Account")" class="btn btn-default btn-flat">Profile</a>
+                            </div>
+                            <div class="pull-right">
+                                @*@Html.ActionLink("Sign out", "LogOut", "Account", null, new { @class = "btn btn-default btn-flat btnlogout" })*@
+                                <a class="btn btn-default btn-flat" id="btnlogout">Sign out</a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<script>
+    $(document).ready(function () {
+        $('#btnlogout').click(function () {
+            $.confirm({
+                title: 'Confirmation',
+                content: 'Sure to sign out?',
+                buttons: {
+                    yes: function () {
+                        window.location = '../Account/LogOut';
+                    },
+                    no: function () { }
+                }
+            })
+        });
+    });
+</script>

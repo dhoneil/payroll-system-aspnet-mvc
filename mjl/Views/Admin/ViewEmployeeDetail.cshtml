@@ -1,0 +1,106 @@
+﻿@using mjl.Models;
+@using mjl.Models.Database;
+
+@{
+    List<ViewEmployeeV2> lstemployee = (List<ViewEmployeeV2>)ViewBag.lstemployee;
+}
+
+
+
+@foreach (ViewEmployeeV2 emp in lstemployee)
+{
+    <div class="row">
+
+        <div class="col-md-4">
+            <div class="box">
+                <div class="box-header">
+                    <div class="box-title">Employment</div>
+                </div>
+                <div class="box-body">
+                    <h4><em><u>General</u></em></h4>
+                    @*Employee No. : <strong>@emp.employee_no</strong><br />*@
+                    Name : <strong>@emp.LastName, @emp.FirstName @emp.MiddleName</strong><br />
+                    Job : <strong>@emp.JobName</strong><br />
+                    Company : <strong>@emp.name</strong><br />
+                    @if (emp.probitionary == true)
+                    {<strong>Probitionary Until @emp.end_probitionary_date.ToDateTimeFormat()</strong><br />}
+                else
+                {<strong>Probitionary Until Not Complied</strong><br />}
+                    Contact No. : <strong>@emp.contact_no</strong><br /><br />
+                    Gender : <strong>@emp.Gender</strong><br />
+                    Marital Status : <strong>@emp.MaritalStatus</strong><br />
+                    Birth Date : <strong>@emp.BirthDate.ToDateTimeFormat()</strong><br />
+                    Birth Place : <strong>@emp.BirthPlace</strong><br />
+                    Nationality : <strong>@emp.Citizenship</strong><br />
+                    Religion : <strong>@emp.religion</strong><br />
+                    Height : <strong>@emp.height</strong><br />
+                    Weight : <strong>@emp.weight</strong><br />
+                    Date Hired : <strong>@emp.DateHired.ToDateTimeFormat()</strong><br />
+
+                    <h4><em><u>Current Address</u></em></h4>
+                    Country : <strong>@emp.Current_country</strong><br />
+                    Region : <strong>@emp.Current_region</strong><br />
+                    City/Municipality : <strong>@emp.Current_city_municipality</strong><br />
+                    Barangay : <strong>@emp.Current_barangay</strong><br />
+                    Street : <strong>@emp.Current_street</strong><br />
+                    Sitio : <strong>@emp.Current_sitio</strong><br />
+
+                    <h4><em><u>Provincial Address</u></em></h4>
+                    Country : <strong>@emp.provincial_country</strong><br />
+                    Region : <strong>@emp.provincial_region</strong><br />
+                    City/Municipality : <strong>@emp.provincial_city_municipality</strong><br />
+                    Barangay : <strong>@emp.provincial_barangay</strong><br />
+                    Street : <strong>@emp.provincial_street</strong><br />
+                    Sitio : <strong>@emp.provincial_sitio</strong><br />
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="box">
+                <div class="box-header">
+                    <div class="box-title">Government</div>
+                </div>
+                <div class="box-body">
+                    <h4><em><u>SSS Number</u></em></h4>
+                @if (emp.with_sss == true)
+                    {<strong>@emp.SSS_Number</strong><br />}
+                else
+                { <strong>Not Complied</strong><br />}
+                    <h4><em><u>Pag-Ibig Number</u></em></h4>
+                    @if (emp.with_pagibig == true)
+                    {<strong>@emp.PagIbig_Number</strong><br />}
+                else
+                { <strong>Not Complied</strong><br />}
+                    <h4><em><u>PhilHealth Number</u></em></h4>
+                    @if (emp.with_philhealth == true)
+                    {<strong>@emp.PhilHealth_Number</strong><br />}
+                else
+                { <strong>Not Complied</strong><br />}
+                    <h4><em><u>TIN Number</u></em></h4>
+                    @if (emp.with_tin == true)
+                    {<strong>@emp.TIN_Number</strong><br />}
+                else
+                { <strong>Not Complied</strong><br />}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="box">
+                <div class="box-header">
+                    <div class="box-title">Compensation</div>
+                </div>
+                <div class="box-body">
+                    <h4><em><u>Compensation Type</u></em></h4>
+                    Compensation Type : <strong>@emp.CompensationType</strong><br /><br />
+                    Valid Start : <strong>@emp.ValidityStart.ToDateTimeFormat()</strong><br /><br />
+                    Compensation Rate : <strong>@emp.CompensationRate</strong><br /><br />
+                    ATM Number : <strong>@emp.atm_number</strong><br /><br />
+                </div>
+            </div>
+        </div>
+
+    </div>
+}

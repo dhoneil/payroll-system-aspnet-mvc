@@ -1,0 +1,427 @@
+﻿@{
+    ViewBag.Title = "Billing Report";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">Filter Options</h3>
+                <div class="box-tools">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="form-vertical row">
+                    <div class="col-sm-12">
+                        <div class="form-group col-md-4">
+                            <label>Company</label>
+                            <div class="form-group">
+                                @Html.DropDownList("company_id", (IEnumerable<SelectListItem>)ViewBag.company, new { @class = "form-control", @id = "select_company" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Date Covered</label>
+                            <input type="text" class="form-control" id="date_range" readonly />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class="control-label" for="">Options</label>
+                            <button type="button" class="btn btn-default btn-block" id="btnFilterBilling">
+                                <i class="fa fa-refresh"></i> FILTER
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div id="viewResult" class="box box-solid">
+            <div class="box-header"></div>
+            <div class="box-body">
+                <div class="result">
+                    <p style="text-align:center">*** CLICK FILTER TO SHOW RESULT ***</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div style="visibility:hidden">
+    <div class="printArea">
+
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="mdlpayslipadjustments">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Billing Adjustment</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="payslip_id" value=" " />
+                <table class="table table-condensed table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Adjustment</th>
+                            <th>Amount</th>
+                            <th>Added&nbsp;By</th>
+                            @*<th>Edited&nbsp;By</th>*@
+                            <th><center><i class="fa fa-gear"></i></center></th>
+                        </tr>
+                    </thead>
+                    <tbody id="_getBillingadjustmentsbyPayslipId">
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                @*<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="btnsavebillingadjustment">Save changes</button>*@
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+@section scripts{
+    <script src="~/Scripts/formPrinting.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            //$('#date_range').daterangepicker();
+            $('#date_range').daterangepicker({ format: 'DD/MM/YYYY' });
+            $(document).on('click', '.adjustmentamount', function () {
+                $(this).numeric();
+            });
+            $(document).on('click', '.adjustmentamountedit', function () {
+                $(this).numeric();
+            });
+
+            $(document).on('click', '.btnremoveadjustment', function () {
+                var adjustment_id = $(this).attr('adjustment_id');
+                if (confirm("Are you sure to remove this adjustment?")) {
+                    $.ajax({
+                        url: '@Url.Action("remove_adjustmentBilling", "Report")',
+                        method: 'post',
+                        data: {
+                            adjustment_id: adjustment_id,
+                        },
+                        success: function (data) {
+                            if (data == true) {
+                                $('#mdlpayslipadjustments').modal('hide');
+                                $('#btnFilterBilling').trigger('click');
+                            }
+                        },
+                        error: function (data) {
+                            $.alert(data.responseText)
+                        }
+                    })
+                }
+                else {
+
+                }
+
+            });
+
+            $(document).on('click', '.btnaddnewadjustment', function () {
+                var payslip_id = $('#payslip_id').val();
+                var name = $(this).closest('tr').find('.adjustmentname').val();
+                var amount = $(this).closest('tr').find('.adjustmentamount').val();
+                if (confirm("Are you sure to add this adjustment?")) {
+                    $.ajax({
+                        url: '@Url.Action("save_adjustmentBilling", "Report")',
+                        method: 'post',
+                        data: {
+                            payslip_id:payslip_id,
+                            adjustment_name:name,
+                            adjustment_amount:amount,
+                        },
+                        success: function (data) {
+                            if (data == true) {
+                                $('#mdlpayslipadjustments').modal('hide');
+                                $('#btnFilterBilling').trigger('click');
+                            }
+                        },
+                        error: function (data) {
+                            $.alert(data.responseText)
+                        }
+                    })
+                }
+                else {
+
+                }
+            });
+
+            
+            $(document).on('click', '.btneditadjustment', function () {
+                var adjustmentid = $(this).attr('adjustment_id');
+                var nameedit = $(this).closest('tr').find('.tdname').text();
+                var amountedit = $(this).closest('tr').find('.tdamount').text();
+
+                $('#payslip_idedit').val(adjustmentid);
+                $('#adjustmentnameedit').val(nameedit);
+                $('#adjustmentamountedit').val(amountedit);
+
+                $('#mdleditpayslipadjustments').modal('show');
+            });
+            
+            $(document).on('click', '#btnUpdatebillingadjustment', function () {
+                
+                var adjustmentid = $('#payslip_idedit').val();
+                var nameedit = $('#adjustmentnameedit').val();
+                var amountedit = $('#adjustmentamountedit').val();
+
+                $.ajax({
+                    url: '@Url.Action("updateAdjustment", "Report")',
+                    method: 'post',
+                    data: {
+                        adjustment_id: adjustmentid,
+                        adjustment_name: nameedit,
+                        adjustment_amount: amountedit,
+                    },
+                    success: function (data) {
+                        if (data==true) {
+                            $('#mdleditpayslipadjustments').modal('hide');
+                            $('#mdlpayslipadjustments').modal('hide');
+                            $('#btnFilterBilling').trigger('click');
+                        }
+                    },
+                    error: function (data) { }
+                })
+                
+            });
+
+            
+            
+            $(document).on('click', '#btnnewaddjustment', function () {
+                var payslipid = $(this).attr('payslip_id');
+                $('#payslip_id').val(payslipid);
+                $('#mdlpayslipadjustments').modal('show');
+
+                $.ajax({
+                    url: '@Url.Action("_getBillingadjustmentsbyPayslipId", "Report")',
+                    method: 'post',
+                    data: {
+                        payslip_id: payslipid,
+                    },
+                    success: function (data) {
+                        $('#_getBillingadjustmentsbyPayslipId').html(data);
+                    },
+                    error: function (data) {
+                        $.alert(data.responseText)
+                    }
+                })
+            });
+            $(document).on('click', '#btnsavebillingadjustment', function () {
+                var flag = true;
+                var payslip_id = $('#payslip_id').val();
+                var name = $('#adjustmentname').val();
+                var amount = $('#adjustmentamount').val();
+                $('.form-control').each(function () {
+                    if ($(this).val().trim() == '') {
+                        $(this).closest('div.form-group').addClass('has-error');
+                        flag = false;
+                    } else {
+                        $(this).closest('div.form-group').removeClass('has-error');
+                    }
+                });
+                if (flag) {
+                    if (confirm("Are you sure to adjust this billing?")) {
+                        $.ajax({
+                            url: '@Url.Action("save_adjustmentBilling","Report")',
+                            method: 'post',
+                            data: {
+                                payslip_id: payslip_id,
+                                adjustment_name: name,
+                                adjustment_amount: amount,
+                            },
+                            success: function (data) {
+                                if (data == true) {
+                                    $('#btnFilterBilling').trigger('click');
+                                    $('#mdlpayslipadjustments').modal('hide');
+                                    alert("Success")
+                                }
+                            },
+                            error: function (data) {
+                                $.alert(data.responseText)
+                            }
+                        })
+                    }
+                    else {
+
+                    }
+                }
+            });
+
+            $('#btnFilterBilling').on('click', function () {
+                //viewResult
+              
+                var company_id = $('#select_company').val();
+                var date_range = $('#date_range').val();
+                
+                if (date_range == "" || company_id == 0) {
+                    alert('Company and Date Covered required');
+                } else {
+                    showLoader('#viewResult');
+                    $.ajax({
+                        url: 'checkCompanyStatus',
+                        type: 'POST',
+                        data: {
+                            company_id: company_id
+                        }, success: function (data) {
+                            if (data == "MANPOWER") {
+                                $.ajax({
+                                    url: 'ViewPayslipBilling',
+                                    type: 'POST',
+                                    data: {
+                                        company_id: company_id,
+                                        date_range: date_range
+                                    }, success: function (data) {
+                                        $('.result').html(data);
+                                        hideLoader('#viewResult');
+
+                                    }, error: function (xhr, status, error) {
+                                        alertDialog({ text: xhr.responseText });
+                                    }
+
+                                });
+                            } else {
+                                $.ajax({
+                                    url: 'ViesSecurityBilling',
+                                    type: 'POST',
+                                    data: {
+                                        company_id: company_id,
+                                        date_range: date_range
+                                    }, success: function (data) {
+                                        $('.result').html(data);
+                                        hideLoader('#viewResult');
+
+                                    }, error: function (xhr, status, error) {
+                                        alertDialog({ text: xhr.responseText });
+                                    }
+
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+
+            $(document).on('click', '.btn_print_manpower_billing', function () {
+                $('._new').hide();
+                $('.printManPowerBilling').print();
+                $('._new').show();
+            });
+
+            $(document).on('click', '.btn-print-security-billing', function () {
+                var id = $(this).attr('id');
+                $.ajax({
+                    url: 'printBillingSecurity',
+                    type: 'POST',
+                    async: false,
+                    data: {
+                        bill_id : id
+                    },
+                    success: function (data) {
+                        $('.printArea').html(data);
+                        $('.printArea').print();
+                    }, error: function (xhr, status, error) {
+                        alertDialog({ text: xhr.responseText });
+                    }
+                });
+             
+            });
+
+            $(document).on('click', '.billing_amount', function () {
+                $(this).numeric();
+                $(this).select();
+            });
+
+          
+
+            $(document).on('click', '.submit_billing', function () {
+               
+                if (confirm("Do you want to submit this billing?")) {
+
+                    $('.submit_billing').attr("disabled", true);
+
+                    var company_id = $('#select_company').val();
+                    var date_range = $('#date_range').val();
+                    var bill_amount = $('#billing_amount').val();
+                    var description = $('#description').val();
+
+
+                    var result = {
+                        company_id: company_id,
+                        bill_amount: bill_amount,
+                        bill_description: description
+                    }
+
+                    var params = {
+                        data: result,
+                        date_range: date_range
+                    }
+
+                    $.ajax({
+                        url: 'insertBilling',
+                        type: 'POST',
+                        data: $.toDictionary(params),
+                        success: function (data) {
+                            $('#btnFilterBilling').trigger('click');
+                            $('.submit_billing').attr("disabled", false);
+                        }, error: function (xhr, status, error) {
+                            alertDialog({ text: xhr.responseText });
+                        }
+
+                    });
+                }
+            });
+
+
+            $(document).on('click', '.update_billing', function () {
+               
+
+                if (confirm("Do you want to update this billing?")) {
+                    $('.update_billing').attr("disabled", true);
+                    var bill_id = $(this).attr('id');
+                    var bill_amount = $('#billing_amount').val();
+                    var description = $('#description').val();
+
+                    var params = {
+                        bill_id: bill_id,
+                        bill_amount: bill_amount,
+                        bill_description: description
+                    }
+
+                    $.ajax({
+                        url: 'updateBilling',
+                        type: 'POST',
+                        data: params,
+                        success: function (data) {
+                            $('#btnFilterBilling').trigger('click');
+                            $('.update_billing').attr("disabled", false);
+                        }, error: function (xhr, status, error) {
+                            alertDialog({ text: xhr.responseText });
+                        }
+
+                    });
+                }
+            });
+
+        });
+    </script>
+}

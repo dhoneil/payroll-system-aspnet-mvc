@@ -1,0 +1,635 @@
+﻿@{
+    ViewBag.Title = "Generate Timesheet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">Filter Options</h3>
+                <div class="box-tools">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="form-vertical row">
+                    <div class="col-sm-12">
+                        <div class="form-group col-md-3">
+                            <label>Company</label>
+                            <div class="form-group">
+                                @Html.DropDownList("company_id", (IEnumerable<SelectListItem>)ViewBag.company, new { @class = "form-control", @id = "select_company" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Date Range</label>
+                            <input type="text" class="form-control" id="date_range" readonly />
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label>DTR INPUT TYPE</label>
+                            <select class="form-control" id="format_dtr">
+                                <option value="">[ SELECT ]</option>
+                                <option value="24">24 HOURS FORMAT</option>
+                                <option value="12">12 HOURS FORMAT</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label class="control-label" for="">Options</label>
+                            <button type="button" class="btn btn-default btn-block" id="btnGenerate">
+                                <i class="fa fa-refresh"></i> FILTER
+                            </button>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label class="control-label" for="">Lock&nbsp;Timesheet&nbsp;for&nbsp;Payslip</label>
+                            <button type="button" class="btn btn-default btn-block" id="btnLock">
+                                <i class="fa fa-lock"></i> Lock
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div id="viewResult" class="box box-solid">
+            <div class="box-header"></div>
+            <div class="box-body">
+                <div class="result">
+                    <p style="text-align:center">*** CLICK FILTER TO SHOW RESULT ***</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="dtr_entry_manual">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4><span class="date_dtr_view"> . . .</span> ( 12 HOURS FORMAT<small> Example : 11:59 AM </small> )</h4>
+            </div>
+            <div class="modal-body">
+                <form id="form_twelformat_input" class="form-vertical">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="entry_time_in">TIME IN</label>
+                            <input type="text" class="form-control" id="entry_time_in" name="twelve_format_input" pattern="^(0?[1-9]|1[012])(:[0-5]\d) [APap][mM]$" placeholder="HH:MM _M" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="entry_time_out">TIME OUT</label>
+                            <input type="text" class="form-control" id="entry_time_out" name="twelve_format_input" pattern="^(0?[1-9]|1[012])(:[0-5]\d) [APap][mM]$" placeholder="HH:MM _M" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-primary btn-block btn-set-manual-dtr-entry" style="margin-top:25px;">SET</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="dtr_entry_manual_military_format">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4><span class="date_dtr_view"> . . .</span> ( 24 HOURS FORMAT<small> Example : 23:59 </small> )</h4>
+            </div>
+            <div class="modal-body">
+                <form id="form_military_input" class="form-vertical">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="entry_time_in_military">TIME IN</label>
+                            <input type="text" class="form-control" id="entry_time_in_military" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]" name="military_format_input" placeholder="HH:MM" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="entry_time_out_military">TIME OUT</label>
+                            <input type="text" class="form-control" id="entry_time_out_military" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]" name="military_format_input" placeholder="HH:MM" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-primary btn-block btn-set-manual-dtr-entry" style="margin-top:25px;">Set</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/jquery.inputmask.bundle.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            var locationOfManualDTREntry = "";
+
+            //$('#date_range').daterangepicker({
+
+            //    format : 'Month dats'
+            //});
+
+            $('#date_range').daterangepicker({ format: 'DD/MM/YYYY' })
+            
+
+            $('input[name="military_format_input"]').inputmask(
+                "hh:mm", {
+                    placeholder: "HH:MM",
+                    insertMode: false,
+                    showMaskOnHover: false,
+                }
+            );
+            $('input[name="twelve_format_input"]').inputmask(
+                "hh:mm t", {
+                    placeholder: "HH:MM _M",
+                    insertMode: false,
+                    showMaskOnHover: false,
+                    hourFormat: 12
+                }
+            );
+            $("input[name='military_format_input']").on("click", function () {
+                $(this).select();
+            });
+            $("input[name='twelve_format_input']").on("click", function () {
+                $(this).select();
+            });
+
+            $('#btnLock').on('click', function () {
+
+                if ($('.chckboxSubmit').is(":checked")) {
+
+                    if (confirm("Do you want to lock their timesheet?")) {
+                        var date_range = $('#date_range').val();
+                        var list = [];
+                        var params = [];
+
+                        $('#employee_timesheet > tbody > tr.tr_timesheet_recprd').each(function () {
+
+
+                            if ($(this).find('.chckboxSubmit').is(":checked")) {
+                                var employee_id = $(this).attr('emp_id');
+                                var regular_days = $(this).find('.regular_days').text();
+                                var holiday_days = $(this).find('.holiday_days').text();
+                                var restday_days = $(this).find('.rest_days').text();
+                                var days_absent = $(this).find('.days_absent').text();
+                                var overtime = $(this).find('.overtime').text();
+                                var lates = $(this).find('.lates').text();
+                                var undertime = $(this).find('.undertime').text();
+
+                                list.push({
+                                    employee_id: employee_id,
+                                    regular_days: regular_days,
+                                    holiday_days: holiday_days,
+                                    restday_days: restday_days,
+                                    absent_days: days_absent,
+                                    lates: lates,
+                                    undertime: undertime,
+                                    overtime_hours: overtime
+                                });
+                            }
+
+                        });
+                        params = {
+                            data: list,
+                            date_range: date_range
+                        }
+                        $.ajax({
+                            url: 'insertEmployeeTimesheet',
+                            type: 'POST',
+                            async: false,
+                            data: $.toDictionary(params),
+                            success: function (data) {
+
+                            }, error: function (xhr, status, error) {
+                                alertDialog({ text: xhr.responseText });
+                            }
+                        });
+                        $('#btnGenerate').trigger('click');
+                    }
+                }
+            });
+
+            $(document).on('click', '.btn-cancel-timesheet', function () {
+                if (confirm("Do you want to cancel his/her timesheet?")) {
+                    var timesheet_id = $(this).attr('id');
+                
+                    $.ajax({
+                        url: 'verifyTimesheetHasPayslip',
+                        type: 'POST',
+                        data: {
+                            timesheet_id: timesheet_id
+                        }, success: function (data) {
+                            if (data == false) {
+                                $.ajax({
+                                    url: 'cancelTimesheet',
+                                    type: 'POST',
+                                    data: {
+                                        timesheet_id: timesheet_id
+                                    }, success: function (data) {
+                                        $('#btnGenerate').trigger('click');
+                                    }
+                                });
+                            } else {
+                                alert("This timesheet has already payslip, you cannot proceed to unlock unless you will remove his/her payslip.");
+                            }
+                        }
+                    });
+               
+               
+                }
+            });
+
+            $(document).on('click', '.btn-timesheet-viewlogs', function () {
+              
+            });
+
+            $(document).on('click', '.btn-entry-manual', function () {
+
+                locationOfManualDTREntry = $(this).closest('tr');
+
+                var format_dtr = $('#format_dtr').val();
+                var date_range = $('#date_range').val();
+
+                var date = $(this).attr('date_dtr');
+                $('.date_dtr_view').text(date);
+
+                if (format_dtr == "24") {
+
+                    var time_in = $(locationOfManualDTREntry).find('.time_in').val();
+                    var time_out = $(locationOfManualDTREntry).find('.time_out ').val();
+
+                    $('#entry_time_in_military').val(time_in);
+                    $('#entry_time_out_military').val(time_out);
+
+                    $('#dtr_entry_manual_military_format').modal('show');
+
+                } else {
+
+                    var time_in = $(locationOfManualDTREntry).find('.time_in').val();
+                    var time_out = $(locationOfManualDTREntry).find('.time_out ').val();
+
+                    $('#entry_time_in').val(time_in);
+                    $('#entry_time_out').val(time_out);
+
+                    $('#dtr_entry_manual').modal('show');
+                }
+            });
+
+            $(document).on('click', '.checkALL', function () {
+                if ($(this).is(":checked")) {
+                    $('input[name=checkrecord]').prop('checked', true);
+                } else {
+                    $('input[name=checkrecord]').prop('checked', false);
+                }
+            });
+
+            $('#form_military_input').on('submit', function (e) {
+                e.preventDefault();
+
+                var time_in = $('#entry_time_in_military').val();
+                var time_out = $('#entry_time_out_military').val();
+           
+            
+                $(locationOfManualDTREntry).find('.time_in').val(time_in);
+                $(locationOfManualDTREntry).find('.time_out').val(time_out);
+
+                $('#entry_time_in_military').val("");
+                $('#entry_time_out_military').val("");
+                $('#dtr_entry_manual_military_format').modal('hide');
+
+                return false;
+
+            });
+
+            $('#form_twelformat_input').on('submit', function (e) {
+                e.preventDefault();
+
+                var time_in = $('#entry_time_in').val();
+                var time_out = $('#entry_time_out').val();
+            
+                $(locationOfManualDTREntry).find('.time_in').val(time_in.toUpperCase());
+                $(locationOfManualDTREntry).find('.time_out').val(time_out.toUpperCase());
+
+                $('#entry_time_in').val("");
+                $('#entry_time_out').val("");
+                $('#dtr_entry_manual').modal('hide');
+
+                return false;
+            });
+
+            $('#btnGenerate').on('click', function () {
+                //viewResult
+                var company_id = $('#select_company').val();
+                var date_range = $('#date_range').val();
+
+                if (date_range == "" || company_id == 0) {
+                    alert('Company and Date Covered required');
+                } else {
+                    showLoader('#viewResult');
+                    $.ajax({
+                        url: 'viewTimesheet',
+                        type: 'POST',
+                        data: {
+                            company_id: company_id,
+                            date_range: date_range
+                        }, success: function (data) {
+                            $('.result').html(data);
+                            hideLoader('#viewResult');
+                        }, error: function (xhr, status, error) {
+                            alertDialog({ text: xhr.responseText });
+                        }
+                    });
+                }
+            });
+
+            $(document).on('click', '.btn-remove-entry', function () {
+
+                if (confirm("Do you want to remove his/her DTR?")) {
+                    var dtr_id = $(this).attr('dtr_id');
+                    var emp_id = $(this).attr('emp_id');
+
+
+                    var parentTable = $(this).closest('tr').parents('table');
+
+                    $.ajax({
+                        url: 'removeDTREntry',
+                        type: 'POST',
+                        data: {
+                            dtr_id: dtr_id
+                        }, success: function (data) {
+
+                            var format_dtr = $('#format_dtr').val();
+                            var date_range = $('#date_range').val();
+
+                            if (format_dtr == "24") {
+                                $.ajax({
+                                    url: 'viewEmployeeDtr',
+                                    type: 'POST',
+                                    async: true,
+                                    data: {
+                                        date_range: date_range,
+                                        employee_id: emp_id
+                                    }, success: function (data) {
+                                        $(parentTable).parents('tr').find('.emp_dtr_details').html(data);
+                                        $('.input_time').timepicker({
+                                            showLeadingZero: true,
+                                            minutes: {
+                                                interval: 1,
+                                            },
+                                        });
+                                    }, error: function (xhr, status, error) {
+                                        alertDialog({ text: xhr.responseText });
+                                    }
+
+                                });
+                            } else {
+                                $.ajax({
+                                    url: 'viewEmployeeDtrTwelveHoursFormat',
+                                    type: 'POST',
+                                    async: true,
+                                    data: {
+                                        date_range: date_range,
+                                        employee_id: emp_id
+                                    }, success: function (data) {
+                                        $(parentTable).parents('tr').find('.emp_dtr_details').html(data);
+                                        $('.input_time').timepicker({
+                                            showPeriod: true,
+                                            showLeadingZero: true,
+                                            minutes: {
+                                                interval: 1,
+                                            },
+                                        });
+                                    }, error: function (xhr, status, error) {
+                                        alertDialog({ text: xhr.responseText });
+                                    }
+
+                                });
+                            }
+
+                        }, error: function (xhr, status, error) {
+                            alertDialog({ text: xhr.responseText });
+                        }
+                    });
+                }
+            });
+
+            $(document).on('click', '.btn-entry-empty', function () {
+                $(this).closest('tr').find('.time_in').val("");
+                $(this).closest('tr').find('.time_out').val("");
+            });
+;
+            $(document).on('click', '.btn-recompute', function () {
+
+
+
+                var parentTable = $(this).parents('table');
+                var parents = $(parentTable).parents('tr').find('.dtr-box');
+                
+                var parentMainTrs = $(parentTable).parents('tr').prev();
+                var emp_id = parentMainTrs.attr('emp_id');
+
+
+                parentMainTrs.html('<td colspan="10"><p style="text-align:center;"> <i class="fa fa-refresh fa-spin"></i> Please wait a moment to refresh. <p/></td>');
+         
+                
+                    showLoader(parents);
+                    var table = $(this).closest('table');
+
+                   
+                    var list = [];
+
+                    var flag = true;
+
+                    table.find('tbody > tr.record').each(function () {
+                        
+                        var dtr_id = $(this).attr('dtr_id');
+                        var date_in = $(this).find('.date_in').attr('value');
+                        var time_in = $(this).find('.time_in').val();
+                        var date_out = $(this).find('.date_out').attr('value');
+                        var time_out = $(this).find('.time_out').val();
+
+                        time_in_login = date_in + ' ' + time_in;
+                        time_out_login = date_out + ' ' + time_out;
+
+                        var data = {
+                            RecordID: dtr_id,
+                            EmployeeID: emp_id,
+                            RecordDate: date_in,
+                            TimeLogIn: time_in_login,
+                            TimeLogOut: time_out_login
+                        }
+                        if (date_in != "" && time_in != "" && date_out != "" && time_out != "") {
+                            list.push(data);
+                        }
+                    });
+                    var params = {
+                        'data': list
+                    }
+                    console.log(params);
+                    $.ajax({
+                        url: 'insertDailyDtrEmployee',
+                        type: 'POST',
+                        data: $.toDictionary(params),
+                        success: function (data) {
+
+                            var format_dtr = $('#format_dtr').val();
+                            var date_range = $('#date_range').val();
+                            
+                            if (format_dtr == "24") {
+                                $.ajax({
+                                    url: 'viewEmployeeDtr',
+                                    type: 'POST',
+                                    async: true,
+                                    data: {
+                                        date_range: date_range,
+                                        employee_id: emp_id
+                                    }, success: function (data) {
+                                        $(parentTable).parents('tr').find('.emp_dtr_details').html(data);
+                                        $('.input_time').timepicker({
+                                            showLeadingZero: true,
+                                            minutes: {
+                                                interval: 1,
+                                            },
+                                        });
+                                    }, error: function (xhr, status, error) {
+                                        alertDialog({ text: xhr.responseText });
+                                    }
+
+                                });
+                            } else {
+                                $.ajax({
+                                    url: 'viewEmployeeDtrTwelveHoursFormat',
+                                    type: 'POST',
+                                    async: true,
+                                    data: {
+                                        date_range: date_range,
+                                        employee_id: emp_id
+                                    }, success: function (data) {
+                                        $(parentTable).parents('tr').find('.emp_dtr_details').html(data);
+                                        $('.input_time').timepicker({
+                                            showPeriod: true,
+                                            showLeadingZero: true,
+                                            minutes: {
+                                                interval: 1,
+                                            },
+                                        });
+                                    }, error: function (xhr, status, error) {
+                                        alertDialog({ text: xhr.responseText });
+                                    }
+
+                                });
+                            }
+
+                            $.ajax({
+                                url: 'refreshTimesheet',
+                                type: 'POST',
+                                async: true,
+                                data: {
+                                    date_range: date_range,
+                                    employee_id: emp_id
+                                }, success: function (data) {
+
+                                    $(parentMainTrs).html(data);
+
+                                }, error: function (xhr, status, error) {
+                                    alertDialog({ text: xhr.responseText });
+                                }
+
+                            });
+
+                            hideLoader('.dtr-box');
+                        }, error: function (xhr, status, error) {
+                            alertDialog({ text: xhr.responseText });
+                        }
+
+                    });
+
+            });
+
+            $(document).on('click', '.show_dtr_details', function () {
+                var format_dtr = $('#format_dtr').val();
+                var employeee_id = $(this).closest('tr').attr('emp_id');
+                var date_range = $('#date_range').val();
+                var _this = $(this).closest('tr').next().find('.emp_dtr_details');
+                var _thisBox = $(this).closest('tr').next().find('.dtr-box');
+
+              
+                //hideLoader(_thisBox);
+                var nexttr = $(this).closest('tr').next('tr');
+                //dtr-box
+                if (format_dtr == "") {
+                    alert("SELECT TYPE DTR INPUT");
+                } else {
+                    if (!nexttr.is(':visible')) {
+                        showLoader(_thisBox);
+                        if (format_dtr == "24") {
+                            $.ajax({
+                                url: 'viewEmployeeDtr',
+                                type: 'POST',
+                                async: true,
+                                data: {
+                                    date_range: date_range,
+                                    employee_id: employeee_id
+                                }, success: function (data) {
+                                    hideLoader('.dtr-box');
+                                    _this.html(data);
+
+                                    $('.input_time').timepicker({
+
+                                        showLeadingZero: true,
+                                        minutes: {
+                                            interval: 1,
+                                        },
+                                    });
+                                }, error: function (xhr, status, error) {
+                                    alertDialog({ text: xhr.responseText });
+                                }
+
+                            });
+                        } else {
+                            $.ajax({
+                                url: 'viewEmployeeDtrTwelveHoursFormat',
+                                type: 'POST',
+                                async: true,
+                                data: {
+                                    date_range: date_range,
+                                    employee_id: employeee_id
+                                }, success: function (data) {
+                                    hideLoader('.dtr-box');
+                                    _this.html(data);
+                                    $('.input_time').timepicker({
+                                        showPeriod: true,
+                                        showLeadingZero: true,
+                                        minutes: {
+                                            interval: 1,
+                                        },
+                                    });
+                                }, error: function (xhr, status, error) {
+                                    alertDialog({ text: xhr.responseText });
+                                }
+
+                            });
+                        }
+                       
+                    } else {
+                        showLoader(_thisBox);
+                    }
+                    $(this).closest('tr').next().slideToggle();
+                }
+            });
+        });
+
+    </script>
+}

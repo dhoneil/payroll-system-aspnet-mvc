@@ -1,0 +1,251 @@
+﻿@using mjl.Models;
+
+@{
+    ViewBag.Title = "Job";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="row">
+    <div class="col-md-3">
+        <button class="btn btn-primary btn-block margin-bottom" id="btnNewJob"><i class="fa fa-plus"></i> New Job</button>
+
+        <div class="box box-solid">
+            <div class="box-header with-border">
+                <div class="box-title">Filter Option</div>
+                <div class="box-tools">
+                    <button class="btn btn-box-tool" type="button" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="form-group">
+                    <label>Search Key</label>
+                    <input class="form-control input-sm" placeholder="Job name" id="txtfilterjobname" />
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="checkbox" style="padding-left:0;">
+                                <input type="checkbox" class="flat-red" id="chkShowInactive" name="chkShowInactive" />
+                                <label for="chkShowInactive" style="margin-left:5px;">Show Inactive</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button id="btnfilterjob" class="btn btn-default btn-block"><i class="fa fa-refresh"></i> Filter</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="box box-primary" id="tbljobcontainer">
+            <div class="box-header with-border">
+                <div class="box-title">List</div>
+            </div>
+            <div class="box-body result">
+            
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdljob">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title"><h4>Add Job</h4></div>
+            </div>
+            <form id="frm_new_job">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Job Name</label>
+                        <input class="form-control" id="txtjobname" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Job Description</label>
+                        <textarea class="form-control" id="txtjobdescription" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer" id="mdlfooter">
+                    <button type="submit" class="btn btn-default btn-sm" id="btnsavejob"><i class="fa fa-save"></i> Save</button>
+                    <button class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fa fa-close"></i> Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdljobUpdate">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title"><h4>Update Job</h4></div>
+            </div>
+            <form id="frm_update_job">
+                <input type="hidden" id="txtjobidUpdate"/>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Job Name</label>
+                        <input class="form-control" id="txtjobnameupdate" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Job Description</label>
+                        <textarea class="form-control" id="txtjobdescriptionupdate" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select class="form-control" id="txtStatusUpdate">
+                            <option value="False">InActive</option>
+                            <option value="True">Active</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer" id="mdlfooter">
+                    <button type="submit" class="btn btn-default btn-sm" id="btnupdate"><i class="fa fa-save"></i> Save</button>
+                    <button class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fa fa-close"></i> Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#chkShowInactive').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%' // optional
+        });
+
+        $(document).on('click', '.btnEditJob', function () {
+            
+            $('#mdljobUpdate').modal('show');
+            $('#txtjobidUpdate').val($(this).closest('tr').find('.job_id').val());
+            $('#txtjobnameupdate').val($(this).closest('tr').find('.job_name').val());
+            $('#txtjobdescriptionupdate').val($(this).closest('tr').find('.job_description').val());
+            $('#txtStatusUpdate').val($(this).closest('tr').find('.job_status').val());
+        });
+
+        $('#frm_update_job').on('submit', function (e) {
+            e.preventDefault();
+
+            if (confirm("Do you want to update this job?")) {
+
+                var btnoriginal_innerHTML = $('#btnupdate').html();
+                $('#btnupdate').attr("disabled", "disabled");
+                $('#btnupdate').html('<i class="fa fa-spin fa-refresh"></i> Processing...');
+
+                var job_id = $('#txtjobidUpdate').val();
+                var job_name = $('#txtjobnameupdate').val();
+                var description = $('#txtjobdescriptionupdate').val();
+                var status = $('#txtStatusUpdate').val();
+
+                $.ajax({
+                    url: 'UpdateJob',
+                    type: 'post',
+                    data: {
+                        JobName: job_name,
+                        JobDescription: description,
+                        JobID: job_id,
+                        IsActive: status
+                    },
+                    success: function (data) {
+                        $('#btnupdate').html(btnoriginal_innerHTML);
+                        $('#mdljobUpdate').modal('hide');
+                    },
+                    error: function () { }
+                });
+                $('#btnupdate').removeAttr("disabled");
+                $('#btnfilterjob').trigger('click');
+            }
+
+
+        });
+
+        $('#frm_new_job').on('submit', function (e) {
+            e.preventDefault();
+
+            if (confirm("Do you want to continue?")) {
+
+                var btnoriginal_innerHTML = $('#btnsavejob').html();
+                $('#btnsavejob').attr("disabled", "disabled");
+                $('#btnsavejob').html('<i class="fa fa-spin fa-refresh"></i> Processing...');
+
+                var job_name = $('#txtjobname').val();
+                var description = $('#txtjobname').val();
+
+                $.ajax({
+                    url: 'SaveJob',
+                    type: 'post',
+                    data: {
+                        JobName: job_name,
+                        JobDescription: description
+                    },
+                    success: function (data) {
+                        $('#btnsavejob').html(btnoriginal_innerHTML);
+                        $('#mdljob').modal('hide');
+                    },
+                    error: function () { }
+                });
+                $('#btnsavejob').removeAttr("disabled");
+                $('#btnfilterjob').trigger('click');
+            }
+        });
+
+        //$('#btnsavejob').click(function () {
+        //    showLoader('#tbljobcontainer');
+
+        //    var job_name = $('#txtjobname').val();
+        //    var description = $('#txtjobname').val();
+
+        //    $.ajax({
+        //        url: '../admin/SaveJob',
+        //        type: 'post',
+        //        data: {
+        //            JobName: job_name,
+        //            JobDescription: description
+        //        },
+        //        success: function (data) {
+        //            $.alert(data.message);
+
+        //            var job_name = $('#txtfilterjobname').val();
+
+        //            $.ajax({
+        //                url: '../admin/filterjob',
+        //                type: 'post',
+        //                data: { JobName: job_name },
+        //                success: function (data) {
+        //                    $('#tbljob').html(data);
+        //                    hideLoader('#tbljobcontainer');
+        //                },
+        //                error: function () { }
+        //            })
+        //        },
+        //        error: function () { }
+        //    })
+        //});
+
+        $('#btnfilterjob').click(function () {
+            showLoader('#tbljobcontainer');
+
+            var job_name = $('#txtfilterjobname').val();
+            var show_inactive = $('input[name=chkShowInactive]').prop('checked');
+            
+            $.ajax({
+                url: 'FilterJob',
+                type: 'post',
+                data: { job_name: job_name, show_active: show_inactive },
+                success: function (data) {
+                    $('.result').html(data);
+                    hideLoader('#tbljobcontainer');
+                },
+                error: function () { }
+            })
+        });
+
+        $('#btnNewJob').click(function () {
+            $('#mdljob').modal('show');
+        });
+    });
+</script>
+}

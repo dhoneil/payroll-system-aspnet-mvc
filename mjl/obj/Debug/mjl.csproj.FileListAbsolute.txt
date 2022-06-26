@@ -1,0 +1,432 @@
+C:\MJLPayroll\mjl\mjl\bin\ApplicationInsights.config
+C:\MJLPayroll\mjl\mjl\bin\roslyn\csc.exe
+C:\MJLPayroll\mjl\mjl\bin\roslyn\csc.exe.config
+C:\MJLPayroll\mjl\mjl\bin\roslyn\csc.rsp
+C:\MJLPayroll\mjl\mjl\bin\roslyn\csi.exe
+C:\MJLPayroll\mjl\mjl\bin\roslyn\csi.rsp
+C:\MJLPayroll\mjl\mjl\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+C:\MJLPayroll\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\MJLPayroll\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+C:\MJLPayroll\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.dll
+C:\MJLPayroll\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+C:\MJLPayroll\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\MJLPayroll\mjl\mjl\bin\roslyn\Microsoft.CSharp.Core.targets
+C:\MJLPayroll\mjl\mjl\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+C:\MJLPayroll\mjl\mjl\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+C:\MJLPayroll\mjl\mjl\bin\roslyn\Microsoft.VisualBasic.Core.targets
+C:\MJLPayroll\mjl\mjl\bin\roslyn\System.AppContext.dll
+C:\MJLPayroll\mjl\mjl\bin\roslyn\System.Collections.Immutable.dll
+C:\MJLPayroll\mjl\mjl\bin\roslyn\System.Diagnostics.StackTrace.dll
+C:\MJLPayroll\mjl\mjl\bin\roslyn\System.IO.FileSystem.dll
+C:\MJLPayroll\mjl\mjl\bin\roslyn\System.IO.FileSystem.Primitives.dll
+C:\MJLPayroll\mjl\mjl\bin\roslyn\System.Reflection.Metadata.dll
+C:\MJLPayroll\mjl\mjl\bin\roslyn\vbc.exe
+C:\MJLPayroll\mjl\mjl\bin\roslyn\vbc.exe.config
+C:\MJLPayroll\mjl\mjl\bin\roslyn\vbc.rsp
+C:\MJLPayroll\mjl\mjl\bin\roslyn\VBCSCompiler.exe
+C:\MJLPayroll\mjl\mjl\bin\roslyn\VBCSCompiler.exe.config
+C:\MJLPayroll\mjl\mjl\bin\mjl.dll.config
+C:\MJLPayroll\mjl\mjl\bin\mjl.dll
+C:\MJLPayroll\mjl\mjl\bin\mjl.pdb
+C:\MJLPayroll\mjl\mjl\bin\Antlr3.Runtime.dll
+C:\MJLPayroll\mjl\mjl\bin\EntityFramework.dll
+C:\MJLPayroll\mjl\mjl\bin\EntityFramework.SqlServer.dll
+C:\MJLPayroll\mjl\mjl\bin\Microsoft.AI.Agent.Intercept.dll
+C:\MJLPayroll\mjl\mjl\bin\Microsoft.AI.DependencyCollector.dll
+C:\MJLPayroll\mjl\mjl\bin\Microsoft.AI.PerfCounterCollector.dll
+C:\MJLPayroll\mjl\mjl\bin\Microsoft.AI.ServerTelemetryChannel.dll
+C:\MJLPayroll\mjl\mjl\bin\Microsoft.AI.Web.dll
+C:\MJLPayroll\mjl\mjl\bin\Microsoft.AI.WindowsServer.dll
+C:\MJLPayroll\mjl\mjl\bin\Microsoft.ApplicationInsights.dll
+C:\MJLPayroll\mjl\mjl\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\MJLPayroll\mjl\mjl\bin\Microsoft.Web.Infrastructure.dll
+C:\MJLPayroll\mjl\mjl\bin\Newtonsoft.Json.dll
+C:\MJLPayroll\mjl\mjl\bin\System.Web.Helpers.dll
+C:\MJLPayroll\mjl\mjl\bin\System.Web.Mvc.dll
+C:\MJLPayroll\mjl\mjl\bin\System.Web.Optimization.dll
+C:\MJLPayroll\mjl\mjl\bin\System.Web.Razor.dll
+C:\MJLPayroll\mjl\mjl\bin\System.Web.WebPages.Deployment.dll
+C:\MJLPayroll\mjl\mjl\bin\System.Web.WebPages.dll
+C:\MJLPayroll\mjl\mjl\bin\System.Web.WebPages.Razor.dll
+C:\MJLPayroll\mjl\mjl\bin\WebGrease.dll
+C:\MJLPayroll\mjl\mjl\bin\EntityFramework.xml
+C:\MJLPayroll\mjl\mjl\bin\EntityFramework.SqlServer.xml
+C:\MJLPayroll\mjl\mjl\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\MJLPayroll\mjl\mjl\bin\System.Web.Helpers.xml
+C:\MJLPayroll\mjl\mjl\bin\System.Web.Mvc.xml
+C:\MJLPayroll\mjl\mjl\bin\System.Web.Optimization.xml
+C:\MJLPayroll\mjl\mjl\bin\System.Web.Razor.xml
+C:\MJLPayroll\mjl\mjl\bin\System.Web.WebPages.xml
+C:\MJLPayroll\mjl\mjl\bin\System.Web.WebPages.Deployment.xml
+C:\MJLPayroll\mjl\mjl\bin\System.Web.WebPages.Razor.xml
+C:\MJLPayroll\mjl\mjl\bin\Antlr3.Runtime.pdb
+C:\MJLPayroll\mjl\mjl\bin\Newtonsoft.Json.xml
+C:\MJLPayroll\mjl\mjl\bin\Microsoft.ApplicationInsights.xml
+C:\MJLPayroll\mjl\mjl\bin\Microsoft.AI.DependencyCollector.xml
+C:\MJLPayroll\mjl\mjl\bin\Microsoft.AI.ServerTelemetryChannel.xml
+C:\MJLPayroll\mjl\mjl\bin\Microsoft.AI.WindowsServer.xml
+C:\MJLPayroll\mjl\mjl\bin\Microsoft.AI.Web.xml
+C:\MJLPayroll\mjl\mjl\obj\Debug\mjl.dll
+C:\MJLPayroll\mjl\mjl\obj\Debug\mjl.pdb
+C:\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.dll
+C:\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\mjl\mjl\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+C:\mjl\mjl\bin\roslyn\System.Collections.Immutable.dll
+C:\mjl\mjl\bin\roslyn\System.Reflection.Metadata.dll
+C:\mjl\mjl\bin\roslyn\VBCSCompiler.exe
+C:\mjl\mjl\bin\ApplicationInsights.config
+C:\mjl\mjl\bin\roslyn\csc.exe
+C:\mjl\mjl\bin\roslyn\csc.exe.config
+C:\mjl\mjl\bin\roslyn\csc.rsp
+C:\mjl\mjl\bin\roslyn\csi.exe
+C:\mjl\mjl\bin\roslyn\csi.rsp
+C:\mjl\mjl\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+C:\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+C:\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+C:\mjl\mjl\bin\roslyn\Microsoft.CSharp.Core.targets
+C:\mjl\mjl\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+C:\mjl\mjl\bin\roslyn\Microsoft.VisualBasic.Core.targets
+C:\mjl\mjl\bin\roslyn\System.AppContext.dll
+C:\mjl\mjl\bin\roslyn\System.Diagnostics.StackTrace.dll
+C:\mjl\mjl\bin\roslyn\System.IO.FileSystem.dll
+C:\mjl\mjl\bin\roslyn\System.IO.FileSystem.Primitives.dll
+C:\mjl\mjl\bin\roslyn\vbc.exe
+C:\mjl\mjl\bin\roslyn\vbc.exe.config
+C:\mjl\mjl\bin\roslyn\vbc.rsp
+C:\mjl\mjl\bin\roslyn\VBCSCompiler.exe.config
+C:\mjl\mjl\bin\mjl.dll.config
+C:\mjl\mjl\bin\mjl.dll
+C:\mjl\mjl\bin\mjl.pdb
+C:\mjl\mjl\bin\Antlr3.Runtime.dll
+C:\mjl\mjl\bin\EntityFramework.dll
+C:\mjl\mjl\bin\EntityFramework.SqlServer.dll
+C:\mjl\mjl\bin\Microsoft.AI.Agent.Intercept.dll
+C:\mjl\mjl\bin\Microsoft.AI.DependencyCollector.dll
+C:\mjl\mjl\bin\Microsoft.AI.PerfCounterCollector.dll
+C:\mjl\mjl\bin\Microsoft.AI.ServerTelemetryChannel.dll
+C:\mjl\mjl\bin\Microsoft.AI.Web.dll
+C:\mjl\mjl\bin\Microsoft.AI.WindowsServer.dll
+C:\mjl\mjl\bin\Microsoft.ApplicationInsights.dll
+C:\mjl\mjl\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\mjl\mjl\bin\Microsoft.Web.Infrastructure.dll
+C:\mjl\mjl\bin\Newtonsoft.Json.dll
+C:\mjl\mjl\bin\System.Web.Helpers.dll
+C:\mjl\mjl\bin\System.Web.Mvc.dll
+C:\mjl\mjl\bin\System.Web.Optimization.dll
+C:\mjl\mjl\bin\System.Web.Razor.dll
+C:\mjl\mjl\bin\System.Web.WebPages.Deployment.dll
+C:\mjl\mjl\bin\System.Web.WebPages.dll
+C:\mjl\mjl\bin\System.Web.WebPages.Razor.dll
+C:\mjl\mjl\bin\WebGrease.dll
+C:\mjl\mjl\bin\EntityFramework.xml
+C:\mjl\mjl\bin\EntityFramework.SqlServer.xml
+C:\mjl\mjl\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\mjl\mjl\bin\System.Web.Helpers.xml
+C:\mjl\mjl\bin\System.Web.Mvc.xml
+C:\mjl\mjl\bin\System.Web.Optimization.xml
+C:\mjl\mjl\bin\System.Web.Razor.xml
+C:\mjl\mjl\bin\System.Web.WebPages.xml
+C:\mjl\mjl\bin\System.Web.WebPages.Deployment.xml
+C:\mjl\mjl\bin\System.Web.WebPages.Razor.xml
+C:\mjl\mjl\bin\Antlr3.Runtime.pdb
+C:\mjl\mjl\bin\Newtonsoft.Json.xml
+C:\mjl\mjl\bin\Microsoft.ApplicationInsights.xml
+C:\mjl\mjl\bin\Microsoft.AI.DependencyCollector.xml
+C:\mjl\mjl\bin\Microsoft.AI.ServerTelemetryChannel.xml
+C:\mjl\mjl\bin\Microsoft.AI.WindowsServer.xml
+C:\mjl\mjl\bin\Microsoft.AI.Web.xml
+C:\mjl\mjl\obj\Debug\mjl.csproj.CoreCompileInputs.cache
+C:\mjl\mjl\obj\Debug\mjl.csproj.CopyComplete
+C:\mjl\mjl\obj\Debug\mjl.dll
+C:\mjl\mjl\obj\Debug\mjl.pdb
+C:\MJLPayroll\mjl\mjl\obj\Debug\mjl.csprojResolveAssemblyReference.cache
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\ApplicationInsights.config
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\roslyn\csc.exe
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\roslyn\csc.exe.config
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\roslyn\csc.rsp
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\roslyn\csi.exe
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\roslyn\csi.rsp
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\roslyn\Microsoft.CSharp.Core.targets
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\roslyn\Microsoft.VisualBasic.Core.targets
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\roslyn\System.AppContext.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\roslyn\System.Collections.Immutable.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\roslyn\System.Diagnostics.StackTrace.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\roslyn\System.IO.FileSystem.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\roslyn\System.IO.FileSystem.Primitives.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\roslyn\System.Reflection.Metadata.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\roslyn\vbc.exe
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\roslyn\vbc.exe.config
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\roslyn\vbc.rsp
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\roslyn\VBCSCompiler.exe
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\roslyn\VBCSCompiler.exe.config
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\mjl.dll.config
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\mjl.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\mjl.pdb
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\Antlr3.Runtime.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\EntityFramework.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\EntityFramework.SqlServer.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\Microsoft.AI.Agent.Intercept.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\Microsoft.AI.DependencyCollector.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\Microsoft.AI.PerfCounterCollector.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\Microsoft.AI.ServerTelemetryChannel.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\Microsoft.AI.Web.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\Microsoft.AI.WindowsServer.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\Microsoft.ApplicationInsights.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\Newtonsoft.Json.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\System.Web.Helpers.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\System.Web.Mvc.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\System.Web.Optimization.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\System.Web.Razor.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\System.Web.WebPages.Deployment.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\System.Web.WebPages.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\System.Web.WebPages.Razor.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\WebGrease.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\EntityFramework.xml
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\EntityFramework.SqlServer.xml
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\System.Web.Helpers.xml
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\System.Web.Mvc.xml
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\System.Web.Optimization.xml
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\System.Web.Razor.xml
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\System.Web.WebPages.xml
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\System.Web.WebPages.Deployment.xml
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\System.Web.WebPages.Razor.xml
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\Antlr3.Runtime.pdb
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\Newtonsoft.Json.xml
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\Microsoft.ApplicationInsights.xml
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\Microsoft.AI.DependencyCollector.xml
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\Microsoft.AI.ServerTelemetryChannel.xml
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\Microsoft.AI.WindowsServer.xml
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\bin\Microsoft.AI.Web.xml
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\obj\Debug\mjl.dll
+C:\Users\Jobee\Desktop\prince dhoneil\mjl\mjl\obj\Debug\mjl.pdb
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\ApplicationInsights.config
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\roslyn\csc.exe
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\roslyn\csc.exe.config
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\roslyn\csc.rsp
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\roslyn\csi.exe
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\roslyn\csi.rsp
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\roslyn\Microsoft.CSharp.Core.targets
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\roslyn\Microsoft.VisualBasic.Core.targets
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\roslyn\System.AppContext.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\roslyn\System.Collections.Immutable.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\roslyn\System.Diagnostics.StackTrace.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\roslyn\System.IO.FileSystem.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\roslyn\System.IO.FileSystem.Primitives.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\roslyn\System.Reflection.Metadata.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\roslyn\vbc.exe
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\roslyn\vbc.exe.config
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\roslyn\vbc.rsp
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\roslyn\VBCSCompiler.exe
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\roslyn\VBCSCompiler.exe.config
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\mjl.dll.config
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\mjl.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\mjl.pdb
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\Antlr3.Runtime.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\EntityFramework.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\EntityFramework.SqlServer.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\Microsoft.AI.Agent.Intercept.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\Microsoft.AI.DependencyCollector.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\Microsoft.AI.PerfCounterCollector.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\Microsoft.AI.ServerTelemetryChannel.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\Microsoft.AI.Web.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\Microsoft.AI.WindowsServer.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\Microsoft.ApplicationInsights.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\Newtonsoft.Json.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\System.Web.Helpers.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\System.Web.Mvc.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\System.Web.Optimization.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\System.Web.Razor.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\System.Web.WebPages.Deployment.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\System.Web.WebPages.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\System.Web.WebPages.Razor.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\WebGrease.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\EntityFramework.xml
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\EntityFramework.SqlServer.xml
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\System.Web.Helpers.xml
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\System.Web.Mvc.xml
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\System.Web.Optimization.xml
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\System.Web.Razor.xml
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\System.Web.WebPages.xml
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\System.Web.WebPages.Deployment.xml
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\System.Web.WebPages.Razor.xml
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\Antlr3.Runtime.pdb
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\Newtonsoft.Json.xml
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\Microsoft.ApplicationInsights.xml
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\Microsoft.AI.DependencyCollector.xml
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\Microsoft.AI.ServerTelemetryChannel.xml
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\Microsoft.AI.WindowsServer.xml
+C:\Users\User\Desktop\mjl\mjl\mjl\bin\Microsoft.AI.Web.xml
+C:\Users\User\Desktop\mjl\mjl\mjl\obj\Debug\mjl.csprojAssemblyReference.cache
+C:\Users\User\Desktop\mjl\mjl\mjl\obj\Debug\mjl.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\mjl\mjl\mjl\obj\Debug\mjl.csproj.CopyComplete
+C:\Users\User\Desktop\mjl\mjl\mjl\obj\Debug\mjl.dll
+C:\Users\User\Desktop\mjl\mjl\mjl\obj\Debug\mjl.pdb
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\ApplicationInsights.config
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\roslyn\csc.exe
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\roslyn\csi.exe
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\roslyn\csc.exe.config
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\roslyn\csc.rsp
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\roslyn\csi.rsp
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\roslyn\Microsoft.CSharp.Core.targets
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\roslyn\Microsoft.VisualBasic.Core.targets
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\roslyn\System.AppContext.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\roslyn\System.Collections.Immutable.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\roslyn\System.Diagnostics.StackTrace.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\roslyn\System.IO.FileSystem.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\roslyn\System.IO.FileSystem.Primitives.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\roslyn\System.Reflection.Metadata.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\roslyn\vbc.exe
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\roslyn\vbc.exe.config
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\roslyn\vbc.rsp
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\roslyn\VBCSCompiler.exe
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\roslyn\VBCSCompiler.exe.config
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\mjl.dll.config
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\mjl.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\mjl.pdb
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\Antlr3.Runtime.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\EntityFramework.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\EntityFramework.SqlServer.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\Microsoft.AI.Agent.Intercept.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\Microsoft.AI.DependencyCollector.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\Microsoft.AI.PerfCounterCollector.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\Microsoft.AI.ServerTelemetryChannel.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\Microsoft.AI.Web.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\Microsoft.AI.WindowsServer.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\Microsoft.ApplicationInsights.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\Newtonsoft.Json.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\System.Web.Helpers.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\System.Web.Mvc.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\System.Web.Optimization.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\System.Web.Razor.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\System.Web.WebPages.Deployment.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\System.Web.WebPages.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\System.Web.WebPages.Razor.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\WebGrease.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\EntityFramework.xml
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\EntityFramework.SqlServer.xml
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\System.Web.Helpers.xml
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\System.Web.Mvc.xml
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\System.Web.Optimization.xml
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\System.Web.Razor.xml
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\System.Web.WebPages.xml
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\System.Web.WebPages.Deployment.xml
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\System.Web.WebPages.Razor.xml
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\Antlr3.Runtime.pdb
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\Newtonsoft.Json.xml
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\Microsoft.ApplicationInsights.xml
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\Microsoft.AI.DependencyCollector.xml
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\Microsoft.AI.ServerTelemetryChannel.xml
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\Microsoft.AI.WindowsServer.xml
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\bin\Microsoft.AI.Web.xml
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\obj\Debug\mjl.csproj.CoreCompileInputs.cache
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\obj\Debug\mjl.csproj.CopyComplete
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\obj\Debug\mjl.dll
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\obj\Debug\mjl.pdb
+C:\Users\actda\OneDrive - Aquip\Desktop\mjl\mjl\mjl\obj\Debug\mjl.csproj.AssemblyReference.cache
+D:\C# PROJECTS\mjl\mjl\mjl\bin\ApplicationInsights.config
+D:\C# PROJECTS\mjl\mjl\mjl\bin\roslyn\csc.exe
+D:\C# PROJECTS\mjl\mjl\mjl\bin\roslyn\csc.exe.config
+D:\C# PROJECTS\mjl\mjl\mjl\bin\roslyn\csc.rsp
+D:\C# PROJECTS\mjl\mjl\mjl\bin\roslyn\csi.exe
+D:\C# PROJECTS\mjl\mjl\mjl\bin\roslyn\csi.rsp
+D:\C# PROJECTS\mjl\mjl\mjl\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\roslyn\Microsoft.CSharp.Core.targets
+D:\C# PROJECTS\mjl\mjl\mjl\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\roslyn\Microsoft.VisualBasic.Core.targets
+D:\C# PROJECTS\mjl\mjl\mjl\bin\roslyn\System.AppContext.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\roslyn\System.Collections.Immutable.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\roslyn\System.Diagnostics.StackTrace.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\roslyn\System.IO.FileSystem.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\roslyn\System.IO.FileSystem.Primitives.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\roslyn\System.Reflection.Metadata.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\roslyn\vbc.exe
+D:\C# PROJECTS\mjl\mjl\mjl\bin\roslyn\vbc.exe.config
+D:\C# PROJECTS\mjl\mjl\mjl\bin\roslyn\vbc.rsp
+D:\C# PROJECTS\mjl\mjl\mjl\bin\roslyn\VBCSCompiler.exe
+D:\C# PROJECTS\mjl\mjl\mjl\bin\roslyn\VBCSCompiler.exe.config
+D:\C# PROJECTS\mjl\mjl\mjl\bin\mjl.dll.config
+D:\C# PROJECTS\mjl\mjl\mjl\bin\mjl.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\mjl.pdb
+D:\C# PROJECTS\mjl\mjl\mjl\bin\Antlr3.Runtime.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\EntityFramework.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\EntityFramework.SqlServer.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\Microsoft.AI.Agent.Intercept.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\Microsoft.AI.DependencyCollector.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\Microsoft.AI.PerfCounterCollector.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\Microsoft.AI.ServerTelemetryChannel.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\Microsoft.AI.Web.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\Microsoft.AI.WindowsServer.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\Microsoft.ApplicationInsights.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\Microsoft.Web.Infrastructure.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\Newtonsoft.Json.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\System.Web.Helpers.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\System.Web.Mvc.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\System.Web.Optimization.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\System.Web.Razor.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\System.Web.WebPages.Deployment.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\System.Web.WebPages.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\System.Web.WebPages.Razor.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\WebGrease.dll
+D:\C# PROJECTS\mjl\mjl\mjl\bin\EntityFramework.xml
+D:\C# PROJECTS\mjl\mjl\mjl\bin\EntityFramework.SqlServer.xml
+D:\C# PROJECTS\mjl\mjl\mjl\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\C# PROJECTS\mjl\mjl\mjl\bin\System.Web.Helpers.xml
+D:\C# PROJECTS\mjl\mjl\mjl\bin\System.Web.Mvc.xml
+D:\C# PROJECTS\mjl\mjl\mjl\bin\System.Web.Optimization.xml
+D:\C# PROJECTS\mjl\mjl\mjl\bin\System.Web.Razor.xml
+D:\C# PROJECTS\mjl\mjl\mjl\bin\System.Web.WebPages.xml
+D:\C# PROJECTS\mjl\mjl\mjl\bin\System.Web.WebPages.Deployment.xml
+D:\C# PROJECTS\mjl\mjl\mjl\bin\System.Web.WebPages.Razor.xml
+D:\C# PROJECTS\mjl\mjl\mjl\bin\Antlr3.Runtime.pdb
+D:\C# PROJECTS\mjl\mjl\mjl\bin\Newtonsoft.Json.xml
+D:\C# PROJECTS\mjl\mjl\mjl\bin\Microsoft.ApplicationInsights.xml
+D:\C# PROJECTS\mjl\mjl\mjl\bin\Microsoft.AI.DependencyCollector.xml
+D:\C# PROJECTS\mjl\mjl\mjl\bin\Microsoft.AI.ServerTelemetryChannel.xml
+D:\C# PROJECTS\mjl\mjl\mjl\bin\Microsoft.AI.WindowsServer.xml
+D:\C# PROJECTS\mjl\mjl\mjl\bin\Microsoft.AI.Web.xml
+D:\C# PROJECTS\mjl\mjl\mjl\obj\Debug\mjl.csproj.CoreCompileInputs.cache
+D:\C# PROJECTS\mjl\mjl\mjl\obj\Debug\mjl.csproj.CopyComplete
+D:\C# PROJECTS\mjl\mjl\mjl\obj\Debug\mjl.dll
+D:\C# PROJECTS\mjl\mjl\mjl\obj\Debug\mjl.pdb
+D:\C# PROJECTS\mjl\mjl\mjl\obj\Debug\mjl.csproj.AssemblyReference.cache

@@ -1,0 +1,186 @@
+﻿@using mjl.Models.Database;
+@using mjl.Models;
+
+@{
+    List<Employee> data = (List<Employee>)ViewBag.lstEmployee;
+    DateTime date_from = (DateTime)ViewBag.date_from;
+    DateTime date_to = (DateTime)ViewBag.date_to;
+    bool has_timesheet = false;
+}
+<table class="table table-bordered table-hover table-condensed"  id="employee_timesheet">
+    <thead>
+        <tr style="background-color:#f2f2f2;">
+            <th>Name</th>
+            <th style="text-align:center;vertical-align:middle">Regular WD</th>
+            <th style="text-align:center;vertical-align:middle">Holiday WD</th>
+            <th style="text-align:center;vertical-align:middle">Restday WD</th>
+            <th style="text-align:center;vertical-align:middle">Days Absent</th>
+            <th style="text-align:center;vertical-align:middle">Total Overtime</th>
+            <th style="text-align:center;vertical-align:middle">Lates</th>
+            <th style="text-align:center;vertical-align:middle">Undertime</th>
+            <th style="text-align:center;vertical-align:middle">Status</th>
+            <th style="text-align:center;vertical-align:middle"><input type="checkbox" class="checkALL" /> Options</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var items in data) {
+
+            string employee_compensatio_type = "MONTHLY";
+
+            Company company = CompanyModel.getCompany(items.company_id.Value);
+            has_timesheet = TimesheetModel.verifyHasEmployeeTimesheet(items.EmployeeID, date_from, date_to);
+            employee_timesheet emp_timesheet = new employee_timesheet();
+            if (has_timesheet) {
+                emp_timesheet = TimesheetModel.getEmployeeTimsheet(items.EmployeeID, date_from, date_to);
+            }
+
+
+            int employee_id = (int)items.EmployeeID;
+            Employee empData = EmployeeModel.getEmployeeByID(employee_id);
+
+            int regular_days = 0;
+            int holiday_days = 0;
+            int restday_days = 0;
+
+            int days_absent = 0;
+            int lates = 0;
+            int undertime = 0;
+
+            decimal overtime = 0;
+
+
+
+
+            foreach (DateTime day in SystemHelper.EachDay(date_from, date_to))
+            {
+                bool holiday_remarks = false;
+
+                if (HolidayModel.VerifygetHolidayByDateandCompany(day, empData.company_id.Value))
+                {
+
+                    CompanyHoliday holiday = HolidayModel.getHolidayByDateandCompany(day, empData.company_id.Value);
+                    holiday_remarks = true;
+                }
+
+
+
+                string remarks_schedule = Scheduler.verifyScheduleAvailable(items.EmployeeID, day);
+
+                if (remarks_schedule == "HasSchedule")
+                {
+                    Employee_Schedule emp_sched = Scheduler.getEmployeeSchedule(items.EmployeeID, day);
+                    DateTime dateSchedIn = DateTime.Parse(emp_sched.TimeIn.Value.ToString());
+                    DateTime dateSchedOut = DateTime.Parse(emp_sched.TimeOut.Value.ToString());
+
+
+                    if (DtrComputation.checkgetDtrReport(items.EmployeeID, day))
+                    {
+                        DailyTimeRecord employee_dtr = DtrComputation.getDtrReport(items.EmployeeID, day);
+
+
+                        
+                        if (holiday_remarks)
+                        {
+                            holiday_days++;
+                        }
+                        else
+                        {
+                            overtime += employee_dtr.total_overtime_hrs.Value;
+                            regular_days++;
+                        }
+
+                        lates += employee_dtr.lates.Value;
+                        undertime += employee_dtr.undertime.Value;
+
+                    }
+                    else
+                    {
+                        if (holiday_remarks == false)
+                        {
+                            if (company.type != "MANPOWER")
+                            {
+                                days_absent++;
+                            }
+                        }
+                    }
+                }
+                else if (remarks_schedule == "NoSchedule")
+                {
+                    if (holiday_remarks == false)
+                    {
+                        if (company.type != "MANPOWER")
+                        {
+                            days_absent++;
+                        }
+                    }
+                }
+                else {
+                    //RESTDAY Schedule
+                    if (DtrComputation.checkgetDtrReport(items.EmployeeID, day))
+                    {
+                        restday_days++;
+                    }
+
+
+                }
+            }
+
+            if (employee_compensatio_type == "")
+            {
+                <tr>
+                    <td><a href="javascript:void(0);">@items.LastName.EmptyNull().ToUpper(), @items.FirstName.EmptyNull().ToUpper()</a></td>
+                    <td style="text-align:center;color:maroon" colspan="9">*** No Compensation Found ***</td>
+                </tr>
+            }
+            else {
+                <tr emp_id="@items.EmployeeID" class="tr_timesheet_recprd">
+                    <td><a class="show_dtr_details" href="javascript:void(0);">@items.LastName.EmptyNull().ToUpper(), @items.FirstName.EmptyNull().ToUpper()</a></td>
+                    <td style="text-align:center" class="regular_days">@regular_days</td>
+                    <td style="text-align:center" class="holiday_days">@holiday_days</td>
+                    <td style="text-align:center" class="rest_days">@restday_days</td>
+                    <td style="text-align:center" class="days_absent">@days_absent</td>
+                    <td style="text-align:center" class="overtime">@overtime</td>
+                    <td style="text-align:center" class="lates">@lates</td>
+                    <td style="text-align:center" class="undertime">@undertime</td>
+                    <td style="text-align:center" class="">
+                        @if (has_timesheet)
+            {
+                <span class="badge bg-blue"><i class="fa fa-lock"></i> LOCK</span>
+            }
+            else
+            {
+                <span class="badge bg-orange"><i class="fa fa-unlock-alt"></i> UNLOCK</span>
+            }
+                    </td>
+                    <td>
+                        @if (has_timesheet)
+            {
+                <div style="text-align:center;">
+                    <div class="btn-group">
+                        <button class="btn btn-default btn-sm btn-cancel-timesheet" id="@emp_timesheet.emp_timesheet_id" title="Unlock"><i class="fa fa-unlock"></i></button>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div style="margin-left:40%">
+                    <input type="checkbox" class="chckboxSubmit" name="checkrecord" />
+                </div>
+            }
+                    </td>
+                </tr>
+                <tr style="display:none">
+                    <td colspan="12" style="background-color:#ecf0f1;">
+                        <div class="box box-solid dtr-box" >
+                            <div class="box-body">
+                                    <div class="emp_dtr_details">
+                                           
+                                    </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

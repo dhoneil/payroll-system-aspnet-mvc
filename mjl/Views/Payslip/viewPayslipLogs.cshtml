@@ -1,0 +1,40 @@
+﻿@using mjl.Models.Database;
+@using mjl.Models;
+
+@{ 
+    Employee_Payslip payslip = (Employee_Payslip)ViewBag.payslip;
+    Employee emp_data = EmployeeModel.getEmployeeByID(payslip.employee_id.Value);
+
+    string name = emp_data.LastName.ToUpper() + ", " + emp_data.FirstName.ToUpper();
+
+    string prepared_name = "N/A";
+    string prepared_date = "N/A";
+
+    string approved_name = "N/A";
+    string approved_date = "N/A";
+
+    if (payslip.prepared_by.HasValue) {
+        User emp_data_prepared_by = UserModel.gerUserById(payslip.prepared_by.Value);
+        prepared_name = emp_data_prepared_by.LastName.ToUpper() + ", " + emp_data_prepared_by.FirstName.ToUpper();
+        prepared_date = payslip.prepared_date.ToDateTimeFormat();
+    }
+    if (payslip.approved_by.HasValue)
+    {
+        User emp_data_approved_by = UserModel.gerUserById(payslip.approved_by.Value);
+        approved_name = emp_data_approved_by.LastName.ToUpper() + ", " + emp_data_approved_by.FirstName.ToUpper();
+        approved_date = payslip.approved_date.ToDateTimeFormat();
+    }
+
+}
+<dl class="dl-horizontal">
+    <dt>Name</dt>
+    <dd>@name</dd>
+    <dt>Prepared By</dt>
+    <dd>@prepared_name</dd>
+    <dt>Prepared Date</dt>
+    <dd>@prepared_date</dd>
+    <dt>Approved By</dt>
+    <dd>@approved_name</dd>
+    <dt>Apprved Date</dt>
+    <dd>@approved_date</dd>
+</dl>

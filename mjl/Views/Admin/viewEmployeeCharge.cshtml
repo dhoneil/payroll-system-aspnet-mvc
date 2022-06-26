@@ -1,0 +1,147 @@
+﻿@using mjl.Models.Database;
+@using mjl.Models;
+
+@{ 
+    viewEmployeeCharge data = (viewEmployeeCharge)ViewBag.emp_charge;
+}
+
+<div class="row">
+    <div class="col-md-12" id="">
+        <div class="box box-solid tblViewDAta">
+            <div class="box-header with-border">
+                <h3 class="box-title">
+                    Request Information ( Request Status :  
+                        @if (data.status.ToUpper() == "FOR APPROVAL")
+                        {
+                            <span class="label label-warning">Pending</span>
+                        }
+                        else if (data.status.ToUpper() == "APPROVED")
+                        {
+                            <span class="label label-primary">Released</span>
+                        }
+                        else
+                        {
+                            <span class="label label-danger">Cancelled</span>
+                        }
+                    )
+                </h3>
+            </div>
+            <div class="box-body" id="printthisarea">
+                <table class="table table-condensed table-bordered">
+                    <thead>
+                        <tr>
+                            <th>NAME</th>
+                            <th>CHARGE&nbsp;NAME</th>
+                            <th>CHARGE&nbsp;AMOUNT</th>
+                            <th>DEDUCTION&nbsp;SCHEDULE</th>
+                            <th>PREPARED&nbsp;BY&nbsp;(Name&nbsp;|&nbsp;Date)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@data.FirstName.ToString() @data.LastName.ToString()</td>
+                            <td id="chargenameeee">@data.ChargeName.ToString()</td>
+                            <td>@data.ChargeAmount.ToString()</td>
+                            <td>@data.date_from.ToDateTimeFormat() - @data.date_from.ToDateTimeFormat()</td>
+                            <td>
+                                @{
+                                    string prepared_name = "";
+                                    User preparedEmployee = UserModel.gerUserById(data.prepared_by.Value);
+                                    prepared_name = preparedEmployee.FirstName + ' ' + preparedEmployee.LastName;
+                                }
+                                @prepared_name.ToUpper() | @data.prepared_date.ToDateTimeFormat()
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="box box-solid tblViewDAta" id="hideonprint">
+            <div class="box-header with-border">
+                <h3 class="box-title">Action Request</h3>
+            </div>
+            <div class="box-body">
+                <table class="table table-condensed table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Last Edit (Name | Date)</th>
+                            <th>Relased By (Name | Date)</th>
+                            <th>Cancelled By (Name | Date)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                @{
+                                    string lastedit_name = "N/A";
+                                    string edit_date = "N/A";
+                                    if (data.lastedit_by.HasValue)
+                                    {
+                                        User lasteditEmployee = UserModel.gerUserById(data.lastedit_by.Value);
+                                        lastedit_name = lasteditEmployee.FirstName + ' ' + lasteditEmployee.LastName;
+                                        edit_date = data.lastedit_date.ToDateTimeFormat();
+                                    }
+                                }
+                                @lastedit_name.ToUpper() | @edit_date
+                            </td>
+                            <td>
+                                @{
+                                    string released_name = "N/A";
+                                    string releasde_date = "N/A";
+                                    if (data.Released_by.HasValue)
+                                    {
+                                        User relasedEmployee = UserModel.gerUserById(data.Released_by.Value);
+                                        released_name = relasedEmployee.FirstName + ' ' + relasedEmployee.LastName;
+                                        releasde_date = data.Released_date.ToDateTimeFormat();
+                                    }
+                                }
+                                @released_name.ToUpper() | @releasde_date
+                            </td>
+                            <td>
+                                @{
+                                    string cancelled_name = "N/A";
+                                    string cancelled_date = "N/A";
+                                    if (data.Cancelled_by.HasValue)
+                                    {
+                                        User cancelleEmployee = UserModel.gerUserById(data.Cancelled_by.Value);
+                                        cancelled_name = cancelleEmployee.FirstName + ' ' + cancelleEmployee.LastName;
+                                        cancelled_date = data.Cancelled_date.ToDateTimeFormat();
+                                    }
+                                }
+                                @cancelled_name.ToUpper() | @cancelled_date
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="box-footer" style="margin-top:30px;">
+                @if (data.status.ToUpper() == "APPROVED")
+                {
+
+                    <button type="button" class="btn btn-primary btn-sm btn_void" charge_id="@data.ChargeID"><i class="fa fa-asterisk"></i> Void Request</button>
+                }
+                else if (data.status.ToUpper() == "FOR APPROVAL")
+                {
+                    <div id="">
+                        <button type="button" class="btn btn-primary btn-sm btn_releasedwithPrint" charge_id="@data.ChargeID">Set as Relased w/ Print</button>
+                        <button type="button" class="btn btn-default btn-sm btn_released" charge_id="@data.ChargeID"><i class="fa fa-thumbs-up"></i> Relased</button>
+                        <button type="button" class="btn btn-default btn-sm btn_printonly"><i class="fa fa-print"></i> Print</button>
+                        <button type="button" class="btn btn-warning btn-sm pull-right btn_cancel" charge_id="@data.ChargeID"><i class="fa fa-thumbs-down"></i> Cancel Request</button>
+                    </div>
+                }
+                else
+                {
+
+                }
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

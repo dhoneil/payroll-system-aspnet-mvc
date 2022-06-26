@@ -1,0 +1,540 @@
+﻿
+@{
+    ViewBag.Title = "Generate Payslip";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">Filter Options</h3>
+                <div class="box-tools">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="form-vertical row">
+                    <div class="col-sm-12">
+                        <div class="form-group col-md-3">
+                            <label>Company</label>
+                            <div class="form-group">
+                                @Html.DropDownList("company_id", (IEnumerable<SelectListItem>)ViewBag.company, new { @class = "form-control", @id = "select_company" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Date Covered</label>
+                            <input type="text" class="form-control" id="date_range" readonly />
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label class="control-label" for=""> </label>
+                            <button type="button" class="btn btn-default btn-block" id="btnGeneratePayslip">
+                                <i class="fa fa-refresh"></i> FILTER
+                            </button>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label class="control-label" for=""> </label>
+                            <button type="button" class="btn btn-default btn-block" id="btnComputePayslip">
+                                <i class="fa fa-calculator"></i> COMPUTE
+                            </button>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label class="control-label" for=""> </label>
+                            <button type="button" class="btn btn-default btn-block" id="btnApprove">
+                                <i class="fa fa-thumbs-o-up"></i> Approved
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div id="viewResult" class="box box-solid">
+            <div class="box-header"></div>
+            <div class="box-body">
+                <div class="result">
+                    <p style="text-align:center">*** CLICK FILTER TO SHOW RESULT ***</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="md_payslip_preview">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title"><h4>Payslip Preview</h4></div>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" class="hidden_payslip_id" />
+                <div class="payslip_preview_print">
+
+                </div>
+            </div>
+            <div class="modal-footer" id="mdlfooter">
+                <button class="btn btn-primary btn-print-payslip-preview" data-dismiss="modal"><i class="fa fa-print"></i> Print</button>
+                <button class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="md_payslip_logs">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title"><h4>Payslip Action Logs</h4></div>
+            </div>
+            <div class="modal-body">
+                <div class="payslip_logs">
+
+                </div>
+            </div>
+            <div class="modal-footer" id="mdlfooter">
+                <button class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@section scripts{
+
+
+    <script src="~/Scripts/formPrinting.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //$('#date_range').daterangepicker();
+            $('#date_range').daterangepicker({ format: 'DD/MM/YYYY' })
+
+            $(document).on('click', '.input_amount', function () {
+                $(this).numeric();
+                $(this).select();
+            });
+
+            $('#btnGeneratePayslip').on('click', function () {
+                var company_id = $('#select_company').val();
+                var date_range = $('#date_range').val();
+
+                if (date_range == "" || company_id == 0) {
+                    alert('Company and Date Covered required');
+                } else {
+                    showLoader('#viewResult');
+                    $.ajax({
+                        url: 'ViewPayslip',
+                        type: 'POST',
+                        data: {
+                            company_id: company_id,
+                            date_range: date_range
+                        }, success: function (data) {
+                            $('.result').html(data);
+                            hideLoader('#viewResult');
+
+                        }, error: function (xhr, status, error) {
+                            alertDialog({ text: xhr.responseText });
+                        }
+                    });
+                }
+            });
+
+
+            $('#btnComputePayslip').on('click', function () {
+
+                var date_range = $('#date_range').val();
+
+                $('#employee_payslip > tbody > tr.has_timesheet').each(function () {
+
+                    var employee_id = $(this).attr("employee_id");
+
+                    $(this).find('.compute_loading').html("<span style='text-align:center'><i class='fa fa-refresh fa-spin'></i> Computing Payslip</span>");
+
+                    $.ajax({
+                        url: 'ComputePayslip',
+                        type: 'POST',
+                        async: false,
+                        data: {
+                            employee_id: employee_id,
+                            date_range: date_range
+                        },
+                        success: function (data) {
+
+                        }, error: function (xhr, status, error) {
+                            alertDialog({ text: xhr.responseText });
+                        }
+                    });
+
+                    $(this).find('.compute_loading').html("<span style='text-align:center'><i class='fa fa-check'></i> Done</span>");
+                });
+                $('#btnGeneratePayslip').trigger('click');
+            });
+
+
+            $('.btn-print-payslip-preview').on('click', function () {
+                $('.payslip_preview_print').print();
+            });
+
+
+            $('#btnApprove').on('click', function () {
+                if ($('.chckboxSubmit').is(":checked")) {
+                    if (confirm("Do you want to approve this payslip?")) {
+                        showLoader('#viewResult');
+                        $('#employee_payslip > tbody > tr.refresh_payslip').each(function () {
+
+                            if ($(this).find('.chckboxSubmit').is(":checked")) {
+
+                                var payslip_id = $(this).find('.chckboxSubmit').attr('payslip_id');
+
+                                $.ajax({
+                                    url: 'changePayslipStatus',
+                                    type: 'POST',
+                                    async: false,
+                                    data: {
+                                        payslip_id: payslip_id,
+                                        status: 'APPROVED'
+                                    }, success: function (data) {
+
+                                    }
+                                });
+
+                            }
+                        });
+                        $('#btnGeneratePayslip').trigger('click');
+                    }
+                } else {
+                    alert("You must check atleast one in the payslip record to be approved");
+                }
+            });
+
+            $(document).on('click', '.btn-print-voidpayslip', function () {
+                if (confirm("Do you want to void this payslip?")) {
+                    showLoader('#viewResult');
+                    var payslip_id = $(this).attr('payslip_id');
+                    $.ajax({
+                        url: 'changePayslipStatus',
+                        type: 'POST',
+                        async: false,
+                        data: {
+                            payslip_id: payslip_id,
+                            status: 'CANCELLED'
+                        }, success: function (data) {
+                            $('#btnGeneratePayslip').trigger('click');
+                        }
+                    });
+                }
+            });
+
+            $(document).on('click', '.btn-print-viewlogs', function () {
+                $('.payslip_logs').html('<p style="text-align:center">Wait for a moment  <i class="fa fa-refresh fa-spin"></i></p>');
+                $('#md_payslip_logs').modal('show');
+                var payslip_id = $(this).attr('payslip_id');
+                
+                $.ajax({
+                    url: 'viewPayslipLogs',
+                    type: 'POST',
+                    async: false,
+                    data: {
+                        payslip_id: payslip_id
+                    }, success: function (data) {
+                        $('.payslip_logs').html(data);
+                    }
+                });
+               
+             
+            });
+
+            $(document).on('click', '.checkALL', function () {
+                if ($(this).is(":checked")) {
+                    $('input[name=checkrecord]').prop('checked', true);
+                } else {
+                    $('input[name=checkrecord]').prop('checked', false);
+                }
+            });
+
+
+            $(document).on('click', '.btn-print-payslip', function () {
+                $('.payslip_preview_print').html('<p style="text-align:center">Wait for a moment  <i class="fa fa-refresh fa-spin"></i></p>');
+                var payslip_id = $(this).attr('payslip_id');
+                $('.hidden_payslip_id').val(payslip_id);
+
+                $.ajax({
+                    url: 'ViewPayslipPrint',
+                    type: 'POST',
+                    data: {
+                        payslip_id: payslip_id
+                    },
+                    success: function (data) {
+                        $('.payslip_preview_print').html(data);
+                    }, error: function (xhr, status, error) {
+                        alertDialog({ text: xhr.responseText });
+                    }
+                });
+                $('#md_payslip_preview').modal('show');
+
+            });
+
+            $(document).on('click', '.show_payslip_details', function () {
+
+                var payslip_id = $(this).attr('payslip_id');
+                var nexttr = $(this).closest('tr').next('tr');
+
+                var _thisBox = $(this).closest('tr').next().find('.payslip-box');
+
+                var _this = $(this).closest('tr').next().find('.emp_payslip_details');
+
+                showLoader(_thisBox);
+                if (!nexttr.is(':visible')) {
+                    $.ajax({
+                        url: 'viewPayslipDetails',
+                        type: 'POST',
+                        data: {
+                            payslip_id: payslip_id
+                        },
+                        success: function (data) {
+                            _this.html(data);
+                        }, error: function (xhr, status, error) {
+                            alertDialog({ text: xhr.responseText });
+                        }
+
+
+                    });
+                    hideLoader('.payslip-box');
+                }
+                $(this).closest('tr').next().slideToggle();
+            });
+
+            $(document).on('click', '.btn-save-adjustment-entry', function () {
+
+                var payslip_id = $(this).attr('payslip_id');
+                var adjustment_name = $(this).closest('tr').find('.entry_adjustment_name').val();
+                var adjustment_amount = $(this).closest('tr').find('.entry_adjustment_amount').val();
+
+                $.ajax({
+                    url: 'insertEntryAdditional',
+                    type: 'POST',
+                    async: false,
+                    data: {
+                        payslip_id: payslip_id,
+                        adjustment_name: adjustment_name,
+                        adjustment_amount: adjustment_amount
+                    },
+                    success: function (data) {
+
+                    }, error: function (xhr, status, error) {
+                        alertDialog({ text: xhr.responseText });
+                    }
+
+                });
+
+                refreshPayslip(payslip_id, $(this));
+                refreshPayslipDetails(payslip_id, $(this));
+
+            });
+
+            $(document).on('click', '.btn-save-entry-deduction', function () {
+
+                var payslip_id = $(this).attr('payslip_id');
+                var deduction_name = $(this).closest('tr').find('.entry_deduction_name').val();
+                var deduction_amount = $(this).closest('tr').find('.entry_deduction_amount').val();
+
+                $.ajax({
+                    url: 'insertEntryDeduction',
+                    type: 'POST',
+                    async: false,
+                    data: {
+                        payslip_id: payslip_id,
+                        deduction_name: deduction_name,
+                        deduction_amount: deduction_amount
+                    },
+                    success: function (data) {
+
+                    }, error: function (xhr, status, error) {
+                        alertDialog({ text: xhr.responseText });
+                    }
+
+                });
+
+                refreshPayslip(payslip_id, $(this));
+                refreshPayslipDetails(payslip_id, $(this));
+
+            });
+
+            $(document).on('change', '.input_charges', function () {
+
+                var payslip_adjustment_id = $(this).attr('payslip_adjustment_id');
+                var payslip_id = $(this).attr('payslip_id');
+                var amount = $(this).val();
+
+                $.ajax({
+                    url: 'updatePayslipAdjustment',
+                    type: 'POST',
+                    async: false,
+                    data: {
+                        payslip_adjustment_id: payslip_adjustment_id,
+                        amount: amount
+                    },
+                    success: function (data) {
+
+                    }, error: function (xhr, status, error) {
+                        alertDialog({ text: xhr.responseText });
+                    }
+                });
+
+                refreshPayslip(payslip_id, $(this));
+                refreshPayslipDetails(payslip_id, $(this));
+
+            });
+
+            $(document).on('change', '.input_government', function () {
+
+                var payslip_government_id = $(this).attr('payslip_government_id');
+                var payslip_id = $(this).attr('payslip_id');
+                var amount = $(this).val();
+
+                $.ajax({
+                    url: 'updatePayslipGovernment',
+                    type: 'POST',
+                    async: false,
+                    data: {
+                        payslip_government_id: payslip_government_id,
+                        amount: amount
+                    },
+                    success: function (data) {
+
+                    }, error: function (xhr, status, error) {
+                        alertDialog({ text: xhr.responseText });
+                    }
+                });
+
+                refreshPayslip(payslip_id, $(this));
+                refreshPayslipDetails(payslip_id, $(this));
+
+            });
+
+            $(document).on('change', '.input_less', function () {
+
+                var payslip_less_id = $(this).attr('id');
+                var payslip_id = $(this).attr('payslip_id');
+                var amount = $(this).val();
+
+                $.ajax({
+                    url: 'updatePayslipLessDetails',
+                    type: 'POST',
+                    async: false,
+                    data: {
+                        payslip_less_id: payslip_less_id,
+                        amount: amount
+                    },
+                    success: function (data) {
+
+                    }, error: function (xhr, status, error) {
+                        alertDialog({ text: xhr.responseText });
+                    }
+                });
+
+                refreshPayslip(payslip_id, $(this));
+                refreshPayslipDetails(payslip_id, $(this));
+
+            });
+
+            $(document).on('click', '.remove_adjustment_entry', function () {
+                var payslip_adjustment_id = $(this).attr('payslip_adjustment_id');
+                var payslip_id = $(this).attr('payslip_id');
+
+                if (confirm("Do you want to remove this Additional Adjustment?"))
+                    $.ajax({
+                        url: 'cancelPayslipAdjusment',
+                        type: 'POST',
+                        async: false,
+                        data: {
+                            payslip_adjustment_id: payslip_adjustment_id
+                        },
+                        success: function (data) {
+
+                        }, error: function (xhr, status, error) {
+                            alertDialog({ text: xhr.responseText });
+                        }
+                    });
+
+                refreshPayslip(payslip_id, $(this));
+                refreshPayslipDetails(payslip_id, $(this));
+            });
+
+            $(document).on('click', '.remove_deduction_entry', function () {
+                var payslip_adjustment_id = $(this).attr('payslip_adjustment_id');
+                var payslip_id = $(this).attr('payslip_id');
+
+                if (confirm("Do you want to remove this Deduction?"))
+                    $.ajax({
+                        url: 'cancelPayslipAdjusment',
+                        type: 'POST',
+                        async: false,
+                        data: {
+                            payslip_adjustment_id: payslip_adjustment_id
+                        },
+                        success: function (data) {
+
+                        }, error: function (xhr, status, error) {
+                            alertDialog({ text: xhr.responseText });
+                        }
+                    });
+
+                refreshPayslip(payslip_id, $(this));
+                refreshPayslipDetails(payslip_id, $(this));
+            });
+
+            function refreshPayslipDetails(payslip_id, _this) {
+
+                var box = _this.closest('table').parents('tr').find('.payslip-box');
+                var _result = _this.closest('table').parents('tr').find('.emp_payslip_details');
+
+                showLoader(box);
+
+                $.ajax({
+                    url: 'viewPayslipDetails',
+                    type: 'POST',
+                    data: {
+                        payslip_id: payslip_id
+                    },
+                    success: function (data) {
+                        _result.html(data);
+                    }, error: function (xhr, status, error) {
+                        alertDialog({ text: xhr.responseText });
+                    }
+                });
+
+
+            }
+
+            function refreshPayslip(payslip_id, _this) {
+                var parentMainTrs = _this.closest('table').parents('tr').prev();
+                parentMainTrs.html('<td colspan="10"><p style="text-align:center;"> <i class="fa fa-refresh fa-spin"></i> Please wait a moment to refresh. <p/></td>');
+
+                $.ajax({
+                    url: 'refreshPayslip',
+                    type: 'POST',
+                    data: {
+                        payslip_id: payslip_id
+                    },
+                    success: function (data) {
+                        parentMainTrs.html(data);
+                        hideLoader('.payslip-box');
+                    }, error: function (xhr, status, error) {
+                        alertDialog({ text: xhr.responseText });
+                    }
+
+                });
+            }
+
+        });
+
+
+
+    </script>
+}

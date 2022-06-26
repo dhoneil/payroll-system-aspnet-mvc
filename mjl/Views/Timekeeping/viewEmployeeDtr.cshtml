@@ -1,0 +1,223 @@
+﻿@using mjl.Models.Database;
+@using mjl.Models;
+@using System.Globalization;
+
+@{
+    int employee_id = (int)ViewBag.employee_id;
+
+    Employee empData = EmployeeModel.getEmployeeByID(employee_id);
+    int company_id = empData.company_id.Value;
+    DateTime date_from = (DateTime)ViewBag.date_from;
+    DateTime date_to = (DateTime)ViewBag.date_to;
+    bool has_timesheet = TimesheetModel.verifyHasEmployeeTimesheet(employee_id, date_from, date_to);
+}
+<div style="padding:20px">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr style="background-color:#f2f2f2;">
+                <th>Date</th>
+                <th>Date In</th>
+                <th style="width:100px;">Time In</th>
+                <th>Date Out</th>
+                <th style="width:100px;">Time Out</th>
+                <th>OT (hr)</th>
+                <th>N-Diff (hr)</th>
+                <th>Late (min)</th>
+                <th>UT (min)</th>
+                <th>Holiday?</th>
+                <th>Restday?</th>
+                <th>Schedule</th>
+                <th>Option</th>
+            </tr>
+        </thead>
+        <tbody>
+            <input type="hidden" class="emp_id" value="@employee_id" />
+            @foreach (DateTime day in SystemHelper.EachDay(date_from, date_to))
+            {
+                string day_format_date = day.ToString("MMMM dd, yyyy");
+                string remarks_schedule = Scheduler.verifyScheduleAvailable(employee_id, day);
+                bool holiday_remarks = false;
+
+                if (HolidayModel.VerifygetHolidayByDateandCompany(day, company_id))
+                {
+
+                    CompanyHoliday holiday = HolidayModel.getHolidayByDateandCompany(day, company_id);
+                    holiday_remarks = true;
+                }
+
+                
+                if (remarks_schedule == "NoSchedule")
+                {
+                    <tr>
+                        <td><span class="badge bg-red">NS</span></td>
+                        <td>@day.ToShortDateString()</td>
+                        <td colspan="12" style="text-align:center;color:white;background-color:#8F1D21">NO SCHEDULE FOUND</td>
+                    </tr>
+                }
+                else
+                {
+                    Employee_Schedule emp_sched = Scheduler.getEmployeeSchedule(employee_id, day);
+                    DateTime dateSchedIn = DateTime.Parse(emp_sched.TimeIn.Value.ToString());
+                    DateTime dateSchedOut = DateTime.Parse(emp_sched.TimeOut.Value.ToString());
+
+
+                    if (DtrComputation.checkgetDtrReport(employee_id, day))
+                    {
+
+                        DailyTimeRecord data = DtrComputation.getDtrReport(employee_id, day);
+
+                        <tr dtr_id="@data.RecordID" class="record">
+                            <td>@data.RecordDate.ToShortDateString()</td>
+                            <td>
+                                <span class="date_in" value="@data.TimeLogIn.Value.ToString("yyyy-MM-dd")">@data.TimeLogIn.Value.ToShortDateString()</span>
+                            </td>
+                            <td>
+                                @if (!has_timesheet)
+                                {
+                                    <input type = "text" class="form-control input_time time_in" value="@data.TimeLogIn.Value.ToString("HH:mm")" readonly />
+                                }
+                                else {
+                                     @data.TimeLogIn.Value.ToString("HH:mm");
+                                }
+                            </td>
+                            <td>
+                                <span class="date_out" value="@data.TimeLogOut.Value.ToString("yyyy-MM-dd")">@data.TimeLogOut.Value.ToShortDateString()</span>
+                            </td>
+                            <td>
+                                @if (!has_timesheet)
+                                {
+                                    <input type="text" class="form-control input_time time_out" value="@data.TimeLogOut.Value.ToString("HH:mm")" readonly />
+                                }
+                                else {
+                                    @data.TimeLogOut.Value.ToString("HH:mm");
+                                }
+                            </td>
+                            <td>@data.total_overtime_hrs.Value</td>
+                            <td>@data.nigthdiff</td>
+                            <td>@data.lates.Value</td>
+                            <td>@data.undertime.Value</td>
+                            <td>
+                                @if (holiday_remarks)
+                                {
+                                    <span class="badge bg-orange">YES</span>
+                                }
+                                else {
+                                    <span class="badge bg-gray">NO</span>
+                                }
+                            </td>
+                            <td>
+                                @if (remarks_schedule == "Restday")
+                                {
+                                    <span class="badge bg-blue">YES</span>
+                                }
+                                else {
+                                    <span class="badge bg-gray">NO</span>
+                                }
+                            </td>
+                            <td>@dateSchedIn.ToString("HH:mm") - @dateSchedOut.ToString("HH:mm")</td>
+                            <td>
+                                @if (!has_timesheet)
+                                {
+                                     <button type="button" class="btn btn-default btn-entry-manual" date_dtr="@day_format_date" title="Manual DTR Entry"><i class="fa fa-clock-o"></i></button>
+                                     <button type="button" class="btn btn-danger btn-remove-entry" title="Remove DTR" dtr_id="@data.RecordID" emp_id="@data.EmployeeID"><i class="fa fa-remove"></i></button>
+                                }
+                                else {
+                                      <span>N/A</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        DateTime dateTimeOut = new DateTime();
+                        if (emp_sched.isOutOverDay == true)
+                        {
+                            dateTimeOut = day.AddDays(1);
+                        }
+                        else {
+                            dateTimeOut = day;
+                        }
+                        <tr dtr_id="0" class="record">
+                            <td>@day.ToShortDateString()</td>
+                            <td>
+                                <span class="date_in" value="@day.ToString("yyyy-MM-dd")">@day.ToShortDateString()</span>
+                            </td>
+                            <td>
+                                @if (!has_timesheet)
+                                {
+                                    <input type="text" class="form-control input_time time_in" readonly/>
+                                }
+                                else
+                                {
+                                    <span>N/A</span>
+                                }
+                            </td>
+                            <td>
+                                <span class="date_out" value="@dateTimeOut.ToString("yyyy-MM-dd")">@dateTimeOut.ToShortDateString()</span>
+                            </td>
+                            <td>  
+                                @if (!has_timesheet)
+                                {
+                                    <input type="text" class="form-control input_time time_out" readonly/>
+                                }
+                                else
+                                {
+                                    <span>N/A</span>
+                                }
+                            </td>
+                            <td>0.00</td>
+                            <td>0.00</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>
+                                @if (holiday_remarks)
+                                {
+                                    <span class="badge bg-orange">YES</span>
+                                }
+                                else {
+                                    <span class="badge bg-gray">NO</span>
+                                }
+                            </td>
+                            <td>
+                                @if (remarks_schedule == "Restday")
+                                {
+                                    <span class="badge bg-blue">YES</span>
+                                }
+                                else {
+                                    <span class="badge bg-gray">NO</span>
+                                }
+                            </td>
+                            <td>@dateSchedIn.ToString("HH:mm") - @dateSchedOut.ToString("HH:mm")</td>
+                            <td>
+                                
+                                @if (!has_timesheet)
+                                {
+
+                                    <button type="button" class="btn btn-default btn-entry-manual" date_dtr="@day_format_date" title="Manual DTR Entry"><i class="fa fa-clock-o"></i></button>
+                                    <button type="button" class="btn btn-default btn-entry-empty" title="Empty DTR Entry"><i class="fa fa-refresh"></i></button>
+                                }
+                                else {
+                                      <span>N/A</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+
+                }
+            }
+        </tbody>
+        <tfoot>
+            @if (has_timesheet)
+            {
+                <tr>
+                    <td colspan="14" style="text-align:center">Note : DTR cannot be <B>EDIT</B> as long as timesheet has been <B>LOCKED</B>. Unlock the timesheet before you want to changes his/her <b>DTR</b> unless you cannot change it.</td>
+               </tr>
+            }
+            else {
+               <tr>
+                  <td colspan="14"><buton class="btn btn-default btn-mini pull-right btn-recompute"><span class="fa fa-save"></span> Save All</buton></td>
+               </tr>
+            }
+        </tfoot>
+    </table>
+</div>

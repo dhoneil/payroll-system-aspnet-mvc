@@ -1,0 +1,198 @@
+﻿@using mjl.Models.Database;
+@using mjl.Models;
+
+@{
+    List<Employee> data = (List<Employee>)ViewBag.emp_list;
+    int count = 0;
+}
+
+<table class="table table-bordered table-condensed" id="list_of_employee">
+    <thead>
+        <tr>
+            <th rowspan="2" style="width:200px;text-align:center;vertical-align:middle">Name</th>
+            <th colspan="2">SSS</th>
+            <th colspan="2">Philhealth</th>
+            <th colspan="2">Pagibig</th>
+        </tr>
+        <tr>
+            <td>
+                <div class="radio">
+                    <label>
+                        <input name="sss_radio_all" value="AUTO" type="radio">Auto
+                    </label>
+                    <a title="Computation Formula" class="sss_table_formula">[<span class="fa fa-question">]</span></a>
+                </div>
+
+            </td>
+            <td>
+                <div class="radio">
+                    <label>
+                        <input name="sss_radio_all" value="MANUAL" type="radio">Manual
+                    </label>
+                    <a title="View Auto Computation Formula"></a>
+                </div>
+            </td>
+            <td>
+                <div class="radio">
+                    <label>
+                        <input name="philhealth_radio_all" value="AUTO" type="radio">Auto
+                    </label>
+                    <a title="Computation Formula" class="philhealth_table_formula">[<span class="fa fa-question">]</span></a>
+                </div>
+            </td>
+            <td>
+                <div class="radio">
+                    <label>
+                        <input name="philhealth_radio_all" value="MANUAL" type="radio">Manual
+                    </label>
+                </div>
+            </td>
+            <td>
+                <div class="radio">
+                    <label>
+                        <input name="pagibig_radio_all" value="AUTO" type="radio">Auto
+                    </label>
+                    <a title="Computation Formula"  class="pagibig_table_formula">[<span class="fa fa-question">]</span></a>
+                </div>
+            </td>
+            <td>
+                <div class="radio">
+                    <label>
+                        <input name="pagibig_radio_all" value="MANUAL" type="radio">Manual
+                    </label>
+                </div>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var items in data)
+        {
+            count++;
+
+            string name = items.LastName.ToUpper() + ", " + items.FirstName.ToUpper();
+            decimal monthly_rate = CompensationModel.getEmployeeCompensationMonthly(items.EmployeeID);
+            decimal auto_sss_amount = 0;
+            decimal philhealth_amount = 0;
+
+            bool has_government_deduction = EmployeeGovernmentModel.verifygetEmployeeGovermentDetails(items.EmployeeID);
+            
+
+            if (monthly_rate > 0)
+            {
+                //Payroll.Models.Database.EmployeeGovernment government_deduction = EmployeeGovernmentModel.getEmployeeGovermentDetails(items.EmployeeID);
+                auto_sss_amount = sssModel.getSSSAmount(monthly_rate);
+                philhealth_amount = philhealthModel.getphilhealthAmount(monthly_rate);
+            }
+
+            if (monthly_rate == 0)
+            {
+                <tr>
+                    <td>@name</td>
+                    <td colspan="7" style="text-align:center;color:maroon">(No Compensation Found)</td>
+                </tr>
+            }
+            else if (monthly_rate == 1)
+            {
+                <tr>
+                    <td>@name</td>
+                    <td colspan="7" style="text-align:center;color:maroon">(You need to update his/her compensation)</td>
+                </tr>
+
+            }
+            else if (has_government_deduction == false)
+            {
+                 <tr>
+                    <td>@name</td>
+                    <td colspan="7" style="text-align:center;color:maroon">(No Government Deduction Found)</td>
+                </tr>
+
+            }
+            else
+            {
+                EmployeeGovernment emp_government_deduction = EmployeeGovernmentModel.getEmployeeGovermentDetails(items.EmployeeID);
+
+
+                <tr class="record">
+                    <input type="hidden" class="employee_id" value="@items.EmployeeID"/>
+                    <td>@name</td>
+                    @if (emp_government_deduction.with_sss == true)
+                    {
+                        <td>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <input type="radio" name="sss_button_@count" class="sss_auto sss" deduction_type="Auto" @(emp_government_deduction.sss_type_deduction == "Auto" ? "checked" : "")>
+                                </span>
+                            <input type="text" class="form-control sss_amount" placeholder="00.00" style="text-align:right" value="@auto_sss_amount.ToNumericFormat()" disabled="disabled">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <input type="radio" name="sss_button_@count" class="sss_manual sss"  deduction_type="Manual" @(emp_government_deduction.sss_type_deduction == "Manual" ? "checked" : "")>
+                                </span>
+                                <input type="text" min="0" class="form-control sss_amount select_amount" style="text-align:right" placeholder="00.00" value="@(emp_government_deduction.sss_type_deduction == "Manual" ? emp_government_deduction.sss_amount.Value.ToNumericFormat() : "0")"/>
+                            </div>
+                        </td>
+                    }
+                    else {
+                        <td colspan="2" style="text-align:center;color:maroon">*** NO SSS DEDUCTION ***</td>
+                    }
+
+        @if (emp_government_deduction.with_philhealth == true)
+        {
+                        <td>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <input type="radio" name="phihealth_@count" class="phihealth_auto philhealth" deduction_type="Auto" @(emp_government_deduction.philhealth_type_deduction == "Auto" ? "checked" : "")>
+                                </span>
+                                <input type="text" class="form-control phihealth_amount" placeholder="00.00" style="text-align:right" value="@philhealth_amount.ToNumericFormat()" disabled="disabled">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <input type="radio" name="phihealth_@count" class="phihealth_manual philhealth" deduction_type="Manual" @(emp_government_deduction.philhealth_type_deduction == "Manual" ? "checked" : "")>
+                                </span>
+                                <input type="text" class="form-control phihealth_amount select_amount" style="text-align:right" placeholder="00.00" value="@(emp_government_deduction.philhealth_type_deduction == "Manual" ? emp_government_deduction.philhealth_amount.Value.ToNumericFormat() : "0")">
+                            </div>
+                        </td>
+        }
+        else {
+                        <td colspan="2" style="text-align:center;color:maroon">*** NO PHILHEALTH DEDUCTION ***</td>
+        }
+
+                    @if (emp_government_deduction.with_pagibig == true)
+                    {
+                        <td>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <input type="radio" name="pagibig_@count" class="pagibig_auto pagibig" deduction_type="Auto" @(emp_government_deduction.pagibig_type_deduction == "Auto" ? "checked" : "")>
+                                </span>
+                                <input type="text" class="form-control pagibig_amount" style="text-align:right" placeholder="00.00" value="100" disabled="disabled">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <input type="radio" name="pagibig_@count" class="pagibig_manual pagibig" deduction_type="Manual" @(emp_government_deduction.pagibig_type_deduction == "Manual" ? "checked" : "")>
+                                </span>
+                                <input type="text" class="form-control pagibig_amount select_amount" style="text-align:right" placeholder="00.00" value="@(emp_government_deduction.pagibig_type_deduction == "Manual" ? emp_government_deduction.pagibig_amount.Value.ToNumericFormat() : "0")">
+                            </div>
+                        </td>
+                    }
+                    else {
+                        <td colspan="2" style="text-align:center;color:maroon">*** NO PAGIBIG DEDUCTION ***</td>
+                    }
+                </tr>
+            }
+
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="8">
+                <button class="btn btn-default pull-right btn-save-all" style="margin-top:40px;margin-bottom:20px;"><span class="fa fa-save"></span> Save Changes</button>
+            </td>
+        </tr>
+    </tfoot>
+</table>

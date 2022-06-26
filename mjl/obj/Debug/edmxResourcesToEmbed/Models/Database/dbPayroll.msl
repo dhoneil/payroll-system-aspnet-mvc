@@ -1,0 +1,846 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="dbPayrollModelStoreContainer" CdmEntityContainer="dbPayrollEntities">
+    <EntitySetMapping Name="BillingAdjustments">
+      <EntityTypeMapping TypeName="dbPayrollModel.BillingAdjustment">
+        <MappingFragment StoreEntitySet="BillingAdjustments">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="payslip_id" ColumnName="payslip_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="amount" ColumnName="amount" />
+          <ScalarProperty Name="is_active" ColumnName="is_active" />
+          <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+          <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+          <ScalarProperty Name="last_edit_by" ColumnName="last_edit_by" />
+          <ScalarProperty Name="last_edit_date" ColumnName="last_edit_date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BillingSecurities">
+      <EntityTypeMapping TypeName="dbPayrollModel.BillingSecurity">
+        <MappingFragment StoreEntitySet="BillingSecurities">
+          <ScalarProperty Name="bill_id" ColumnName="bill_id" />
+          <ScalarProperty Name="bill_description" ColumnName="bill_description" />
+          <ScalarProperty Name="bill_amount" ColumnName="bill_amount" />
+          <ScalarProperty Name="company_id" ColumnName="company_id" />
+          <ScalarProperty Name="date_from" ColumnName="date_from" />
+          <ScalarProperty Name="date_to" ColumnName="date_to" />
+          <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+          <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+          <ScalarProperty Name="updated_by" ColumnName="updated_by" />
+          <ScalarProperty Name="update_date" ColumnName="update_date" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="remarks" ColumnName="remarks" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Companies">
+      <EntityTypeMapping TypeName="dbPayrollModel.Company">
+        <MappingFragment StoreEntitySet="Companies">
+          <ScalarProperty Name="company_id" ColumnName="company_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="owner_name" ColumnName="owner_name" />
+          <ScalarProperty Name="admin_fee" ColumnName="admin_fee" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="city" ColumnName="city" />
+          <ScalarProperty Name="contact_number" ColumnName="contact_number" />
+          <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+          <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+          <ScalarProperty Name="last_edit_by" ColumnName="last_edit_by" />
+          <ScalarProperty Name="last_edit_date" ColumnName="last_edit_date" />
+          <ScalarProperty Name="is_active" ColumnName="is_active" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CompanyHolidays">
+      <EntityTypeMapping TypeName="dbPayrollModel.CompanyHoliday">
+        <MappingFragment StoreEntitySet="CompanyHolidays">
+          <ScalarProperty Name="HolidayID" ColumnName="HolidayID" />
+          <ScalarProperty Name="HolidayName" ColumnName="HolidayName" />
+          <ScalarProperty Name="HolidayType" ColumnName="HolidayType" />
+          <ScalarProperty Name="HolidayDate" ColumnName="HolidayDate" />
+          <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+          <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+          <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+          <ScalarProperty Name="last_edit_by" ColumnName="last_edit_by" />
+          <ScalarProperty Name="last_edit_date" ColumnName="last_edit_date" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CompensationHistories">
+      <EntityTypeMapping TypeName="dbPayrollModel.CompensationHistory">
+        <MappingFragment StoreEntitySet="CompensationHistories">
+          <ScalarProperty Name="HistoryID" ColumnName="HistoryID" />
+          <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+          <ScalarProperty Name="CompensationType" ColumnName="CompensationType" />
+          <ScalarProperty Name="ValidityStart" ColumnName="ValidityStart" />
+          <ScalarProperty Name="CompensationRate" ColumnName="CompensationRate" />
+          <ScalarProperty Name="PreparedBy" ColumnName="PreparedBy" />
+          <ScalarProperty Name="PreparedDate" ColumnName="PreparedDate" />
+          <ScalarProperty Name="LastEditBy" ColumnName="LastEditBy" />
+          <ScalarProperty Name="LastEditDate" ColumnName="LastEditDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DailyTimeRecords">
+      <EntityTypeMapping TypeName="dbPayrollModel.DailyTimeRecord">
+        <MappingFragment StoreEntitySet="DailyTimeRecords">
+          <ScalarProperty Name="RecordID" ColumnName="RecordID" />
+          <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+          <ScalarProperty Name="RecordDate" ColumnName="RecordDate" />
+          <ScalarProperty Name="SystemEqDate" ColumnName="SystemEqDate" />
+          <ScalarProperty Name="TimeLogIn" ColumnName="TimeLogIn" />
+          <ScalarProperty Name="TimeLogOut" ColumnName="TimeLogOut" />
+          <ScalarProperty Name="TimeLogType" ColumnName="TimeLogType" />
+          <ScalarProperty Name="PreparedBy" ColumnName="PreparedBy" />
+          <ScalarProperty Name="PreparedDate" ColumnName="PreparedDate" />
+          <ScalarProperty Name="LastEditBy" ColumnName="LastEditBy" />
+          <ScalarProperty Name="LastEditDate" ColumnName="LastEditDate" />
+          <ScalarProperty Name="Source" ColumnName="Source" />
+          <ScalarProperty Name="HasComputedPayslip" ColumnName="HasComputedPayslip" />
+          <ScalarProperty Name="total_duty_hrs" ColumnName="total_duty_hrs" />
+          <ScalarProperty Name="total_overtime_hrs" ColumnName="total_overtime_hrs" />
+          <ScalarProperty Name="holiday_hrs" ColumnName="holiday_hrs" />
+          <ScalarProperty Name="nigthdiff" ColumnName="nigthdiff" />
+          <ScalarProperty Name="lates" ColumnName="lates" />
+          <ScalarProperty Name="undertime" ColumnName="undertime" />
+          <ScalarProperty Name="isHalfDay" ColumnName="isHalfDay" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="employee_master">
+      <EntityTypeMapping TypeName="dbPayrollModel.employee_master">
+        <MappingFragment StoreEntitySet="employee_master">
+          <ScalarProperty Name="cust_acct_no" ColumnName="cust_acct_no" />
+          <ScalarProperty Name="countryid" ColumnName="countryid" />
+          <ScalarProperty Name="comp_code" ColumnName="comp_code" />
+          <ScalarProperty Name="franchise" ColumnName="franchise" />
+          <ScalarProperty Name="store_code" ColumnName="store_code" />
+          <ScalarProperty Name="employee_no" ColumnName="employee_no" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="first_name" ColumnName="first_name" />
+          <ScalarProperty Name="middle_name" ColumnName="middle_name" />
+          <ScalarProperty Name="last_name" ColumnName="last_name" />
+          <ScalarProperty Name="birthday" ColumnName="birthday" />
+          <ScalarProperty Name="civil_id_no" ColumnName="civil_id_no" />
+          <ScalarProperty Name="civil_id_expired" ColumnName="civil_id_expired" />
+          <ScalarProperty Name="health_card_no" ColumnName="health_card_no" />
+          <ScalarProperty Name="health_crd_exp" ColumnName="health_crd_exp" />
+          <ScalarProperty Name="level" ColumnName="level" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="inac_date" ColumnName="inac_date" />
+          <ScalarProperty Name="act_date" ColumnName="act_date" />
+          <ScalarProperty Name="passport" ColumnName="passport" />
+          <ScalarProperty Name="passport_expr" ColumnName="passport_expr" />
+          <ScalarProperty Name="address_flat" ColumnName="address_flat" />
+          <ScalarProperty Name="address_floor" ColumnName="address_floor" />
+          <ScalarProperty Name="address_censuno" ColumnName="address_censuno" />
+          <ScalarProperty Name="address_buildingno" ColumnName="address_buildingno" />
+          <ScalarProperty Name="address_street" ColumnName="address_street" />
+          <ScalarProperty Name="address_blockno" ColumnName="address_blockno" />
+          <ScalarProperty Name="address_area" ColumnName="address_area" />
+          <ScalarProperty Name="address_city" ColumnName="address_city" />
+          <ScalarProperty Name="address_country" ColumnName="address_country" />
+          <ScalarProperty Name="origin_address" ColumnName="origin_address" />
+          <ScalarProperty Name="origin_city" ColumnName="origin_city" />
+          <ScalarProperty Name="origin_country" ColumnName="origin_country" />
+          <ScalarProperty Name="first_name_a" ColumnName="first_name_a" />
+          <ScalarProperty Name="middle_name_a" ColumnName="middle_name_a" />
+          <ScalarProperty Name="last_name_a" ColumnName="last_name_a" />
+          <ScalarProperty Name="father_name_a" ColumnName="father_name_a" />
+          <ScalarProperty Name="father_last_a" ColumnName="father_last_a" />
+          <ScalarProperty Name="salary_rate" ColumnName="salary_rate" />
+          <ScalarProperty Name="address_avenue" ColumnName="address_avenue" />
+          <ScalarProperty Name="dept_code" ColumnName="dept_code" />
+          <ScalarProperty Name="sect_code" ColumnName="sect_code" />
+          <ScalarProperty Name="photo" ColumnName="photo" />
+          <ScalarProperty Name="genderid" ColumnName="genderid" />
+          <ScalarProperty Name="maritalid" ColumnName="maritalid" />
+          <ScalarProperty Name="nationalityid" ColumnName="nationalityid" />
+          <ScalarProperty Name="worksched" ColumnName="worksched" />
+          <ScalarProperty Name="driverlicense" ColumnName="driverlicense" />
+          <ScalarProperty Name="driverexpired" ColumnName="driverexpired" />
+          <ScalarProperty Name="Contract" ColumnName="Contract" />
+          <ScalarProperty Name="noyears" ColumnName="noyears" />
+          <ScalarProperty Name="contract_expired" ColumnName="contract_expired" />
+          <ScalarProperty Name="residency_no" ColumnName="residency_no" />
+          <ScalarProperty Name="residency_expired" ColumnName="residency_expired" />
+          <ScalarProperty Name="bankid" ColumnName="bankid" />
+          <ScalarProperty Name="bank_account_no" ColumnName="bank_account_no" />
+          <ScalarProperty Name="Passport_countryid" ColumnName="Passport_countryid" />
+          <ScalarProperty Name="passport_issuedat" ColumnName="passport_issuedat" />
+          <ScalarProperty Name="datehired" ColumnName="datehired" />
+          <ScalarProperty Name="statusid" ColumnName="statusid" />
+          <ScalarProperty Name="photo_filename" ColumnName="photo_filename" />
+          <ScalarProperty Name="photo_imagetype" ColumnName="photo_imagetype" />
+          <ScalarProperty Name="phoneno" ColumnName="phoneno" />
+          <ScalarProperty Name="mobileno" ColumnName="mobileno" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="compmobno" ColumnName="compmobno" />
+          <ScalarProperty Name="compemailadd" ColumnName="compemailadd" />
+          <ScalarProperty Name="shift_code" ColumnName="shift_code" />
+          <ScalarProperty Name="clientassign" ColumnName="clientassign" />
+          <ScalarProperty Name="shift_type" ColumnName="shift_type" />
+          <ScalarProperty Name="birthplace" ColumnName="birthplace" />
+          <ScalarProperty Name="salary_typeid" ColumnName="salary_typeid" />
+          <ScalarProperty Name="salary_periodid" ColumnName="salary_periodid" />
+          <ScalarProperty Name="height" ColumnName="height" />
+          <ScalarProperty Name="weight" ColumnName="weight" />
+          <ScalarProperty Name="religionid" ColumnName="religionid" />
+          <ScalarProperty Name="spouse" ColumnName="spouse" />
+          <ScalarProperty Name="spouse_occupation" ColumnName="spouse_occupation" />
+          <ScalarProperty Name="fathers_name" ColumnName="fathers_name" />
+          <ScalarProperty Name="fathers_occupation" ColumnName="fathers_occupation" />
+          <ScalarProperty Name="mothers_name" ColumnName="mothers_name" />
+          <ScalarProperty Name="mothers_occupation" ColumnName="mothers_occupation" />
+          <ScalarProperty Name="parent_address" ColumnName="parent_address" />
+          <ScalarProperty Name="skillandlanguage" ColumnName="skillandlanguage" />
+          <ScalarProperty Name="caseemergency" ColumnName="caseemergency" />
+          <ScalarProperty Name="caseemergencycontact" ColumnName="caseemergencycontact" />
+          <ScalarProperty Name="caseemergencyaddress" ColumnName="caseemergencyaddress" />
+          <ScalarProperty Name="sssno" ColumnName="sssno" />
+          <ScalarProperty Name="pagibig" ColumnName="pagibig" />
+          <ScalarProperty Name="philhealth" ColumnName="philhealth" />
+          <ScalarProperty Name="tinno" ColumnName="tinno" />
+          <ScalarProperty Name="probitionary" ColumnName="probitionary" />
+          <ScalarProperty Name="noofmonths" ColumnName="noofmonths" />
+          <ScalarProperty Name="endprob" ColumnName="endprob" />
+          <ScalarProperty Name="housing" ColumnName="housing" />
+          <ScalarProperty Name="transpo" ColumnName="transpo" />
+          <ScalarProperty Name="sil" ColumnName="sil" />
+          <ScalarProperty Name="vl" ColumnName="vl" />
+          <ScalarProperty Name="sl" ColumnName="sl" />
+          <ScalarProperty Name="renewcontract" ColumnName="renewcontract" />
+          <ScalarProperty Name="restday" ColumnName="restday" />
+          <ScalarProperty Name="allowance_petrol" ColumnName="allowance_petrol" />
+          <ScalarProperty Name="allowance_telephone" ColumnName="allowance_telephone" />
+          <ScalarProperty Name="allowance_travel" ColumnName="allowance_travel" />
+          <ScalarProperty Name="allowance_car" ColumnName="allowance_car" />
+          <ScalarProperty Name="allowance_job_nature" ColumnName="allowance_job_nature" />
+          <ScalarProperty Name="allowance_foods" ColumnName="allowance_foods" />
+          <ScalarProperty Name="allowance_others" ColumnName="allowance_others" />
+          <ScalarProperty Name="cash_bond" ColumnName="cash_bond" />
+          <ScalarProperty Name="pagibig_contr" ColumnName="pagibig_contr" />
+          <ScalarProperty Name="philhealth_contr" ColumnName="philhealth_contr" />
+          <ScalarProperty Name="fingerprintid" ColumnName="fingerprintid" />
+          <ScalarProperty Name="security_lisence" ColumnName="security_lisence" />
+          <ScalarProperty Name="sl_dateexpire" ColumnName="sl_dateexpire" />
+          <ScalarProperty Name="signaturephoto" ColumnName="signaturephoto" />
+          <ScalarProperty Name="photos" ColumnName="photos" />
+          <ScalarProperty Name="sss_deduct" ColumnName="sss_deduct" />
+          <ScalarProperty Name="pagibig_deduct" ColumnName="pagibig_deduct" />
+          <ScalarProperty Name="philhealthdeduct" ColumnName="philhealthdeduct" />
+          <ScalarProperty Name="chargefee" ColumnName="chargefee" />
+          <ScalarProperty Name="runningbalance" ColumnName="runningbalance" />
+          <ScalarProperty Name="defaulthrswork" ColumnName="defaulthrswork" />
+          <ScalarProperty Name="chargepaydaydeduct" ColumnName="chargepaydaydeduct" />
+          <ScalarProperty Name="sprsdhrsprem" ColumnName="sprsdhrsprem" />
+          <ScalarProperty Name="defaultothrswork" ColumnName="defaultothrswork" />
+          <ScalarProperty Name="nsdhrswork" ColumnName="nsdhrswork" />
+          <ScalarProperty Name="totalhrsworby8" ColumnName="totalhrsworby8" />
+          <ScalarProperty Name="billingfee" ColumnName="billingfee" />
+          <ScalarProperty Name="incentive" ColumnName="incentive" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="Nationality" ColumnName="Nationality" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Employee_Payslip">
+      <EntityTypeMapping TypeName="dbPayrollModel.Employee_Payslip">
+        <MappingFragment StoreEntitySet="Employee_Payslip">
+          <ScalarProperty Name="payslip_id" ColumnName="payslip_id" />
+          <ScalarProperty Name="company_id" ColumnName="company_id" />
+          <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+          <ScalarProperty Name="employee_rate" ColumnName="employee_rate" />
+          <ScalarProperty Name="date_from" ColumnName="date_from" />
+          <ScalarProperty Name="date_to" ColumnName="date_to" />
+          <ScalarProperty Name="total_additionals" ColumnName="total_additionals" />
+          <ScalarProperty Name="total_less" ColumnName="total_less" />
+          <ScalarProperty Name="total_deduction" ColumnName="total_deduction" />
+          <ScalarProperty Name="gross_pay" ColumnName="gross_pay" />
+          <ScalarProperty Name="net_pay" ColumnName="net_pay" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+          <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+          <ScalarProperty Name="cancelled_by" ColumnName="cancelled_by" />
+          <ScalarProperty Name="cancelled_date" ColumnName="cancelled_date" />
+          <ScalarProperty Name="approved_by" ColumnName="approved_by" />
+          <ScalarProperty Name="approved_date" ColumnName="approved_date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Employee_Payslip_Adjustment">
+      <EntityTypeMapping TypeName="dbPayrollModel.Employee_Payslip_Adjustment">
+        <MappingFragment StoreEntitySet="Employee_Payslip_Adjustment">
+          <ScalarProperty Name="payslip_adjustment_id" ColumnName="payslip_adjustment_id" />
+          <ScalarProperty Name="payslip_id" ColumnName="payslip_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="amount" ColumnName="amount" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+          <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+          <ScalarProperty Name="cancelled_by" ColumnName="cancelled_by" />
+          <ScalarProperty Name="cancelled_date" ColumnName="cancelled_date" />
+          <ScalarProperty Name="lastedit_by" ColumnName="lastedit_by" />
+          <ScalarProperty Name="lastedit_date" ColumnName="lastedit_date" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="isCharges" ColumnName="isCharges" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Employee_Payslip_Details">
+      <EntityTypeMapping TypeName="dbPayrollModel.Employee_Payslip_Details">
+        <MappingFragment StoreEntitySet="Employee_Payslip_Details">
+          <ScalarProperty Name="payslip_less_id" ColumnName="payslip_less_id" />
+          <ScalarProperty Name="payslip_id" ColumnName="payslip_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="days" ColumnName="days" />
+          <ScalarProperty Name="hours" ColumnName="hours" />
+          <ScalarProperty Name="amount" ColumnName="amount" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="last_edit_by" ColumnName="last_edit_by" />
+          <ScalarProperty Name="last_edit_date" ColumnName="last_edit_date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Employee_Payslip_Government">
+      <EntityTypeMapping TypeName="dbPayrollModel.Employee_Payslip_Government">
+        <MappingFragment StoreEntitySet="Employee_Payslip_Government">
+          <ScalarProperty Name="payslip_government_id" ColumnName="payslip_government_id" />
+          <ScalarProperty Name="payslip_id" ColumnName="payslip_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="amount" ColumnName="amount" />
+          <ScalarProperty Name="last_edit_by" ColumnName="last_edit_by" />
+          <ScalarProperty Name="last_edit_date" ColumnName="last_edit_date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Employee_Schedule">
+      <EntityTypeMapping TypeName="dbPayrollModel.Employee_Schedule">
+        <MappingFragment StoreEntitySet="Employee_Schedule">
+          <ScalarProperty Name="ScheduleID" ColumnName="ScheduleID" />
+          <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+          <ScalarProperty Name="EffectiveDate" ColumnName="EffectiveDate" />
+          <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
+          <ScalarProperty Name="TimeIn" ColumnName="TimeIn" />
+          <ScalarProperty Name="TimeOut" ColumnName="TimeOut" />
+          <ScalarProperty Name="Restday" ColumnName="Restday" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+          <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+          <ScalarProperty Name="latest_edit_by" ColumnName="latest_edit_by" />
+          <ScalarProperty Name="latest_edit_date" ColumnName="latest_edit_date" />
+          <ScalarProperty Name="isOutOverDay" ColumnName="isOutOverDay" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="employee_timesheet">
+      <EntityTypeMapping TypeName="dbPayrollModel.employee_timesheet">
+        <MappingFragment StoreEntitySet="employee_timesheet">
+          <ScalarProperty Name="emp_timesheet_id" ColumnName="emp_timesheet_id" />
+          <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+          <ScalarProperty Name="date_from" ColumnName="date_from" />
+          <ScalarProperty Name="date_to" ColumnName="date_to" />
+          <ScalarProperty Name="regular_days" ColumnName="regular_days" />
+          <ScalarProperty Name="holiday_days" ColumnName="holiday_days" />
+          <ScalarProperty Name="restday_days" ColumnName="restday_days" />
+          <ScalarProperty Name="absent_days" ColumnName="absent_days" />
+          <ScalarProperty Name="overtime_hours" ColumnName="overtime_hours" />
+          <ScalarProperty Name="lates" ColumnName="lates" />
+          <ScalarProperty Name="undertime" ColumnName="undertime" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+          <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+          <ScalarProperty Name="cancelled_by" ColumnName="cancelled_by" />
+          <ScalarProperty Name="cancelled_date" ColumnName="cancelled_date" />
+          <ScalarProperty Name="lastedit_by" ColumnName="lastedit_by" />
+          <ScalarProperty Name="lastedit_date" ColumnName="lastedit_date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EmployeeCharges">
+      <EntityTypeMapping TypeName="dbPayrollModel.EmployeeCharge">
+        <MappingFragment StoreEntitySet="EmployeeCharges">
+          <ScalarProperty Name="ChargeID" ColumnName="ChargeID" />
+          <ScalarProperty Name="ChargeName" ColumnName="ChargeName" />
+          <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+          <ScalarProperty Name="date_from" ColumnName="date_from" />
+          <ScalarProperty Name="date_to" ColumnName="date_to" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+          <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+          <ScalarProperty Name="lastedit_by" ColumnName="lastedit_by" />
+          <ScalarProperty Name="lastedit_date" ColumnName="lastedit_date" />
+          <ScalarProperty Name="ChargeAmount" ColumnName="ChargeAmount" />
+          <ScalarProperty Name="Released_by" ColumnName="Released_by" />
+          <ScalarProperty Name="Released_date" ColumnName="Released_date" />
+          <ScalarProperty Name="Cancelled_by" ColumnName="Cancelled_by" />
+          <ScalarProperty Name="Cancelled_date" ColumnName="Cancelled_date" />
+          <ScalarProperty Name="payslip_adjustment_id" ColumnName="payslip_adjustment_id" />
+          <ScalarProperty Name="payslip_id" ColumnName="payslip_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EmployeeDependents">
+      <EntityTypeMapping TypeName="dbPayrollModel.EmployeeDependent">
+        <MappingFragment StoreEntitySet="EmployeeDependents">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="emp_id" ColumnName="emp_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="relation" ColumnName="relation" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="preparedBy" ColumnName="preparedBy" />
+          <ScalarProperty Name="preparedDate" ColumnName="preparedDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EmployeeGovernments">
+      <EntityTypeMapping TypeName="dbPayrollModel.EmployeeGovernment">
+        <MappingFragment StoreEntitySet="EmployeeGovernments">
+          <ScalarProperty Name="goverment_deduction_id" ColumnName="goverment_deduction_id" />
+          <ScalarProperty Name="emp_id" ColumnName="emp_id" />
+          <ScalarProperty Name="with_sss" ColumnName="with_sss" />
+          <ScalarProperty Name="sss_type_deduction" ColumnName="sss_type_deduction" />
+          <ScalarProperty Name="sss_amount" ColumnName="sss_amount" />
+          <ScalarProperty Name="with_philhealth" ColumnName="with_philhealth" />
+          <ScalarProperty Name="philhealth_type_deduction" ColumnName="philhealth_type_deduction" />
+          <ScalarProperty Name="philhealth_amount" ColumnName="philhealth_amount" />
+          <ScalarProperty Name="with_pagibig" ColumnName="with_pagibig" />
+          <ScalarProperty Name="pagibig_type_deduction" ColumnName="pagibig_type_deduction" />
+          <ScalarProperty Name="pagibig_amount" ColumnName="pagibig_amount" />
+          <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+          <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+          <ScalarProperty Name="last_edit_by" ColumnName="last_edit_by" />
+          <ScalarProperty Name="last_edit_date" ColumnName="last_edit_date" />
+          <ScalarProperty Name="with_tin" ColumnName="with_tin" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Employees">
+      <EntityTypeMapping TypeName="dbPayrollModel.Employee">
+        <MappingFragment StoreEntitySet="Employees">
+          <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+          <ScalarProperty Name="employee_no" ColumnName="employee_no" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="DateHired" ColumnName="DateHired" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="Citizenship" ColumnName="Citizenship" />
+          <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+          <ScalarProperty Name="BirthPlace" ColumnName="BirthPlace" />
+          <ScalarProperty Name="JobID" ColumnName="JobID" />
+          <ScalarProperty Name="PreparedBy" ColumnName="PreparedBy" />
+          <ScalarProperty Name="PreparedDate" ColumnName="PreparedDate" />
+          <ScalarProperty Name="LastEditBy" ColumnName="LastEditBy" />
+          <ScalarProperty Name="LastEditDate" ColumnName="LastEditDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="company_id" ColumnName="company_id" />
+          <ScalarProperty Name="contact_no" ColumnName="contact_no" />
+          <ScalarProperty Name="birth_place" ColumnName="birth_place" />
+          <ScalarProperty Name="height" ColumnName="height" />
+          <ScalarProperty Name="weight" ColumnName="weight" />
+          <ScalarProperty Name="probitionary" ColumnName="probitionary" />
+          <ScalarProperty Name="prob_no_of_months" ColumnName="prob_no_of_months" />
+          <ScalarProperty Name="end_probitionary_date" ColumnName="end_probitionary_date" />
+          <ScalarProperty Name="province_address" ColumnName="province_address" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="Current_country" ColumnName="Current_country" />
+          <ScalarProperty Name="MaritalStatus" ColumnName="MaritalStatus" />
+          <ScalarProperty Name="religion" ColumnName="religion" />
+          <ScalarProperty Name="Current_region" ColumnName="Current_region" />
+          <ScalarProperty Name="Current_city_municipality" ColumnName="Current_city_municipality" />
+          <ScalarProperty Name="Current_street" ColumnName="Current_street" />
+          <ScalarProperty Name="Current_barangay" ColumnName="Current_barangay" />
+          <ScalarProperty Name="Current_sitio" ColumnName="Current_sitio" />
+          <ScalarProperty Name="provincial_country" ColumnName="provincial_country" />
+          <ScalarProperty Name="provincial_region" ColumnName="provincial_region" />
+          <ScalarProperty Name="provincial_city_municipality" ColumnName="provincial_city_municipality" />
+          <ScalarProperty Name="provincial_street" ColumnName="provincial_street" />
+          <ScalarProperty Name="provincial_barangay" ColumnName="provincial_barangay" />
+          <ScalarProperty Name="provincial_sitio" ColumnName="provincial_sitio" />
+          <ScalarProperty Name="renew_contract" ColumnName="renew_contract" />
+          <ScalarProperty Name="SSS_Number" ColumnName="SSS_Number" />
+          <ScalarProperty Name="PagIbig_Number" ColumnName="PagIbig_Number" />
+          <ScalarProperty Name="PhilHealth_Number" ColumnName="PhilHealth_Number" />
+          <ScalarProperty Name="TIN_Number" ColumnName="TIN_Number" />
+          <ScalarProperty Name="atm_number" ColumnName="atm_number" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EmployeeSpouses">
+      <EntityTypeMapping TypeName="dbPayrollModel.EmployeeSpous">
+        <MappingFragment StoreEntitySet="EmployeeSpouses">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="emp_id" ColumnName="emp_id" />
+          <ScalarProperty Name="firstname" ColumnName="firstname" />
+          <ScalarProperty Name="middlename" ColumnName="middlename" />
+          <ScalarProperty Name="lastname" ColumnName="lastname" />
+          <ScalarProperty Name="preparedBy" ColumnName="preparedBy" />
+          <ScalarProperty Name="preparedDate" ColumnName="preparedDate" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Jobs">
+      <EntityTypeMapping TypeName="dbPayrollModel.Job">
+        <MappingFragment StoreEntitySet="Jobs">
+          <ScalarProperty Name="JobID" ColumnName="JobID" />
+          <ScalarProperty Name="JobName" ColumnName="JobName" />
+          <ScalarProperty Name="JobDescription" ColumnName="JobDescription" />
+          <ScalarProperty Name="PreparedBy" ColumnName="PreparedBy" />
+          <ScalarProperty Name="PreparedDate" ColumnName="PreparedDate" />
+          <ScalarProperty Name="LastEditBy" ColumnName="LastEditBy" />
+          <ScalarProperty Name="LastEditDate" ColumnName="LastEditDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SSS_Contribution">
+      <EntityTypeMapping TypeName="dbPayrollModel.SSS_Contribution">
+        <MappingFragment StoreEntitySet="SSS_Contribution">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="start_range" ColumnName="start_range" />
+          <ScalarProperty Name="end_range" ColumnName="end_range" />
+          <ScalarProperty Name="monthly_salary_credit" ColumnName="monthly_salary_credit" />
+          <ScalarProperty Name="social_security_er" ColumnName="social_security_er" />
+          <ScalarProperty Name="social_security_ee" ColumnName="social_security_ee" />
+          <ScalarProperty Name="social_security_total" ColumnName="social_security_total" />
+          <ScalarProperty Name="ec_er" ColumnName="ec_er" />
+          <ScalarProperty Name="total_contribution_er" ColumnName="total_contribution_er" />
+          <ScalarProperty Name="total_contribution_ee" ColumnName="total_contribution_ee" />
+          <ScalarProperty Name="grand_total_contribution" ColumnName="grand_total_contribution" />
+          <ScalarProperty Name="total_contribution" ColumnName="total_contribution" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="dbPayrollModel.User">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="View_billingAdjustments">
+      <EntityTypeMapping TypeName="dbPayrollModel.View_billingAdjustments">
+        <MappingFragment StoreEntitySet="View_billingAdjustments">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="payslip_id" ColumnName="payslip_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="amount" ColumnName="amount" />
+          <ScalarProperty Name="is_active" ColumnName="is_active" />
+          <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+          <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+          <ScalarProperty Name="last_edit_by" ColumnName="last_edit_by" />
+          <ScalarProperty Name="last_edit_date" ColumnName="last_edit_date" />
+          <ScalarProperty Name="Expr1" ColumnName="Expr1" />
+          <ScalarProperty Name="Expr5" ColumnName="Expr5" />
+          <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+          <ScalarProperty Name="employee_rate" ColumnName="employee_rate" />
+          <ScalarProperty Name="date_from" ColumnName="date_from" />
+          <ScalarProperty Name="date_to" ColumnName="date_to" />
+          <ScalarProperty Name="total_additionals" ColumnName="total_additionals" />
+          <ScalarProperty Name="total_less" ColumnName="total_less" />
+          <ScalarProperty Name="total_deduction" ColumnName="total_deduction" />
+          <ScalarProperty Name="gross_pay" ColumnName="gross_pay" />
+          <ScalarProperty Name="net_pay" ColumnName="net_pay" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="Expr2" ColumnName="Expr2" />
+          <ScalarProperty Name="Expr3" ColumnName="Expr3" />
+          <ScalarProperty Name="cancelled_by" ColumnName="cancelled_by" />
+          <ScalarProperty Name="cancelled_date" ColumnName="cancelled_date" />
+          <ScalarProperty Name="approved_by" ColumnName="approved_by" />
+          <ScalarProperty Name="approved_date" ColumnName="approved_date" />
+          <ScalarProperty Name="fname" ColumnName="fname" />
+          <ScalarProperty Name="lname" ColumnName="lname" />
+          <ScalarProperty Name="fname_edit" ColumnName="fname_edit" />
+          <ScalarProperty Name="lname_edit" ColumnName="lname_edit" />
+          <ScalarProperty Name="e_ID" ColumnName="e_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="viewChargeReports">
+      <EntityTypeMapping TypeName="dbPayrollModel.viewChargeReport">
+        <MappingFragment StoreEntitySet="viewChargeReports">
+          <ScalarProperty Name="ChargeID" ColumnName="ChargeID" />
+          <ScalarProperty Name="ChargeName" ColumnName="ChargeName" />
+          <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+          <ScalarProperty Name="date_from" ColumnName="date_from" />
+          <ScalarProperty Name="date_to" ColumnName="date_to" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+          <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+          <ScalarProperty Name="lastedit_by" ColumnName="lastedit_by" />
+          <ScalarProperty Name="lastedit_date" ColumnName="lastedit_date" />
+          <ScalarProperty Name="ChargeAmount" ColumnName="ChargeAmount" />
+          <ScalarProperty Name="Released_by" ColumnName="Released_by" />
+          <ScalarProperty Name="Released_date" ColumnName="Released_date" />
+          <ScalarProperty Name="Cancelled_by" ColumnName="Cancelled_by" />
+          <ScalarProperty Name="Cancelled_date" ColumnName="Cancelled_date" />
+          <ScalarProperty Name="payslip_adjustment_id" ColumnName="payslip_adjustment_id" />
+          <ScalarProperty Name="payslip_id" ColumnName="payslip_id" />
+          <ScalarProperty Name="Expr1" ColumnName="Expr1" />
+          <ScalarProperty Name="employee_no" ColumnName="employee_no" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="DateHired" ColumnName="DateHired" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="Citizenship" ColumnName="Citizenship" />
+          <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+          <ScalarProperty Name="BirthPlace" ColumnName="BirthPlace" />
+          <ScalarProperty Name="JobID" ColumnName="JobID" />
+          <ScalarProperty Name="PreparedBy" ColumnName="PreparedBy" />
+          <ScalarProperty Name="PreparedDate" ColumnName="PreparedDate" />
+          <ScalarProperty Name="LastEditBy" ColumnName="LastEditBy" />
+          <ScalarProperty Name="LastEditDate" ColumnName="LastEditDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="company_id" ColumnName="company_id" />
+          <ScalarProperty Name="contact_no" ColumnName="contact_no" />
+          <ScalarProperty Name="birth_place" ColumnName="birth_place" />
+          <ScalarProperty Name="probitionary" ColumnName="probitionary" />
+          <ScalarProperty Name="prob_no_of_months" ColumnName="prob_no_of_months" />
+          <ScalarProperty Name="end_probitionary_date" ColumnName="end_probitionary_date" />
+          <ScalarProperty Name="province_address" ColumnName="province_address" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="Current_country" ColumnName="Current_country" />
+          <ScalarProperty Name="MaritalStatus" ColumnName="MaritalStatus" />
+          <ScalarProperty Name="religion" ColumnName="religion" />
+          <ScalarProperty Name="Current_region" ColumnName="Current_region" />
+          <ScalarProperty Name="Current_city_municipality" ColumnName="Current_city_municipality" />
+          <ScalarProperty Name="Current_street" ColumnName="Current_street" />
+          <ScalarProperty Name="Current_barangay" ColumnName="Current_barangay" />
+          <ScalarProperty Name="Current_sitio" ColumnName="Current_sitio" />
+          <ScalarProperty Name="provincial_country" ColumnName="provincial_country" />
+          <ScalarProperty Name="provincial_region" ColumnName="provincial_region" />
+          <ScalarProperty Name="provincial_city_municipality" ColumnName="provincial_city_municipality" />
+          <ScalarProperty Name="provincial_street" ColumnName="provincial_street" />
+          <ScalarProperty Name="provincial_barangay" ColumnName="provincial_barangay" />
+          <ScalarProperty Name="provincial_sitio" ColumnName="provincial_sitio" />
+          <ScalarProperty Name="renew_contract" ColumnName="renew_contract" />
+          <ScalarProperty Name="SSS_Number" ColumnName="SSS_Number" />
+          <ScalarProperty Name="PagIbig_Number" ColumnName="PagIbig_Number" />
+          <ScalarProperty Name="PhilHealth_Number" ColumnName="PhilHealth_Number" />
+          <ScalarProperty Name="TIN_Number" ColumnName="TIN_Number" />
+          <ScalarProperty Name="atm_number" ColumnName="atm_number" />
+          <ScalarProperty Name="Expr2" ColumnName="Expr2" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="owner_name" ColumnName="owner_name" />
+          <ScalarProperty Name="admin_fee" ColumnName="admin_fee" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="city" ColumnName="city" />
+          <ScalarProperty Name="contact_number" ColumnName="contact_number" />
+          <ScalarProperty Name="Expr3" ColumnName="Expr3" />
+          <ScalarProperty Name="Expr4" ColumnName="Expr4" />
+          <ScalarProperty Name="last_edit_by" ColumnName="last_edit_by" />
+          <ScalarProperty Name="last_edit_date" ColumnName="last_edit_date" />
+          <ScalarProperty Name="is_active" ColumnName="is_active" />
+          <ScalarProperty Name="weight" ColumnName="weight" />
+          <ScalarProperty Name="height" ColumnName="height" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="viewCompanyHolidays">
+      <EntityTypeMapping TypeName="dbPayrollModel.viewCompanyHoliday">
+        <MappingFragment StoreEntitySet="viewCompanyHolidays">
+          <ScalarProperty Name="HolidayID" ColumnName="HolidayID" />
+          <ScalarProperty Name="HolidayName" ColumnName="HolidayName" />
+          <ScalarProperty Name="HolidayType" ColumnName="HolidayType" />
+          <ScalarProperty Name="HolidayDate" ColumnName="HolidayDate" />
+          <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+          <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+          <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+          <ScalarProperty Name="last_edit_by" ColumnName="last_edit_by" />
+          <ScalarProperty Name="last_edit_date" ColumnName="last_edit_date" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="company_id" ColumnName="company_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="owner_name" ColumnName="owner_name" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="city" ColumnName="city" />
+          <ScalarProperty Name="contact_number" ColumnName="contact_number" />
+          <ScalarProperty Name="Expr1" ColumnName="Expr1" />
+          <ScalarProperty Name="Expr2" ColumnName="Expr2" />
+          <ScalarProperty Name="Expr3" ColumnName="Expr3" />
+          <ScalarProperty Name="Expr4" ColumnName="Expr4" />
+          <ScalarProperty Name="is_active" ColumnName="is_active" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="viewEmployeeCharges">
+      <EntityTypeMapping TypeName="dbPayrollModel.viewEmployeeCharge">
+        <MappingFragment StoreEntitySet="viewEmployeeCharges">
+          <ScalarProperty Name="ChargeID" ColumnName="ChargeID" />
+          <ScalarProperty Name="ChargeName" ColumnName="ChargeName" />
+          <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+          <ScalarProperty Name="date_from" ColumnName="date_from" />
+          <ScalarProperty Name="date_to" ColumnName="date_to" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+          <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+          <ScalarProperty Name="lastedit_by" ColumnName="lastedit_by" />
+          <ScalarProperty Name="lastedit_date" ColumnName="lastedit_date" />
+          <ScalarProperty Name="ChargeAmount" ColumnName="ChargeAmount" />
+          <ScalarProperty Name="Released_by" ColumnName="Released_by" />
+          <ScalarProperty Name="Released_date" ColumnName="Released_date" />
+          <ScalarProperty Name="Cancelled_by" ColumnName="Cancelled_by" />
+          <ScalarProperty Name="Cancelled_date" ColumnName="Cancelled_date" />
+          <ScalarProperty Name="payslip_adjustment_id" ColumnName="payslip_adjustment_id" />
+          <ScalarProperty Name="payslip_id" ColumnName="payslip_id" />
+          <ScalarProperty Name="Expr1" ColumnName="Expr1" />
+          <ScalarProperty Name="employee_no" ColumnName="employee_no" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="DateHired" ColumnName="DateHired" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="Citizenship" ColumnName="Citizenship" />
+          <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+          <ScalarProperty Name="BirthPlace" ColumnName="BirthPlace" />
+          <ScalarProperty Name="JobID" ColumnName="JobID" />
+          <ScalarProperty Name="PreparedBy" ColumnName="PreparedBy" />
+          <ScalarProperty Name="PreparedDate" ColumnName="PreparedDate" />
+          <ScalarProperty Name="LastEditBy" ColumnName="LastEditBy" />
+          <ScalarProperty Name="LastEditDate" ColumnName="LastEditDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="company_id" ColumnName="company_id" />
+          <ScalarProperty Name="contact_no" ColumnName="contact_no" />
+          <ScalarProperty Name="birth_place" ColumnName="birth_place" />
+          <ScalarProperty Name="probitionary" ColumnName="probitionary" />
+          <ScalarProperty Name="prob_no_of_months" ColumnName="prob_no_of_months" />
+          <ScalarProperty Name="end_probitionary_date" ColumnName="end_probitionary_date" />
+          <ScalarProperty Name="province_address" ColumnName="province_address" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="Current_country" ColumnName="Current_country" />
+          <ScalarProperty Name="MaritalStatus" ColumnName="MaritalStatus" />
+          <ScalarProperty Name="religion" ColumnName="religion" />
+          <ScalarProperty Name="Current_region" ColumnName="Current_region" />
+          <ScalarProperty Name="Current_city_municipality" ColumnName="Current_city_municipality" />
+          <ScalarProperty Name="Current_street" ColumnName="Current_street" />
+          <ScalarProperty Name="Current_barangay" ColumnName="Current_barangay" />
+          <ScalarProperty Name="Current_sitio" ColumnName="Current_sitio" />
+          <ScalarProperty Name="provincial_country" ColumnName="provincial_country" />
+          <ScalarProperty Name="provincial_region" ColumnName="provincial_region" />
+          <ScalarProperty Name="provincial_city_municipality" ColumnName="provincial_city_municipality" />
+          <ScalarProperty Name="provincial_street" ColumnName="provincial_street" />
+          <ScalarProperty Name="provincial_barangay" ColumnName="provincial_barangay" />
+          <ScalarProperty Name="provincial_sitio" ColumnName="provincial_sitio" />
+          <ScalarProperty Name="renew_contract" ColumnName="renew_contract" />
+          <ScalarProperty Name="height" ColumnName="height" />
+          <ScalarProperty Name="weight" ColumnName="weight" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ViewEmployeeV2">
+      <EntityTypeMapping TypeName="dbPayrollModel.ViewEmployeeV2">
+        <MappingFragment StoreEntitySet="ViewEmployeeV2">
+          <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+          <ScalarProperty Name="employee_no" ColumnName="employee_no" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="DateHired" ColumnName="DateHired" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="Citizenship" ColumnName="Citizenship" />
+          <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+          <ScalarProperty Name="BirthPlace" ColumnName="BirthPlace" />
+          <ScalarProperty Name="JobID" ColumnName="JobID" />
+          <ScalarProperty Name="PreparedBy" ColumnName="PreparedBy" />
+          <ScalarProperty Name="PreparedDate" ColumnName="PreparedDate" />
+          <ScalarProperty Name="LastEditBy" ColumnName="LastEditBy" />
+          <ScalarProperty Name="LastEditDate" ColumnName="LastEditDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="company_id" ColumnName="company_id" />
+          <ScalarProperty Name="contact_no" ColumnName="contact_no" />
+          <ScalarProperty Name="birth_place" ColumnName="birth_place" />
+          <ScalarProperty Name="probitionary" ColumnName="probitionary" />
+          <ScalarProperty Name="prob_no_of_months" ColumnName="prob_no_of_months" />
+          <ScalarProperty Name="end_probitionary_date" ColumnName="end_probitionary_date" />
+          <ScalarProperty Name="province_address" ColumnName="province_address" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="Current_country" ColumnName="Current_country" />
+          <ScalarProperty Name="MaritalStatus" ColumnName="MaritalStatus" />
+          <ScalarProperty Name="religion" ColumnName="religion" />
+          <ScalarProperty Name="Current_region" ColumnName="Current_region" />
+          <ScalarProperty Name="Current_city_municipality" ColumnName="Current_city_municipality" />
+          <ScalarProperty Name="Current_street" ColumnName="Current_street" />
+          <ScalarProperty Name="Current_barangay" ColumnName="Current_barangay" />
+          <ScalarProperty Name="Current_sitio" ColumnName="Current_sitio" />
+          <ScalarProperty Name="provincial_country" ColumnName="provincial_country" />
+          <ScalarProperty Name="provincial_region" ColumnName="provincial_region" />
+          <ScalarProperty Name="provincial_city_municipality" ColumnName="provincial_city_municipality" />
+          <ScalarProperty Name="provincial_street" ColumnName="provincial_street" />
+          <ScalarProperty Name="provincial_barangay" ColumnName="provincial_barangay" />
+          <ScalarProperty Name="provincial_sitio" ColumnName="provincial_sitio" />
+          <ScalarProperty Name="renew_contract" ColumnName="renew_contract" />
+          <ScalarProperty Name="SSS_Number" ColumnName="SSS_Number" />
+          <ScalarProperty Name="PagIbig_Number" ColumnName="PagIbig_Number" />
+          <ScalarProperty Name="PhilHealth_Number" ColumnName="PhilHealth_Number" />
+          <ScalarProperty Name="TIN_Number" ColumnName="TIN_Number" />
+          <ScalarProperty Name="Expr1" ColumnName="Expr1" />
+          <ScalarProperty Name="JobName" ColumnName="JobName" />
+          <ScalarProperty Name="JobDescription" ColumnName="JobDescription" />
+          <ScalarProperty Name="Expr2" ColumnName="Expr2" />
+          <ScalarProperty Name="Expr3" ColumnName="Expr3" />
+          <ScalarProperty Name="Expr4" ColumnName="Expr4" />
+          <ScalarProperty Name="Expr5" ColumnName="Expr5" />
+          <ScalarProperty Name="Expr6" ColumnName="Expr6" />
+          <ScalarProperty Name="HistoryID" ColumnName="HistoryID" />
+          <ScalarProperty Name="Expr7" ColumnName="Expr7" />
+          <ScalarProperty Name="CompensationType" ColumnName="CompensationType" />
+          <ScalarProperty Name="ValidityStart" ColumnName="ValidityStart" />
+          <ScalarProperty Name="CompensationRate" ColumnName="CompensationRate" />
+          <ScalarProperty Name="Expr8" ColumnName="Expr8" />
+          <ScalarProperty Name="Expr9" ColumnName="Expr9" />
+          <ScalarProperty Name="Expr10" ColumnName="Expr10" />
+          <ScalarProperty Name="Expr11" ColumnName="Expr11" />
+          <ScalarProperty Name="Expr12" ColumnName="Expr12" />
+          <ScalarProperty Name="goverment_deduction_id" ColumnName="goverment_deduction_id" />
+          <ScalarProperty Name="emp_id" ColumnName="emp_id" />
+          <ScalarProperty Name="with_sss" ColumnName="with_sss" />
+          <ScalarProperty Name="sss_type_deduction" ColumnName="sss_type_deduction" />
+          <ScalarProperty Name="sss_amount" ColumnName="sss_amount" />
+          <ScalarProperty Name="with_philhealth" ColumnName="with_philhealth" />
+          <ScalarProperty Name="philhealth_type_deduction" ColumnName="philhealth_type_deduction" />
+          <ScalarProperty Name="philhealth_amount" ColumnName="philhealth_amount" />
+          <ScalarProperty Name="with_pagibig" ColumnName="with_pagibig" />
+          <ScalarProperty Name="pagibig_type_deduction" ColumnName="pagibig_type_deduction" />
+          <ScalarProperty Name="pagibig_amount" ColumnName="pagibig_amount" />
+          <ScalarProperty Name="prepared_by" ColumnName="prepared_by" />
+          <ScalarProperty Name="prepared_date" ColumnName="prepared_date" />
+          <ScalarProperty Name="last_edit_by" ColumnName="last_edit_by" />
+          <ScalarProperty Name="last_edit_date" ColumnName="last_edit_date" />
+          <ScalarProperty Name="Expr13" ColumnName="Expr13" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="owner_name" ColumnName="owner_name" />
+          <ScalarProperty Name="admin_fee" ColumnName="admin_fee" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="city" ColumnName="city" />
+          <ScalarProperty Name="contact_number" ColumnName="contact_number" />
+          <ScalarProperty Name="Expr14" ColumnName="Expr14" />
+          <ScalarProperty Name="Expr15" ColumnName="Expr15" />
+          <ScalarProperty Name="Expr16" ColumnName="Expr16" />
+          <ScalarProperty Name="Expr17" ColumnName="Expr17" />
+          <ScalarProperty Name="is_active" ColumnName="is_active" />
+          <ScalarProperty Name="with_tin" ColumnName="with_tin" />
+          <ScalarProperty Name="atm_number" ColumnName="atm_number" />
+          <ScalarProperty Name="height" ColumnName="height" />
+          <ScalarProperty Name="weight" ColumnName="weight" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

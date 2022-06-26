@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewBag.Title = "Payslip Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">Filter Options</h3>
+                <div class="box-tools">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="form-vertical row">
+                    <div class="col-sm-12">
+                        <div class="form-group col-md-3">
+                            <label>Company</label>
+                            <div class="form-group">
+                                @Html.DropDownList("company_id", (IEnumerable<SelectListItem>)ViewBag.company, new { @class = "form-control", @id = "select_company" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Date Covered</label>
+                            <input type="text" class="form-control" id="date_range" readonly />
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label class="control-label" for=""> </label>
+                            <button type="button" class="btn btn-default btn-block" id="btnGenerate">
+                                <i class="fa fa-refresh"></i> GENERATE
+                            </button>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label class="control-label" for=""> </label>
+                            <button type="button" class="btn btn-default btn-block" id="btnPrint">
+                                <i class="fa fa-print"></i> PRINT
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div id="viewResult" class="box box-solid">
+            <div class="box-header"></div>
+            <div class="box-body">
+                <div class="result">
+                    <p style="text-align:center">*** CLICK GENERATE TO SHOW REPORT ***</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+@section scripts{
+
+    <script src="~/Scripts/formPrinting.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //$('#date_range').daterangepicker();
+            $('#date_range').daterangepicker({ format: 'DD/MM/YYYY' })
+
+
+            $('#btnGenerate').on('click', function () {
+                var company_id = $('#select_company').val();
+                var date_range = $('#date_range').val();
+
+                if (date_range == "" || company_id == 0) {
+                    alert('Company and Date Covered required');
+                } else {
+                    showLoader('#viewResult');
+                    $.ajax({
+                        url: '_PayslipReport',
+                        type: 'POST',
+                        data: {
+                            company_id: company_id,
+                            date_range: date_range
+                        }, success: function (data) {
+                            $('.result').html(data);
+                            hideLoader('#viewResult');
+
+                        }, error: function (xhr, status, error) {
+                            alertDialog({ text: xhr.responseText });
+                        }
+                    });
+                }
+            });
+
+            $('#btnPrint').on('click', function () {
+                $('.result').print();
+            });
+           
+        });
+    </script>
+
+}
+
